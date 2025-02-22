@@ -24,7 +24,7 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-server-core")
-    implementation("io.ktor:ktor-server-openapi")
+    implementation("io.github.smiley4:ktor-swagger-ui:4.1.6")
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.insert-koin:koin-ktor:$koin_version")
