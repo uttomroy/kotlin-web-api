@@ -1,12 +1,13 @@
 package com.education
 
+import com.education.repositories.UserRepository
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting() {
+fun Application.configureRouting( userRepository: UserRepository ) {
     routing {
         get("/adfdaf", {
             response {
@@ -29,7 +30,8 @@ fun Application.configureRouting() {
                 }
             }
         }) {
-            call.respondText("test")
+            val userInfo = userRepository.getUserInfo(1)
+            call.respondText(userInfo.toString())
         }
     }
 }

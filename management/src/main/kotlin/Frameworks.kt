@@ -2,6 +2,8 @@ package com.education
 
 import com.education.configs.DBConfig
 import com.education.configs.DataSource
+import com.education.repositories.UserRepository
+import com.education.repositories.UserRepositoryImpl
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.application.*
@@ -23,6 +25,7 @@ fun Application.configureFrameworks() {
                     println(environment.log.info("Hello, World!"))
                 }
             }
+            single<UserRepository> { UserRepositoryImpl(get()) }
         })
     }
 }

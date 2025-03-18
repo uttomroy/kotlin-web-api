@@ -4,15 +4,18 @@ package com.education.configs
 import com.typesafe.config.Config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class DataSource (config: DBConfig) {
-    private val dataSource1: HikariDataSource
+    private val dataSource: HikariDataSource
     private val POOL_SIZE: Int = 10
 
     init {
-        val config1 = HikariConfig().apply {
+        val config = HikariConfig().apply {
             jdbcUrl = config.url
             driverClassName = config.driver
             username = config.user
@@ -22,12 +25,14 @@ class DataSource (config: DBConfig) {
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
             validate()
         }
-        dataSource1 = HikariDataSource(config1)
-        Database.connect(dataSource1)
+        dataSource = HikariDataSource(config)
+        Database.connect(dataSource)
     }
 
-    fun <T> dbQuery1(block: () -> T): T =
-        transaction(Database.connect(dataSource1)) {
-            block()
+    suspend fun <T> dbQuery(block: () -> T): T =
+        withContext(Dispatchers.IO) {
+            newSuspendedTransaction {
+                block()
+            }
         }
 }

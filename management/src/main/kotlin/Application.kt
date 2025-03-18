@@ -3,6 +3,8 @@ package com.education
 import io.github.smiley4.ktorswaggerui.SwaggerUI
 import io.github.smiley4.ktorswaggerui.data.OutputFormat
 import io.ktor.server.application.*
+import org.koin.core.context.GlobalContext
+import org.koin.ktor.plugin.Koin
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -21,5 +23,5 @@ fun Application.module() {
     configureHTTP()
     configureSerialization()
     configureFrameworks()
-    configureRouting()
+    configureRouting(GlobalContext.get().get())
 }
