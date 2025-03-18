@@ -17,7 +17,6 @@ fun Application.module() {
         externalDocs {
             url = "https://github.com/education/kotlin-swagger-ui"
         }
-
     }
     configureHTTP()
     configureSerialization()

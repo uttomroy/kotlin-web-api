@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:17
+    container_name: management-db
+    ports:
+      - "54325:5432"
+    environment:
+      POSTGRES_USER: postges
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: management
+    volumes:
+      - ./db-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped
