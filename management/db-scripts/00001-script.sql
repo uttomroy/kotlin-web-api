@@ -4,6 +4,16 @@ CREATE DATABASE management;
 -- Connect to the management database
 \c management
 
+CREATE TABLE organizations (
+    organization_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT null,
+    address VARCHAR(255),
+    contact_number varchar(50),
+    email varchar(100),
+    country varchar(100),
+    created_at date,
+    is_active bit
+);
 
 -- Create users table
 CREATE TABLE users (
