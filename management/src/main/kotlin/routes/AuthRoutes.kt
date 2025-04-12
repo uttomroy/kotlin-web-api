@@ -3,6 +3,8 @@ package routes
 import configs.JWTConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -24,6 +26,14 @@ data class TokenResponse(
 data class ErrorResponse(
     val message: String
 )
+
+suspend fun ApplicationCall.requireRole(jwtConfig: JWTConfig, requiredRole: String) {
+    val principal = principal<JWTPrincipal>()
+    if (principal == null || !jwtConfig.isUserInRole(principal, requiredRole)) {
+        respond(HttpStatusCode.Forbidden, ErrorResponse("Access denied. Required role: $requiredRole"))
+        return
+    }
+}
 
 fun Route.authRoutes(jwtConfig: JWTConfig) {
     post("/login", {
@@ -65,10 +75,19 @@ fun Route.authRoutes(jwtConfig: JWTConfig) {
     }) {
         val loginRequest = call.receive<LoginRequest>()
         
-        // Here you should implement your actual authentication logic
-        // This is just a simple example
         if (loginRequest.username == "admin" && loginRequest.password == "admin") {
-            val token = jwtConfig.generateToken(loginRequest.username)
+            val roles = if (loginRequest.username == "admin") listOf("ADMIN", "USER") else listOf("USER")
+            val token = jwtConfig.generateToken(loginRequest.username, roles)
+            
+            // Set HTTP-only cookie with the JWT token
+            call.response.cookies.append(
+                name = "jwt_token",
+                value = token,
+                httpOnly = true,
+                path = "/",     // Cookie is valid for all paths
+                maxAge = 1800   // 30 minutes
+            )
+            
             call.respond(TokenResponse(token))
         } else {
             call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Invalid credentials"))

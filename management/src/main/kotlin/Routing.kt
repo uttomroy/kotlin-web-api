@@ -10,6 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import routes.authRoutes
+import routes.requireRole
 
 @Serializable
 data class UserProfileResponse(
@@ -54,14 +55,40 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                     HttpStatusCode.Unauthorized to {
                         description = "Authentication required"
                     }
+                    HttpStatusCode.Forbidden to {
+                        description = "Insufficient permissions"
+                    }
                 }
             }) {
-                // In a real application, you would get the user ID from the JWT token
+                // Require USER role for profile access
+                call.requireRole(jwtConfig, "USER")
                 call.respond(UserProfileResponse(
                     id = 1,
                     username = "john_doe",
                     email = "john@example.com"
                 ))
+            }
+
+            get("/admin-panel", {
+                response {
+                    HttpStatusCode.OK to {
+                        description = "Access admin panel"
+                        body<String> { 
+                            description = "Admin panel data"
+                        }
+                    }
+                    HttpStatusCode.Unauthorized to {
+                        description = "Authentication required"
+                    }
+                    HttpStatusCode.Forbidden to {
+                        description = "Insufficient permissions"
+                    }
+                }
+                tags = listOf("Admin")
+            }) {
+                // Require ADMIN role for admin panel
+                call.requireRole(jwtConfig, "ADMIN")
+                call.respondText("Welcome to admin panel")
             }
 
             get("/secure-data", {
@@ -103,3 +130,4 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
         }
     }
 }
+ 
