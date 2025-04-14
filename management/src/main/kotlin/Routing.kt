@@ -21,111 +21,112 @@ data class UserProfileResponse(
 
 fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig) {
     routing {
-        // Public routes
-        authRoutes(jwtConfig)
-        
-        get("/public", {
-            response {
-                HttpStatusCode.OK to {
-                    description = "Public endpoint"
-                    body<String> { description = "Public message" }
-                }
-            }
-        }) {
-            call.respondText("This is a public endpoint")
-        }
-
-        // Protected routes
-        authenticate {
-            get("/profile", {
+        route("/api") {
+            // Public routes
+            authRoutes(jwtConfig)
+            
+            get("/public", {
                 response {
                     HttpStatusCode.OK to {
-                        description = "Get user profile"
-                        body<UserProfileResponse> { 
-                            description = "User profile information"
-                            example("User Profile") {
-                                value = UserProfileResponse(
-                                    id = 1,
-                                    username = "john_doe",
-                                    email = "john@example.com"
-                                )
+                        description = "Public endpoint"
+                        body<String> { description = "Public message" }
+                    }
+                }
+            }) {
+                call.respondText("This is a public endpoint")
+            }
+
+            // Protected routes
+            authenticate {
+                get("/profile", {
+                    response {
+                        HttpStatusCode.OK to {
+                            description = "Get user profile"
+                            body<UserProfileResponse> { 
+                                description = "User profile information"
+                                example("User Profile") {
+                                    value = UserProfileResponse(
+                                        id = 1,
+                                        username = "john_doe",
+                                        email = "john@example.com"
+                                    )
+                                }
                             }
                         }
-                    }
-                    HttpStatusCode.Unauthorized to {
-                        description = "Authentication required"
-                    }
-                    HttpStatusCode.Forbidden to {
-                        description = "Insufficient permissions"
-                    }
-                }
-            }) {
-                // Require USER role for profile access
-                call.requireRole(jwtConfig, "USER")
-                call.respond(UserProfileResponse(
-                    id = 1,
-                    username = "john_doe",
-                    email = "john@example.com"
-                ))
-            }
-
-            get("/admin-panel", {
-                response {
-                    HttpStatusCode.OK to {
-                        description = "Access admin panel"
-                        body<String> { 
-                            description = "Admin panel data"
+                        HttpStatusCode.Unauthorized to {
+                            description = "Authentication required"
+                        }
+                        HttpStatusCode.Forbidden to {
+                            description = "Insufficient permissions"
                         }
                     }
-                    HttpStatusCode.Unauthorized to {
-                        description = "Authentication required"
-                    }
-                    HttpStatusCode.Forbidden to {
-                        description = "Insufficient permissions"
-                    }
+                }) {
+                    // Require USER role for profile access
+                    call.requireRole(jwtConfig, "USER")
+                    call.respond(UserProfileResponse(
+                        id = 1,
+                        username = "john_doe",
+                        email = "john@example.com"
+                    ))
                 }
-                tags = listOf("Admin")
-            }) {
-                // Require ADMIN role for admin panel
-                call.requireRole(jwtConfig, "ADMIN")
-                call.respondText("Welcome to admin panel")
-            }
 
-            get("/secure-data", {
-                response {
-                    HttpStatusCode.OK to {
-                        description = "Get secure data"
-                        body<String> { 
-                            description = "Sensitive information"
-                            example("Secure Data") {
-                                value = "This is sensitive data that requires authentication"
+                get("/admin-panel", {
+                    response {
+                        HttpStatusCode.OK to {
+                            description = "Access admin panel"
+                            body<String> { 
+                                description = "Admin panel data"
                             }
                         }
+                        HttpStatusCode.Unauthorized to {
+                            description = "Authentication required"
+                        }
+                        HttpStatusCode.Forbidden to {
+                            description = "Insufficient permissions"
+                        }
                     }
-                    HttpStatusCode.Unauthorized to {
-                        description = "Authentication required"
-                    }
+                }) {
+                    // Require ADMIN role for admin panel
+                    call.requireRole(jwtConfig, "ADMIN")
+                    call.respondText("Welcome to admin panel")
                 }
-            }) {
-                call.respondText("This is sensitive data that requires authentication")
-            }
 
-            get("/test", {
-                response {
-                    HttpStatusCode.OK to {
-                        description = "Successful response"
-                        body<String> { description = "The greeting message" }
+                get("/secure-data", {
+                    response {
+                        HttpStatusCode.OK to {
+                            description = "Get secure data"
+                            body<String> { 
+                                description = "Sensitive information"
+                                example("Secure Data") {
+                                    value = "This is sensitive data that requires authentication"
+                                }
+                            }
+                        }
+                        HttpStatusCode.Unauthorized to {
+                            description = "Authentication required"
+                        }
                     }
-                    HttpStatusCode.BadRequest to {
-                        description = "Bad request"
-                    }
-                    HttpStatusCode.Unauthorized to {
-                        description = "Authentication required"
-                    }
+                }) {
+                    call.respondText("This is sensitive data that requires authentication")
                 }
-            }) {
-                val userInfo = userRepository.getUserInfo(1)
-                call.respondText(userInfo.toString())
+
+                get("/test", {
+                    response {
+                        HttpStatusCode.OK to {
+                            description = "Successful response"
+                            body<String> { description = "The greeting message" }
+                        }
+                        HttpStatusCode.BadRequest to {
+                            description = "Bad request"
+                        }
+                        HttpStatusCode.Unauthorized to {
+                            description = "Authentication required"
+                        }
+                    }
+                }) {
+                    val userInfo = userRepository.getUserInfo(1)
+                    call.respondText(userInfo.toString())
+                }
             }
         }
     }
