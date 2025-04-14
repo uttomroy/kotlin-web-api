@@ -1,5 +1,11 @@
--- Create database
-CREATE DATABASE management;
+-- Check and create database if it doesn't exist
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'management') THEN
+        CREATE DATABASE management;
+    END IF;
+END
+$$;
 
 -- Connect to the management database
 \c management
@@ -52,11 +58,11 @@ CREATE TABLE role_mapping (
 CREATE TABLE teachers (
     teacher_id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    department VARCHAR(100),
+    department VARCHAR(50),
     joining_date DATE,
-    qualification VARCHAR(255),
     photo_url VARCHAR(300),
-    status VARCHAR(10) NOT NULL,
+    designation VARCHAR(50) NOT NULL,
+    is_active BOOLEAN NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id)  
 );
 

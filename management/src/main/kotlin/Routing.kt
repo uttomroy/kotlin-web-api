@@ -124,7 +124,7 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                         }
                     }
                 }) {
-                    val userInfo = userRepository.getUserInfo(1)
+                    val userInfo = userRepository.getUserById(1)
                     call.respondText(userInfo.toString())
                 }
             }
