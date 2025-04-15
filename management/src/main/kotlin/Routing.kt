@@ -3,6 +3,7 @@ package com.education
 import com.education.repositories.TeacherRepository
 import com.education.repositories.UserRepository
 import com.education.routes.teacherRoutes
+import com.education.services.UserService
 import configs.JWTConfig
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
@@ -21,11 +22,13 @@ data class UserProfileResponse(
     val email: String
 )
 
-fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig, teacherRepository: TeacherRepository) {
+fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig,
+                                 teacherRepository: TeacherRepository,
+                                 userService: UserService) {
     routing {
         route("/api") {
             // Public routes
-            authRoutes(jwtConfig)
+            authRoutes(jwtConfig, userService)
             
             get("/public", {
                 response {
@@ -35,7 +38,7 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                     }
                 }
             }) {
-                call.respondText("This is a public endpoint")
+                call.respondText(userService.generatePasswordHash("1234"))
             }
 
             // Protected routes
@@ -88,8 +91,6 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                         }
                     }
                 }) {
-                    // Require ADMIN role for admin panel
-                    call.requireRole(jwtConfig, "ADMIN")
                     call.respondText("Welcome to admin panel")
                 }
                 teacherRoutes(teacherRepository)

@@ -30,6 +30,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+    implementation("org.mindrot:jbcrypt:0.4")
     implementation("io.ktor:ktor-server-core")
     implementation("io.github.smiley4:ktor-swagger-ui:4.1.6")
     implementation("io.ktor:ktor-server-content-negotiation")

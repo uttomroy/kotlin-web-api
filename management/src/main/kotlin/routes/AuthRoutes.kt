@@ -1,5 +1,6 @@
 package routes
 
+import com.education.services.UserService
 import configs.JWTConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -35,7 +36,7 @@ suspend fun ApplicationCall.requireRole(jwtConfig: JWTConfig, requiredRole: Stri
     }
 }
 
-fun Route.authRoutes(jwtConfig: JWTConfig) {
+fun Route.authRoutes(jwtConfig: JWTConfig, userService: UserService) {
     post("/login", {
         summary = "Authenticate user and get JWT token"
         description = "Authenticates a user with username and password, returns JWT token on success"
@@ -74,20 +75,15 @@ fun Route.authRoutes(jwtConfig: JWTConfig) {
         tags = listOf("Authentication")
     }) {
         val loginRequest = call.receive<LoginRequest>()
-        
-        if (loginRequest.username == "admin" && loginRequest.password == "admin") {
-            val roles = if (loginRequest.username == "admin") listOf("ADMIN", "USER") else listOf("USER")
-            val token = jwtConfig.generateToken(loginRequest.username, roles)
-            
-            // Set HTTP-only cookie with the JWT token
+        if(userService.isValidUser(loginRequest)){
+            val token = jwtConfig.generateToken(loginRequest.username)
             call.response.cookies.append(
                 name = "jwt_token",
                 value = token,
                 httpOnly = true,
-                path = "/",     // Cookie is valid for all paths
-                maxAge = 1800   // 30 minutes
+                path = "/",
+                maxAge = 1800
             )
-            
             call.respond(TokenResponse(token))
         } else {
             call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Invalid credentials"))

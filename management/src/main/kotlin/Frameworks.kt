@@ -6,6 +6,10 @@ import com.education.repositories.TeacherRepository
 import com.education.repositories.TeacherRepositoryImpl
 import com.education.repositories.UserRepository
 import com.education.repositories.UserRepositoryImpl
+import com.education.services.PasswordService
+import com.education.services.PasswordServiceImpl
+import com.education.services.UserService
+import com.education.services.UserServiceImpl
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.application.*
@@ -27,8 +31,10 @@ fun Application.configureFrameworks() {
                     println(environment.log.info("Hello, World!"))
                 }
             }
+            single<PasswordService> { PasswordServiceImpl() }
             single<UserRepository> { UserRepositoryImpl(get()) }
             single<TeacherRepository> { TeacherRepositoryImpl(get()) }
+            single<UserService> { UserServiceImpl(get(), get()) }
         })
     }
 }
