@@ -1,6 +1,8 @@
 package com.education
 
+import com.education.repositories.TeacherRepository
 import com.education.repositories.UserRepository
+import com.education.routes.teacherRoutes
 import configs.JWTConfig
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
@@ -19,7 +21,7 @@ data class UserProfileResponse(
     val email: String
 )
 
-fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig) {
+fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig, teacherRepository: TeacherRepository) {
     routing {
         route("/api") {
             // Public routes
@@ -90,43 +92,7 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                     call.requireRole(jwtConfig, "ADMIN")
                     call.respondText("Welcome to admin panel")
                 }
-
-                get("/secure-data", {
-                    response {
-                        HttpStatusCode.OK to {
-                            description = "Get secure data"
-                            body<String> { 
-                                description = "Sensitive information"
-                                example("Secure Data") {
-                                    value = "This is sensitive data that requires authentication"
-                                }
-                            }
-                        }
-                        HttpStatusCode.Unauthorized to {
-                            description = "Authentication required"
-                        }
-                    }
-                }) {
-                    call.respondText("This is sensitive data that requires authentication")
-                }
-
-                get("/test", {
-                    response {
-                        HttpStatusCode.OK to {
-                            description = "Successful response"
-                            body<String> { description = "The greeting message" }
-                        }
-                        HttpStatusCode.BadRequest to {
-                            description = "Bad request"
-                        }
-                        HttpStatusCode.Unauthorized to {
-                            description = "Authentication required"
-                        }
-                    }
-                }) {
-                    val userInfo = userRepository.getUserInfo(1)
-                    call.respondText(userInfo.toString())
-                }
+                teacherRoutes(teacherRepository)
             }
         }
     }
