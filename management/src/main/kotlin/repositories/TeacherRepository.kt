@@ -2,7 +2,10 @@ package com.education.repositories
 
 import com.education.configs.DataSource
 import com.education.entities.Teacher
+import com.education.entities.User
+import com.education.models.CreateTeacherRequest
 import com.education.models.TeacherDAO
+import com.education.models.CreateUserRequest
 import org.jetbrains.exposed.sql.*
 import kotlinx.datetime.LocalDate
 
@@ -11,21 +14,8 @@ interface TeacherRepository {
     suspend fun getTeacherByUserId(userId: Int): TeacherDAO?
     suspend fun getAllTeachers(): List<TeacherDAO>
     suspend fun createTeacher(
-        userId: Int,
-        department: String?,
-        joiningDate: LocalDate?,
-        photoUrl: String?,
-        designation: String,
-        isActive: Boolean
+        teacherRequest: CreateTeacherRequest,
     ): Int
-    suspend fun updateTeacher(
-        teacherId: Int,
-        department: String?,
-        joiningDate: LocalDate?,
-        photoUrl: String?,
-        designation: String?,
-        isActive: Boolean?
-    ): Boolean
 }
 
 class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherRepository {
@@ -34,7 +24,7 @@ class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherReposit
         teacherId = this[Teacher.teacherId],
         userId = this[Teacher.userId],
         department = this[Teacher.department],
-        joiningDate = this[Teacher.joiningDate]?.let { kotlinx.datetime.LocalDate(it.year, it.monthValue, it.dayOfMonth) },
+        joiningDate = this[Teacher.joiningDate],
         photoUrl = this[Teacher.photoUrl],
         designation = this[Teacher.designation],
         isActive = this[Teacher.isActive]
@@ -64,42 +54,32 @@ class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherReposit
     }
 
     override suspend fun createTeacher(
-        userId: Int,
-        department: String?,
-        joiningDate: LocalDate?,
-        photoUrl: String?,
-        designation: String,
-        isActive: Boolean
+        teacherRequest: CreateTeacherRequest
     ): Int {
         return dataSource.dbQuery {
+            val userId = User.insert {
+                it[organizationId] = teacherRequest.organizationId
+                it[firstName] = teacherRequest.firstName
+                it[lastName] = teacherRequest.lastName
+                it[email] = teacherRequest.email
+                it[phoneNumber] = teacherRequest.phoneNumber
+                it[password] = "1234"
+                it[gender] = teacherRequest.gender
+                it[dateOfBirth] = teacherRequest.dateOfBirth
+                it[isActive] = true
+                it[createdAt] = java.time.LocalDateTime.now()
+                it[updatedAt] = java.time.LocalDateTime.now()
+            } get User.userId
+
+            // Then create the teacher using the new user's ID
             Teacher.insert {
                 it[Teacher.userId] = userId
-                it[Teacher.department] = department
-                it[Teacher.joiningDate] = joiningDate?.let { date -> java.time.LocalDate.of(date.year, date.monthNumber, date.dayOfMonth) }
-                it[Teacher.photoUrl] = photoUrl
-                it[Teacher.designation] = designation
-                it[Teacher.isActive] = isActive
+                it[department] = teacherRequest.department
+                it[joiningDate] = teacherRequest.joiningDate
+                it[photoUrl] = teacherRequest.photoUrl
+                it[designation] = teacherRequest.designation
+                it[isActive] = true
             }[Teacher.teacherId]
-        }
-    }
-
-    override suspend fun updateTeacher(
-        teacherId: Int,
-        department: String?,
-        joiningDate: LocalDate?,
-        photoUrl: String?,
-        designation: String?,
-        isActive: Boolean?
-    ): Boolean {
-        return dataSource.dbQuery {
-            val updateStatement = Teacher.update({ Teacher.teacherId eq teacherId }) { statement ->
-                department?.let { statement[Teacher.department] = it }
-                joiningDate?.let { date -> statement[Teacher.joiningDate] = java.time.LocalDate.of(date.year, date.monthNumber, date.dayOfMonth) }
-                photoUrl?.let { statement[Teacher.photoUrl] = it }
-                designation?.let { statement[Teacher.designation] = it }
-                isActive?.let { statement[Teacher.isActive] = it }
-            }
-            updateStatement > 0
         }
     }
 } 

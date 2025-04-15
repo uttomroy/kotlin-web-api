@@ -39,7 +39,7 @@ data class CreateUserRequest(
     val phoneNumber: String,
     val password: String,
     val gender: String,
-    val dateOfBirth: String  // Format: "YYYY-MM-DD"
+    val dateOfBirth: String
 )
 
 data class UpdateUserRequest(

@@ -6,7 +6,7 @@ services:
     ports:
       - "54325:5432"
     environment:
-      POSTGRES_USER: postges
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: management
     volumes:

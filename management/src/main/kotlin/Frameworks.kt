@@ -2,6 +2,8 @@ package com.education
 
 import com.education.configs.DBConfig
 import com.education.configs.DataSource
+import com.education.repositories.TeacherRepository
+import com.education.repositories.TeacherRepositoryImpl
 import com.education.repositories.UserRepository
 import com.education.repositories.UserRepositoryImpl
 import com.typesafe.config.Config
@@ -26,6 +28,7 @@ fun Application.configureFrameworks() {
                 }
             }
             single<UserRepository> { UserRepositoryImpl(get()) }
+            single<TeacherRepository> { TeacherRepositoryImpl(get()) }
         })
     }
 }

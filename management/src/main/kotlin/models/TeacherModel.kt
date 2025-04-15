@@ -7,9 +7,9 @@ import kotlinx.datetime.LocalDate
 data class TeacherDAO(
     val teacherId: Int,
     val userId: Int,
-    val department: String?,
-    val joiningDate: LocalDate?,
-    val photoUrl: String?,
+    val department: String,
+    val joiningDate: String,
+    val photoUrl: String,
     val designation: String,
     val isActive: Boolean
 )
@@ -19,9 +19,9 @@ data class TeacherDAO(
 data class TeacherDTO(
     val id: Int,
     val userId: Int,
-    val department: String?,
-    val joiningDate: LocalDate?,
-    val photoUrl: String?,
+    val department: String,
+    val joiningDate: String,
+    val photoUrl: String,
     val designation: String,
     val isActive: Boolean
 )
@@ -29,19 +29,25 @@ data class TeacherDTO(
 // Request DTOs
 @Serializable
 data class CreateTeacherRequest(
-    val userId: Int,
-    val department: String?,
-    val joiningDate: LocalDate?,
-    val photoUrl: String?,
-    val designation: String
+    val department: String,
+    val joiningDate: String,
+    val photoUrl: String,
+    val designation: String,
+    val organizationId: Int,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val phoneNumber: String,
+    val gender: String,
+    val dateOfBirth: String
 )
 
 @Serializable
 data class UpdateTeacherRequest(
-    val department: String?,
-    val joiningDate: LocalDate?,
-    val photoUrl: String?,
-    val designation: String?
+    val department: String,
+    val joiningDate: LocalDate,
+    val photoUrl: String,
+    val designation: String
 )
 
 // Extension function to convert between DAO and DTO
@@ -53,4 +59,4 @@ fun TeacherDAO.toDTO() = TeacherDTO(
     photoUrl = photoUrl,
     designation = designation,
     isActive = isActive
-) 
+)
