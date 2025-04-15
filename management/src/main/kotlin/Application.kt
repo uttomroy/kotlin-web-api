@@ -55,5 +55,5 @@ fun Application.module() {
     configureHTTP()
     configureSerialization()
     configureFrameworks()
-    configureRouting(GlobalContext.get().get(), jwtConfig, GlobalContext.get().get())
+    configureRouting(GlobalContext.get().get(), jwtConfig, GlobalContext.get().get(), GlobalContext.get().get())
 }
