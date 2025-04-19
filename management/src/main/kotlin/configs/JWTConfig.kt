@@ -2,6 +2,8 @@ package configs
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.education.enums.ROLE
+import com.education.models.UserDAO
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.application.*
@@ -43,16 +45,23 @@ class JWTConfig(private val environment: ApplicationEnvironment) {
         config.realm = realm
     }
 
-    fun generateToken(userId: String, roles: List<String> = listOf("USER")): String = JWT.create()
+    fun generateToken(userInfo: UserDAO): String = JWT.create()
         .withAudience(audience)
         .withIssuer(issuer)
-        .withClaim("userId", userId)
-        .withClaim("roles", roles)
-        .withExpiresAt(java.util.Date(System.currentTimeMillis() + tokenExpiry))  // Set expiry
-        .withIssuedAt(java.util.Date())  // When the token was issued
+        .withClaim("userId", userInfo.userId)
+        .withClaim("roles", userInfo.roles.map { it.roleId })
+        .withClaim("org_id", userInfo.organizationId)
+        .withExpiresAt(java.util.Date(System.currentTimeMillis() + tokenExpiry))
+        .withIssuedAt(java.util.Date())
         .sign(Algorithm.HMAC256(secret))
 
-    fun isUserInRole(principal: JWTPrincipal, requiredRole: String): Boolean {
-        return principal.payload.getClaim("roles").asList(String::class.java).contains(requiredRole)
+    fun isUserInRole(principal: JWTPrincipal, requiredRole: List<Int>): Boolean {
+        return principal.payload.getClaim("roles").asList(String::class.java).any() { role ->
+            requiredRole.contains(role.toInt())
+        }
+    }
+
+    fun userHasOrgAccess(principal: JWTPrincipal, orgId: Int): Boolean {
+        return principal.payload.getClaim("org_id").asInt() == orgId
     }
 } 

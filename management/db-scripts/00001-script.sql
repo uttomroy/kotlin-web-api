@@ -41,14 +41,13 @@ CREATE TABLE users (
 -- Create roles table
 CREATE TABLE roles (
     role_id SERIAL PRIMARY KEY,
-    role_name VARCHAR(50) NOT NULL
+    role_name VARCHAR(50) UNIQUE NOT NULL
 );
 
 -- Create role_mapping table
 CREATE TABLE role_mapping (
     role_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (role_id, user_id),
     FOREIGN KEY (role_id) REFERENCES roles(role_id)  ,
     FOREIGN KEY (user_id) REFERENCES users(user_id)  

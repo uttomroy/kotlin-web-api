@@ -6,18 +6,16 @@ import com.education.repositories.TeacherRepository
 import com.education.repositories.TeacherRepositoryImpl
 import com.education.repositories.UserRepository
 import com.education.repositories.UserRepositoryImpl
-import com.education.services.PasswordService
-import com.education.services.PasswordServiceImpl
-import com.education.services.UserService
-import com.education.services.UserServiceImpl
+import com.education.services.*
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import configs.JWTConfig
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
-fun Application.configureFrameworks() {
+fun Application.configureFrameworks(jwtConfig: JWTConfig) {
     install(Koin) {
         slf4jLogger()
         modules(module {
@@ -31,10 +29,11 @@ fun Application.configureFrameworks() {
                     println(environment.log.info("Hello, World!"))
                 }
             }
-            single<PasswordService> { PasswordServiceImpl() }
+            single<HashService> { HashServiceImpl() }
             single<UserRepository> { UserRepositoryImpl(get()) }
             single<TeacherRepository> { TeacherRepositoryImpl(get()) }
             single<UserService> { UserServiceImpl(get(), get()) }
+            single<IdentityService> { IdentityServiceImpl(get(), get(), jwtConfig) }
         })
     }
 }

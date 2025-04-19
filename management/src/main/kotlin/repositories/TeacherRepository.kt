@@ -71,7 +71,6 @@ class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherReposit
                 it[updatedAt] = java.time.LocalDateTime.now()
             } get User.userId
 
-            // Then create the teacher using the new user's ID
             Teacher.insert {
                 it[Teacher.userId] = userId
                 it[department] = teacherRequest.department

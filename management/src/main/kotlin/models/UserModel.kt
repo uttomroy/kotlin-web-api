@@ -14,7 +14,8 @@ data class UserDAO(
     val dateOfBirth: String,  // Format: "YYYY-MM-DD"
     val isActive: Boolean,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
+    val roles: List<RoleMappingDAO> = emptyList()
 )
 
 data class UserDTO(

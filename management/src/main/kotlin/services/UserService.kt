@@ -1,22 +1,14 @@
 package com.education.services
 
 import com.education.repositories.UserRepository
-import routes.LoginRequest
+import com.education.routes.public.LoginRequest
 
 interface UserService{
-    suspend fun isValidUser(loginRequest: LoginRequest): Boolean
     suspend fun generatePasswordHash(password: String): String
 }
 
-class UserServiceImpl (private val userRepository: UserRepository, private val passwordService: PasswordService): UserService {
-    override suspend fun isValidUser(loginRequest: LoginRequest): Boolean {
-        userRepository.getUserByEmail(loginRequest.username)?.let { user ->
-            return passwordService.verifyPassword(loginRequest.password, user.password)
-        }
-        return false
-    }
-
+class UserServiceImpl (private val userRepository: UserRepository, private val passwordService: HashService): UserService {
     override suspend fun generatePasswordHash(password: String): String {
-        return passwordService.hashPassword(password)
+        return passwordService.generateHash(password)
     }
 }

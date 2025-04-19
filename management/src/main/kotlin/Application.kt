@@ -1,5 +1,6 @@
 package com.education
 
+import com.education.routes.configureRouting
 import configs.JWTConfig
 import io.github.smiley4.ktorswaggerui.SwaggerUI
 import io.github.smiley4.ktorswaggerui.data.OutputFormat
@@ -54,6 +55,7 @@ fun Application.module() {
     }
     configureHTTP()
     configureSerialization()
-    configureFrameworks()
-    configureRouting(GlobalContext.get().get(), jwtConfig, GlobalContext.get().get(), GlobalContext.get().get())
+    configureFrameworks(jwtConfig)
+    val globalContext = GlobalContext.get()
+    configureRouting(globalContext.get(), jwtConfig, globalContext.get(), globalContext.get(), globalContext.get())
 }

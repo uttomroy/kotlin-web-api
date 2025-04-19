@@ -2,14 +2,22 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 export default function MenuBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const orgId = params?.orgId;
 
   const handleLogin = () => {
     router.push('/login');
+  };
+
+  const handleDashboard = () => {
+    if (orgId) {
+      router.push(`/orgs/${orgId}/dashboard`);
+    }
   };
 
   const handleLogout = async () => {
@@ -48,6 +56,9 @@ export default function MenuBar() {
 
           {/* Desktop Menu */}
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}> {/* Hide on small screens */}
+            {orgId && (
+              <Button color="inherit" onClick={handleDashboard}>Dashboard</Button>
+            )}
             <Button color="inherit" onClick={handleLogin}>Login</Button>
             <Button color="inherit" onClick={handleLogout}>Logout</Button>
           </Box>
@@ -62,6 +73,13 @@ export default function MenuBar() {
           onKeyDown={toggleDrawer(false)}
         >
           <List>
+            {orgId && (
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleDashboard}>
+                  <Typography>Dashboard</Typography>
+                </ListItemButton>
+              </ListItem>
+            )}
             <ListItem disablePadding>
               <ListItemButton onClick={handleLogin}>
                 <Typography>Login</Typography>

@@ -8,11 +8,13 @@ import {
   CircularProgress,
   Alert
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/services/api';
 
 export default function Dashboard() {
   const router = useRouter();
+  const params = useParams();
+  const orgId = params.orgId;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState<any>(null);
@@ -20,11 +22,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get('/api/admin-panel');
+        const response = await api.get(`api/orgs/${orgId}/admin-panel`);
 
         if (response.ok) {
-          const result = await response.json();
-          setData(result);
+        //   const result = await response.json();
+        //   setData(result);
         } else if (response.status === 401 || response.status === 403) {
           // Redirect to login if unauthorized
           router.push('/login');
@@ -39,7 +41,7 @@ export default function Dashboard() {
     };
 
     fetchData();
-  }, [router]);
+  }, [router, orgId]);
 
   if (loading) {
     return (
@@ -58,7 +60,7 @@ export default function Dashboard() {
     <Container maxWidth="lg">
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Dashboard
+          Dashboard for Organization {orgId}
         </Typography>
 
         {error && (

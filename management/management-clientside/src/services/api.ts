@@ -11,7 +11,7 @@ const defaultOptions: RequestInit = {
 const getBaseUrl = (endpoint: string) => {
     if (process.env.NODE_ENV === 'development') {
         // In development, use the Next.js proxy path
-        return `proxy/${endpoint}`;
+        return `/proxy/${endpoint}`;
     }
     // In production, use the full URL from config
     return `${config.API_BASE_URL}${endpoint}`;
@@ -19,6 +19,7 @@ const getBaseUrl = (endpoint: string) => {
 
 export const api = {
     get: async (endpoint: string) => {
+        console.log(getBaseUrl(endpoint));
         const response = await fetch(getBaseUrl(endpoint), {
             ...defaultOptions,
             method: 'GET',

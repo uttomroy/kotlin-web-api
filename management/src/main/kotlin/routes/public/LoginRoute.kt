@@ -1,11 +1,7 @@
-package routes
+package com.education.routes.public
 
-import com.education.services.UserService
-import configs.JWTConfig
+import com.education.services.IdentityService
 import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -15,7 +11,8 @@ import io.github.smiley4.ktorswaggerui.dsl.routing.post
 @Serializable
 data class LoginRequest(
     val username: String,
-    val password: String
+    val password: String,
+    val organizationId: Int
 )
 
 @Serializable
@@ -28,15 +25,7 @@ data class ErrorResponse(
     val message: String
 )
 
-suspend fun ApplicationCall.requireRole(jwtConfig: JWTConfig, requiredRole: String) {
-    val principal = principal<JWTPrincipal>()
-    if (principal == null || !jwtConfig.isUserInRole(principal, requiredRole)) {
-        respond(HttpStatusCode.Forbidden, ErrorResponse("Access denied. Required role: $requiredRole"))
-        return
-    }
-}
-
-fun Route.authRoutes(jwtConfig: JWTConfig, userService: UserService) {
+fun Route.loginRoute(identityService: IdentityService) {
     post("/login", {
         summary = "Authenticate user and get JWT token"
         description = "Authenticates a user with username and password, returns JWT token on success"
@@ -45,8 +34,9 @@ fun Route.authRoutes(jwtConfig: JWTConfig, userService: UserService) {
                 description = "User credentials"
                 example("Login Request") {
                     value = LoginRequest(
-                        username = "admin",
-                        password = "admin"
+                        username = "admin@gmail.com",
+                        password = "1234",
+                        organizationId = 1
                     )
                 }
                 required = true
@@ -75,8 +65,8 @@ fun Route.authRoutes(jwtConfig: JWTConfig, userService: UserService) {
         tags = listOf("Authentication")
     }) {
         val loginRequest = call.receive<LoginRequest>()
-        if(userService.isValidUser(loginRequest)){
-            val token = jwtConfig.generateToken(loginRequest.username)
+        val token = identityService.generateTokenForValidUser(loginRequest)
+        if(!token.isNullOrEmpty()){
             call.response.cookies.append(
                 name = "jwt_token",
                 value = token,
@@ -84,7 +74,7 @@ fun Route.authRoutes(jwtConfig: JWTConfig, userService: UserService) {
                 path = "/",
                 maxAge = 1800
             )
-            call.respond(TokenResponse(token))
+            call.respond(HttpStatusCode.OK, "successfully logged in")
         } else {
             call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Invalid credentials"))
         }

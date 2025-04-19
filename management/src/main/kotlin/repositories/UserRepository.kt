@@ -2,7 +2,9 @@ package com.education.repositories
 
 import com.education.configs.DataSource
 import com.education.entities.User
+import com.education.entities.RoleMapping
 import com.education.models.UserDAO
+import com.education.models.RoleMappingDAO
 import org.jetbrains.exposed.sql.*
 
 interface UserRepository {
@@ -28,12 +30,16 @@ interface UserRepository {
         gender: String?,
         dateOfBirth: String?  // Format: "YYYY-MM-DD"
     ): Boolean
-    suspend fun getUserByEmail(email: String): UserDAO?
+    suspend fun getUserByEmailAndOrgId(email: String, organizationId: Int): UserDAO?
 }
 
 class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
     
-    private fun ResultRow.toUserDAO() = UserDAO(
+    private fun ResultRow.toRoleMappingDAO() = RoleMappingDAO(
+        roleId = this[RoleMapping.roleId]
+    )
+    
+    private fun ResultRow.toUserDAO(roleMappings: List<RoleMappingDAO> = emptyList()) = UserDAO(
         userId = this[User.userId],
         organizationId = this[User.organizationId],
         firstName = this[User.firstName],
@@ -45,14 +51,21 @@ class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
         dateOfBirth = this[User.dateOfBirth],
         isActive = this[User.isActive],
         createdAt = this[User.createdAt],
-        updatedAt = this[User.updatedAt]
+        updatedAt = this[User.updatedAt],
+        roles = roleMappings
     )
     
     override suspend fun getUserById(userId: Int): UserDAO? {
         return dataSource.dbQuery {
-            User.select { User.userId eq userId }
-                .map { it.toUserDAO() }
+            val user = User.select { User.userId eq userId }
                 .singleOrNull()
+                ?.let { row ->
+                    val roleMappings = RoleMapping
+                        .select { RoleMapping.userId eq userId }
+                        .map { it.toRoleMappingDAO() }
+                    row.toUserDAO(roleMappings)
+                }
+            user
         }
     }
 
@@ -111,11 +124,17 @@ class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
         }
     }
 
-    override suspend fun getUserByEmail(email: String): UserDAO? {
+    override suspend fun getUserByEmailAndOrgId(email: String, organizationId: Int): UserDAO? {
         return dataSource.dbQuery {
-            User.select { User.email eq email }
-                .map { it.toUserDAO() }
+            val user = User.select { User.email eq email and (User.organizationId eq organizationId) }
                 .singleOrNull()
+                ?.let { row ->
+                    val roleMappings = RoleMapping
+                        .select { RoleMapping.userId eq row[User.userId] }
+                        .map { it.toRoleMappingDAO() }
+                    row.toUserDAO(roleMappings)
+                }
+            user
         }
     }
 }

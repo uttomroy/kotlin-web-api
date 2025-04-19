@@ -17,6 +17,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [organizationId, setOrganizationId] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -25,13 +26,28 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
+    if (!organizationId) {
+      setError('Organization ID is required');
+      setLoading(false);
+      return;
+    }
+
+    const orgId = parseInt(organizationId);
+    if (isNaN(orgId) || orgId <= 0) {
+      setError('Please enter a valid organization ID');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await api.post('/api/login', { username, password });
+      const response = await api.post('/api/login', { 
+        username, 
+        password,
+        organizationId: orgId 
+      });
 
       if (response.ok) {
-        const data = await response.json();
-        // Cookie will be automatically set by the browser
-        router.push('/dashboard'); // Redirect to dashboard after successful login
+        router.push(`/orgs/${orgId}/dashboard`);
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Login failed');
@@ -78,11 +94,23 @@ export default function LoginPage() {
               margin="normal"
               required
               fullWidth
+              id="organizationId"
+              label="Organization ID"
+              name="organizationId"
+              type="number"
+              autoComplete="off"
+              value={organizationId}
+              onChange={(e) => setOrganizationId(e.target.value)}
+              disabled={loading}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="username"
               label="Username"
               name="username"
               autoComplete="username"
-              autoFocus
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}

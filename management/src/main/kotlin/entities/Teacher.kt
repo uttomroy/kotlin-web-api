@@ -13,4 +13,4 @@ object Teacher : Table("teachers") {
     val isActive = bool("is_active")
 
     override val primaryKey = PrimaryKey(teacherId)
-} 
+}

@@ -1,4 +1,4 @@
-package com.education.routes
+package com.education.routes.auth
 
 import com.education.models.CreateTeacherRequest
 import com.education.repositories.TeacherRepository
@@ -7,7 +7,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.post
-import routes.TokenResponse
+import com.education.routes.public.TokenResponse
 
 
 fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
