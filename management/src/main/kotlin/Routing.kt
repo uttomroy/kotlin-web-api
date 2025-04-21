@@ -1,7 +1,9 @@
 package com.education
 
 import com.education.repositories.TeacherRepository
+import com.education.routes.testRoutes
 import com.education.repositories.UserRepository
+import com.education.routes.studentRoutes
 import com.education.routes.teacherRoutes
 import com.education.services.UserService
 import configs.JWTConfig
@@ -27,6 +29,8 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                                  userService: UserService) {
     routing {
         route("/api") {
+            testRoutes()
+            studentRoutes()
             // Public routes
             authRoutes(jwtConfig, userService)
             
