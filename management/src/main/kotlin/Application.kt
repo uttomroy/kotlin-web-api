@@ -49,7 +49,7 @@ fun Application.module() {
             description = "API Documentation for the application"
         }
         server {
-            url = "http://0.0.0.0:8080"
+            url = "http://127.0.0.1:8080"
             description = "Global server for the API"
         }
     }
@@ -57,5 +57,5 @@ fun Application.module() {
     configureSerialization()
     configureFrameworks(jwtConfig)
     val globalContext = GlobalContext.get()
-    configureRouting(globalContext.get(), jwtConfig, globalContext.get(), globalContext.get(), globalContext.get())
+    configureRouting(globalContext.get(), jwtConfig, globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get())
 }

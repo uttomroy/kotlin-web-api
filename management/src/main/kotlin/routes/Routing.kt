@@ -15,6 +15,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import com.education.routes.public.loginRoute
+import com.education.services.StudentService
 
 @Serializable
 data class UserProfileResponse(
@@ -25,11 +26,12 @@ data class UserProfileResponse(
 
 fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig,
                                  teacherRepository: TeacherRepository,
-                                 userService: UserService, identityService: IdentityService) {
+                                 userService: UserService, identityService: IdentityService, studentService: StudentService) {
     routing {
         route("/api") {
             loginRoute(identityService)
-            authenticatedRoutes(identityService, teacherRepository)
+            authenticatedRoutes(identityService, teacherRepository, studentService)
+
             get("/defualt-user-passwordhash", {
                 response {
                     HttpStatusCode.OK to {

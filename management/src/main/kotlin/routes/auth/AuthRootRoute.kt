@@ -4,15 +4,20 @@ import com.education.routes.UserProfileResponse
 import com.education.enums.ROLE
 import com.education.repositories.TeacherRepository
 import com.education.services.IdentityService
+import com.education.services.StudentService
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepository: TeacherRepository) {
-    route("/orgs/{orgId}"){
-        authenticate {
+fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepository: TeacherRepository,
+                              studentService: StudentService) {
+    authenticate {
+        // Student routes at /api/students
+        studentRoutes(studentService)
+
+        route("/orgs/{orgId}"){
             get("/profile", {
                 request {
                     pathParameter<Int>("orgId") {
