@@ -11,24 +11,21 @@ import io.ktor.server.routing.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.post
 
 fun Route.studentRoutes(
-     studentService : StudentService
+    studentService: StudentService
 ) {
     route("/api/students") {
         // Get all students
         get {
             try {
-                val student = studentService.getStudentById(2)
+                val student = studentService.getStudentById(3)
                 if (student != null) {
                     call.respond(HttpStatusCode.OK, student)
                 } else {
                     call.respond(HttpStatusCode.NotFound, mapOf("error" to "Student not found"))
                 }
-            }
-            catch (e: Exception){
-                println("Error in student route: ${e.message}")
-                println("Stack trace: ${e.stackTraceToString()}")
+            } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError, 
+                    HttpStatusCode.InternalServerError,
                     mapOf(
                         "error" to "Failed to fetch student",
                         "details" to (e.message ?: "Unknown error")
@@ -90,8 +87,6 @@ fun Route.studentRoutes(
                 val studentId = studentService.createStudent(studentRequest)
                 call.respond(HttpStatusCode.OK, mapOf("studentId" to studentId))
             } catch (e: Exception) {
-                println("Error creating student: ${e.message}")
-                println("Stack trace: ${e.stackTraceToString()}")
                 call.respond(
                     HttpStatusCode.InternalServerError,
                     mapOf(
@@ -148,7 +143,7 @@ fun Route.studentRoutes(
                 }
             }
             tags = listOf("Students")
-        }){
+        }) {
             try {
                 val updateStudentRequest = call.receive<UpdateStudentRequest>()
                 val isUpdated = studentService.updateStudent(updateStudentRequest)
@@ -158,8 +153,6 @@ fun Route.studentRoutes(
                     call.respond(HttpStatusCode.NotFound, mapOf("error" to "Student not found"))
                 }
             } catch (e: Exception) {
-                println("Error updating student: ${e.message}")
-                println("Stack trace: ${e.stackTraceToString()}")
                 call.respond(
                     HttpStatusCode.InternalServerError,
                     mapOf(
@@ -170,4 +163,4 @@ fun Route.studentRoutes(
             }
         }
     }
-} 
+}

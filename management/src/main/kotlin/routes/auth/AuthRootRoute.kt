@@ -15,9 +15,10 @@ fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepositor
                               studentService: StudentService) {
     authenticate {
         // Student routes at /api/students
-        studentRoutes(studentService)
 
         route("/orgs/{orgId}"){
+            studentRoutes(studentService)
+
             get("/profile", {
                 request {
                     pathParameter<Int>("orgId") {

@@ -32,7 +32,7 @@ fun Application.configureFrameworks(jwtConfig: JWTConfig) {
             single<UserService> { UserServiceImpl(get(), get()) }
             single<IdentityService> { IdentityServiceImpl(get(), get(), jwtConfig) }
             single<StudentRepository> { StudentRepositoryImpl(get()) }
-            single<StudentService> { StudentServiceImpl(get(), get()) }
+            single<StudentService> { StudentServiceImpl(get()) }
         })
     }
 }
