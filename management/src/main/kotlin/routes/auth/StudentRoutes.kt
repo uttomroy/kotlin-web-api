@@ -1,7 +1,9 @@
 package com.education.routes.auth
 
 import com.education.models.CreateStudentRequest
+import com.education.models.StudentDTO
 import com.education.models.UpdateStudentRequest
+import com.education.routes.UserProfileResponse
 import com.education.services.StudentService
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -9,13 +11,39 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.post
+import io.github.smiley4.ktorswaggerui.dsl.routing.get
 
 fun Route.studentRoutes(
     studentService: StudentService
 ) {
-    route("/api/students") {
-        // Get all students
-        get {
+    route("students") {
+        get("/",{
+            summary = "Get Student list"
+            description = "Get all students in the organization"
+            operationId = "getStudents"
+            tags = listOf("Student")
+            request {
+                pathParameter<Int>("orgId") {
+                    description = "Organization ID"
+                    required = true
+                    example("Example Org ID") { value = 1 }
+                }
+            }
+            response {
+                HttpStatusCode.OK to {
+                    description = "Successfully retrieved student list"
+                    body<StudentDTO> {
+                        description = "User profile information"
+                    }
+                }
+                HttpStatusCode.Unauthorized to {
+                    description = "Authentication required"
+                }
+                HttpStatusCode.Forbidden to {
+                    description = "Insufficient permissions"
+                }
+            }
+        }) {
             try {
                 val student = studentService.getStudentById(3)
                 if (student != null) {
@@ -39,6 +67,11 @@ fun Route.studentRoutes(
             summary = "Create new student"
             description = "Creates a new student with user details"
             request {
+                pathParameter<Int>("orgId") {
+                    description = "Organization ID"
+                    required = true
+                    example("Example Org ID") { value = 1 }
+                }
                 body<CreateStudentRequest> {
                     description = "Student creation request with user details"
                     example("Create Student Request") {
@@ -80,7 +113,7 @@ fun Route.studentRoutes(
                     description = "Server error occurred"
                 }
             }
-            tags = listOf("Students")
+            tags = listOf("Student")
         }) {
             try {
                 val studentRequest = call.receive<CreateStudentRequest>()
@@ -101,6 +134,11 @@ fun Route.studentRoutes(
             summary = "Update student information"
             description = "Updates the information of an existing student"
             request {
+                pathParameter<Int>("orgId") {
+                    description = "Organization ID"
+                    required = true
+                    example("Example Org ID") { value = 1 }
+                }
                 body<UpdateStudentRequest> {
                     description = "Student update request"
                     example("Update Student Request") {
@@ -142,7 +180,7 @@ fun Route.studentRoutes(
                     }
                 }
             }
-            tags = listOf("Students")
+            tags = listOf("Student")
         }) {
             try {
                 val updateStudentRequest = call.receive<UpdateStudentRequest>()

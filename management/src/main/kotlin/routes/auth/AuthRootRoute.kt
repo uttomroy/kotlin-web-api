@@ -13,22 +13,24 @@ import io.ktor.server.routing.*
 
 fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepository: TeacherRepository,
                               studentService: StudentService) {
+
     authenticate {
-        // Student routes at /api/students
-
-        route("/orgs/{orgId}"){
-            studentRoutes(studentService)
-
+        route("/orgs/{orgId}") {
             get("/profile", {
+                summary = "Get user profile"
+                description = "Get the profile of the authenticated user"
+                operationId = "getUserProfile"
+                tags = listOf("Profile")
                 request {
                     pathParameter<Int>("orgId") {
                         description = "Organization ID"
                         required = true
+                        example("Example Org ID") { value = 1 }
                     }
                 }
                 response {
                     HttpStatusCode.OK to {
-                        description = "Get user profile"
+                        description = "Successfully retrieved profile"
                         body<UserProfileResponse> {
                             description = "User profile information"
                             example("User Profile") {
@@ -48,45 +50,20 @@ fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepositor
                     }
                 }
             }) {
-                if(!identityService.userHasRequiredPermission(call, call.parameters["orgId"]!!.toInt(), listOf(ROLE.TEACHER))){
-                    call.respond(HttpStatusCode.Forbidden, "You do not have permission to access this resource.")
-                }
+                // Get and validate orgId
+                val orgId = call.parameters["orgId"]?.toIntOrNull()
+                    ?: throw IllegalArgumentException("Invalid organization ID")
+                
                 call.respond(
                     UserProfileResponse(
-                    id = 1,
-                    username = "john_doe",
-                    email = "john@example.com"
+                        id = 1,
+                        username = "john_doe",
+                        email = "john@example.com"
                     )
                 )
             }
 
-            get("/admin-panel", {
-                request {
-                    pathParameter<Int>("orgId") {
-                        description = "Organization ID"
-                        required = true
-                    }
-                }
-                response {
-                    HttpStatusCode.OK to {
-                        description = "Access admin panel"
-                        body<String> {
-                            description = "Admin panel data"
-                        }
-                    }
-                    HttpStatusCode.Unauthorized to {
-                        description = "Authentication required"
-                    }
-                    HttpStatusCode.Forbidden to {
-                        description = "Insufficient permissions"
-                    }
-                }
-            }) {
-                if(!identityService.userHasRequiredPermission(call, call.parameters["orgId"]!!.toInt(), listOf(ROLE.ADMIN))){
-                    call.respond(HttpStatusCode.Forbidden, "You do not have permission to access this resource.")
-                }
-                call.respondText("Welcome to admin panel")
-            }
+            studentRoutes(studentService)
             teacherRoutes(teacherRepository)
         }
     }
