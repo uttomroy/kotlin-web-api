@@ -11,7 +11,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { api } from '@/services/api';
+import {login} from "@/services/authenticationService";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,20 +40,15 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await api.post('/api/login', { 
-        username, 
-        password,
-        organizationId: orgId 
-      });
+      const response = await login( orgId, username, password);
 
-      if (response.ok) {
-        router.push(`/orgs/${orgId}/dashboard`);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
-      }
+      router.push(`/orgs/${orgId}/dashboard`);
     } catch (err) {
-      setError('Failed to connect to the server');
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Failed to connect to the server');
+      }
     } finally {
       setLoading(false);
     }

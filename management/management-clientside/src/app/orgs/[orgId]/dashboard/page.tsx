@@ -10,11 +10,12 @@ import {
 } from '@mui/material';
 import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/services/api';
+import { getUserProfile } from '@/services/profileService';
 
 export default function Dashboard() {
   const router = useRouter();
   const params = useParams();
-  const orgId = params.orgId;
+  const orgId = parseInt(params.orgId as string, 10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState<any>(null);
@@ -22,26 +23,16 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(`api/orgs/${orgId}/admin-panel`);
-
-        if (response.ok) {
-        //   const result = await response.json();
-        //   setData(result);
-        } else if (response.status === 401 || response.status === 403) {
-          // Redirect to login if unauthorized
-          router.push('/login');
-        } else {
-          setError('Failed to fetch dashboard data');
-        }
-      } catch (err) {
-        setError('Failed to connect to the server');
-      } finally {
+        const response = await getUserProfile(orgId);
         setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+        // Handle the error
       }
     };
 
     fetchData();
-  }, [router, orgId]);
+  }, [orgId]);
 
   if (loading) {
     return (
