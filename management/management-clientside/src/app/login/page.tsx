@@ -13,7 +13,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { api } from '@/services/api';
+import { login, AuthError } from "@/services/authenticationService";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,20 +42,14 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await api.post('/api/login', { 
-        username, 
-        password,
-        organizationId: orgId 
-      });
-
-      if (response.ok) {
-        router.push(`/orgs/${orgId}/dashboard`);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
-      }
+      await login(orgId, username, password);
+      router.push(`/orgs/${orgId}/dashboard`);
     } catch (err) {
-      setError('Failed to connect to the server');
+      if (err instanceof AuthError) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }

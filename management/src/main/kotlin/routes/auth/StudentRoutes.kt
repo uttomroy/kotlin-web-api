@@ -1,8 +1,11 @@
 package com.education.routes.auth
 
 import com.education.models.CreateStudentRequest
+import com.education.models.StudentDTO
 import com.education.models.UpdateStudentRequest
+import com.education.routes.UserProfileResponse
 import com.education.services.StudentService
+import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -13,75 +16,36 @@ import io.github.smiley4.ktorswaggerui.dsl.routing.get
 fun Route.studentRoutes(
     studentService: StudentService
 ) {
-    route("/api/students") {
-
-        // Get all students
-        get({
-            summary = "Get all students"
-            description = "Returns a list of all students"
-            response {
-                HttpStatusCode.OK to {
-                    description = "List of students"
-                }
-                HttpStatusCode.NotFound to {
-                    description = "No students found"
-                }
-                HttpStatusCode.InternalServerError to {
-                    description = "Server error"
-                }
-            }
-            tags = listOf("Students")
-        }) {
-            try {
-                val students = studentService.getAllStudents()
-                if (students != null)
-                    call.respond(HttpStatusCode.OK, students)
-                else
-                    call.respond(HttpStatusCode.NotFound, mapOf("error" to "Students not found"))
-            } catch (e: Exception) {
-                call.respond(
-                    HttpStatusCode.InternalServerError,
-                    mapOf(
-                        "error" to "Failed to fetch students",
-                        "details" to (e.message ?: "Unknown error")
-                    )
-                )
-            }
-        }
-
-        // ✅ Get student by ID
-        get("{studentId}", {
-            summary = "Get student by ID"
-            description = "Returns a student by their ID"
+    route("students") {
+        get("/",{
+            summary = "Get Student list"
+            description = "Get all students in the organization"
+            operationId = "getStudents"
+            tags = listOf("Student")
             request {
-                pathParameter<Int>("studentId") {
-                    description = "The ID of the student"
+                pathParameter<Int>("orgId") {
+                    description = "Organization ID"
+                    required = true
+                    example("Example Org ID") { value = 1 }
                 }
             }
             response {
                 HttpStatusCode.OK to {
-                    description = "Student found"
+                    description = "Successfully retrieved student list"
+                    body<StudentDTO> {
+                        description = "User profile information"
+                    }
                 }
-                HttpStatusCode.NotFound to {
-                    description = "Student not found"
+                HttpStatusCode.Unauthorized to {
+                    description = "Authentication required"
                 }
-                HttpStatusCode.BadRequest to {
-                    description = "Invalid student ID"
-                }
-                HttpStatusCode.InternalServerError to {
-                    description = "Server error"
+                HttpStatusCode.Forbidden to {
+                    description = "Insufficient permissions"
                 }
             }
-            tags = listOf("Students")
         }) {
             try {
-                val studentId = call.parameters["studentId"]?.toIntOrNull()
-                if (studentId == null) {
-                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid student ID"))
-                    return@get
-                }
-
-                val student = studentService.getStudentById(studentId)
+                val student = studentService.getStudentById(3)
                 if (student != null) {
                     call.respond(HttpStatusCode.OK, student)
                 } else {
@@ -103,6 +67,11 @@ fun Route.studentRoutes(
             summary = "Create new student"
             description = "Creates a new student with user details"
             request {
+                pathParameter<Int>("orgId") {
+                    description = "Organization ID"
+                    required = true
+                    example("Example Org ID") { value = 1 }
+                }
                 body<CreateStudentRequest> {
                     description = "Student creation request with user details"
                     example("Create Student Request") {
@@ -144,7 +113,7 @@ fun Route.studentRoutes(
                     description = "Server error occurred"
                 }
             }
-            tags = listOf("Students")
+            tags = listOf("Student")
         }) {
             try {
                 val studentRequest = call.receive<CreateStudentRequest>()
@@ -161,11 +130,15 @@ fun Route.studentRoutes(
             }
         }
 
-        // Update student
         post("/update", {
             summary = "Update student information"
             description = "Updates the information of an existing student"
             request {
+                pathParameter<Int>("orgId") {
+                    description = "Organization ID"
+                    required = true
+                    example("Example Org ID") { value = 1 }
+                }
                 body<UpdateStudentRequest> {
                     description = "Student update request"
                     example("Update Student Request") {
@@ -207,7 +180,7 @@ fun Route.studentRoutes(
                     }
                 }
             }
-            tags = listOf("Students")
+            tags = listOf("Student")
         }) {
             try {
                 val updateStudentRequest = call.receive<UpdateStudentRequest>()

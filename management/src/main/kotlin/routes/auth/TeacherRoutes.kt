@@ -7,7 +7,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.post
-import com.education.routes.public.TokenResponse
+import com.education.routes.public.LoginResponse
 
 
 fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
@@ -15,6 +15,11 @@ fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
         summary = "Create new teacher"
         description = "Authenticates a user with username and password, returns JWT token on success"
         request {
+            pathParameter<Int>("orgId") {
+                description = "Organization ID"
+                required = true
+                example("Example Org ID") { value = 1 }
+            }
             body<CreateTeacherRequest> {
                 description = "Teacher creation request with user details"
                 example("Create Teacher Request") {
@@ -38,10 +43,10 @@ fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
         response {
             HttpStatusCode.OK to {
                 description = "Teacher has been created successfully"
-                body<TokenResponse> {
+                body<LoginResponse> {
                     description = "Teacher create request response"
                     example("Success Response") {
-                        value = TokenResponse(token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
+                        value = LoginResponse(token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
                     }
                 }
             }

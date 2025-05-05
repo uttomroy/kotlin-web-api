@@ -44,13 +44,17 @@ fun Application.module() {
             withCredentials = true
         }
         info {
-            title = "API Documentation"
+            title = "Management API"
             version = "1.0.0"
-            description = "API Documentation for the application"
+            description = "Management System API Documentation"
+            contact {
+                name = "API Support"
+                email = "support@example.com"
+            }
         }
         server {
             url = "http://127.0.0.1:8080"
-            description = "Global server for the API"
+            description = "Development server"
         }
     }
     configureHTTP()

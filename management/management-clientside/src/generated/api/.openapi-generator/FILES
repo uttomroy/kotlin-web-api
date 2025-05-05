@@ -1,0 +1,16 @@
+apis/AuthenticationApi.ts
+apis/DefaultApi.ts
+apis/ProfileApi.ts
+apis/StudentApi.ts
+apis/index.ts
+index.ts
+models/ComEducationModelsCreateStudentRequest.ts
+models/ComEducationModelsCreateTeacherRequest.ts
+models/ComEducationModelsStudentDTO.ts
+models/ComEducationModelsUpdateStudentRequest.ts
+models/ComEducationRoutesPublicErrorResponse.ts
+models/ComEducationRoutesPublicLoginRequest.ts
+models/ComEducationRoutesPublicLoginResponse.ts
+models/ComEducationRoutesUserProfileResponse.ts
+models/index.ts
+runtime.ts

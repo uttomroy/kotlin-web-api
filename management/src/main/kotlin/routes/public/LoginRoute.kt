@@ -16,7 +16,7 @@ data class LoginRequest(
 )
 
 @Serializable
-data class TokenResponse(
+data class LoginResponse(
     val token: String
 )
 
@@ -29,6 +29,7 @@ fun Route.loginRoute(identityService: IdentityService) {
     post("/login", {
         summary = "Authenticate user and get JWT token"
         description = "Authenticates a user with username and password, returns JWT token on success"
+        tags = listOf("Authentication")
         request {
             body<LoginRequest> {
                 description = "User credentials"
@@ -45,12 +46,6 @@ fun Route.loginRoute(identityService: IdentityService) {
         response {
             HttpStatusCode.OK to {
                 description = "Successfully authenticated"
-                body<TokenResponse> {
-                    description = "JWT token response"
-                    example("Success Response") {
-                        value = TokenResponse(token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-                    }
-                }
             }
             HttpStatusCode.Unauthorized to {
                 description = "Authentication failed"
@@ -62,7 +57,6 @@ fun Route.loginRoute(identityService: IdentityService) {
                 }
             }
         }
-        tags = listOf("Authentication")
     }) {
         val loginRequest = call.receive<LoginRequest>()
         val token = identityService.generateTokenForValidUser(loginRequest)
@@ -74,7 +68,7 @@ fun Route.loginRoute(identityService: IdentityService) {
                 path = "/",
                 maxAge = 1800
             )
-            call.respond(HttpStatusCode.OK, "successfully logged in")
+            call.respond(HttpStatusCode.OK)
         } else {
             call.respond(HttpStatusCode.Unauthorized, ErrorResponse("Invalid credentials"))
         }

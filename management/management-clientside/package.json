@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-api": "openapi-generator-cli generate -i http://127.0.0.1:8080/openapi -g typescript-fetch -o src/generated/api --skip-validate-spec --additional-properties=supportsES6=true,npmVersion=8.0.0,typescriptThreePlus=true",
+    "postinstall": "npm run generate-api"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
