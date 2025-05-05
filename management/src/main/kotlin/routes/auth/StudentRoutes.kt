@@ -3,21 +3,85 @@ package com.education.routes.auth
 import com.education.models.CreateStudentRequest
 import com.education.models.UpdateStudentRequest
 import com.education.services.StudentService
-import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.post
+import io.github.smiley4.ktorswaggerui.dsl.routing.get
 
 fun Route.studentRoutes(
     studentService: StudentService
 ) {
     route("/api/students") {
+
         // Get all students
-        get {
+        get({
+            summary = "Get all students"
+            description = "Returns a list of all students"
+            response {
+                HttpStatusCode.OK to {
+                    description = "List of students"
+                }
+                HttpStatusCode.NotFound to {
+                    description = "No students found"
+                }
+                HttpStatusCode.InternalServerError to {
+                    description = "Server error"
+                }
+            }
+            tags = listOf("Students")
+        }) {
             try {
-                val student = studentService.getStudentById(3)
+                val students = studentService.getAllStudents()
+                if (students != null)
+                    call.respond(HttpStatusCode.OK, students)
+                else
+                    call.respond(HttpStatusCode.NotFound, mapOf("error" to "Students not found"))
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError,
+                    mapOf(
+                        "error" to "Failed to fetch students",
+                        "details" to (e.message ?: "Unknown error")
+                    )
+                )
+            }
+        }
+
+        // ✅ Get student by ID
+        get("{studentId}", {
+            summary = "Get student by ID"
+            description = "Returns a student by their ID"
+            request {
+                pathParameter<Int>("studentId") {
+                    description = "The ID of the student"
+                }
+            }
+            response {
+                HttpStatusCode.OK to {
+                    description = "Student found"
+                }
+                HttpStatusCode.NotFound to {
+                    description = "Student not found"
+                }
+                HttpStatusCode.BadRequest to {
+                    description = "Invalid student ID"
+                }
+                HttpStatusCode.InternalServerError to {
+                    description = "Server error"
+                }
+            }
+            tags = listOf("Students")
+        }) {
+            try {
+                val studentId = call.parameters["studentId"]?.toIntOrNull()
+                if (studentId == null) {
+                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid student ID"))
+                    return@get
+                }
+
+                val student = studentService.getStudentById(studentId)
                 if (student != null) {
                     call.respond(HttpStatusCode.OK, student)
                 } else {
@@ -97,6 +161,7 @@ fun Route.studentRoutes(
             }
         }
 
+        // Update student
         post("/update", {
             summary = "Update student information"
             description = "Updates the information of an existing student"

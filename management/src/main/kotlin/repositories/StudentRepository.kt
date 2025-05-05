@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 interface StudentRepository {
+    suspend fun getAllStudents(): List<StudentDAO>
     suspend fun getStudentById(studentId: Int): StudentDAO?
     suspend fun createStudent(studentRequest: CreateStudentRequest): Int
     suspend fun updateStudent(updateStudentRequest: UpdateStudentRequest): Boolean
@@ -25,6 +26,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
             userId = this[Student.userId],
             firstName = this[User.firstName],
             lastName = this[User.lastName],
+            gender = this[User.gender],
             fatherName = this[Student.fatherName],
             motherName = this[Student.motherName],
             parentContact = this[Student.parentContact],
@@ -34,6 +36,13 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
             emergencyContact = this[Student.emergencyContact],
             status = this[Student.status]
         )
+    override  suspend fun getAllStudents(): List<StudentDAO> {
+        return dataSource.dbQuery {
+            (Student innerJoin User )
+                .selectAll()
+                .map { it.toStudentDAO() }
+        }
+    }
 
     override suspend fun getStudentById(studentId: Int): StudentDAO? {
         return dataSource.dbQuery {

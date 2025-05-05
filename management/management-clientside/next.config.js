@@ -5,12 +5,16 @@ const nextConfig = {
             return [
                 {
                     source: '/proxy/:path*',
-                    destination: 'http://localhost:8080/:path*'
+                    destination: 'http://127.0.0.1:8080/:path*'
+                },
+                {
+                    source: '/api/:path*',
+                    destination: 'http://127.0.0.1:8080/api/:path*'
                 }
             ];
         }
         return [];
-}
+    }
 };
 
 module.exports = nextConfig; 

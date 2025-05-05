@@ -17,7 +17,7 @@ interface UserRepository {
         email: String,
         phoneNumber: String,
         password: String,
-        gender: String?,
+        gender: String,
         dateOfBirth: String,  // Format: "YYYY-MM-DD"
         isActive: Boolean = true
     ): Int
@@ -34,11 +34,11 @@ interface UserRepository {
 }
 
 class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
-    
+
     private fun ResultRow.toRoleMappingDAO() = RoleMappingDAO(
         roleId = this[RoleMapping.roleId]
     )
-    
+
     private fun ResultRow.toUserDAO(roleMappings: List<RoleMappingDAO> = emptyList()) = UserDAO(
         userId = this[User.userId],
         organizationId = this[User.organizationId],
@@ -54,7 +54,7 @@ class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
         updatedAt = this[User.updatedAt],
         roles = roleMappings
     )
-    
+
     override suspend fun getUserById(userId: Int): UserDAO? {
         return dataSource.dbQuery {
             val user = User.select { User.userId eq userId }
@@ -83,7 +83,7 @@ class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
         email: String,
         phoneNumber: String,
         password: String,
-        gender: String?,
+        gender: String,
         dateOfBirth: String,
         isActive: Boolean
     ): Int {
