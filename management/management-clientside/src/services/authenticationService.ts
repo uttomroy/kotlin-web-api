@@ -1,22 +1,33 @@
-import {
-    AuthenticationApi
-} from '../generated/api';
+import { AuthenticationApi } from '../generated/api';
 import { createApiConfig } from './generated-api';
 
 // Create Students API instance
-const authenticationApi = new AuthenticationApi(createApiConfig());
+const api = new AuthenticationApi(createApiConfig());
+
+export class AuthError extends Error {
+    constructor(public code: number, message: string) {
+        super(message);
+        this.name = 'AuthError';
+    }
+}
 
 export async function login(orgId: number, username: string, password: string) {
     try {
-        return await authenticationApi.apiLoginPost({
+        const response = await api.apiLoginPost({
             comEducationRoutesPublicLoginRequest: {
                 organizationId: orgId,
                 username: username,
                 password: password
             }
         });
-    } catch (error) {
-        console.error('Error fetching students:', error);
-        throw error;
+        return response;
+    } catch (error: any) {
+        if (error.response?.status === 401) {
+            throw new AuthError(401, "Username or password is incorrect");
+        } else if (error.response?.status === 403) {
+            throw new AuthError(403, "Access forbidden");
+        } else {
+            throw new AuthError(500, "Failed to connect to the server");
+        }
     }
 }

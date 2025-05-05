@@ -11,7 +11,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import {login} from "@/services/authenticationService";
+import { login, AuthError } from "@/services/authenticationService";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,14 +40,13 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await login( orgId, username, password);
-
+      await login(orgId, username, password);
       router.push(`/orgs/${orgId}/dashboard`);
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof AuthError) {
         setError(err.message);
       } else {
-        setError('Failed to connect to the server');
+        setError('An unexpected error occurred');
       }
     } finally {
       setLoading(false);
