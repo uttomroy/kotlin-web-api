@@ -65,14 +65,23 @@ CREATE TABLE teachers (
     FOREIGN KEY (user_id) REFERENCES users(user_id)  
 );
 
+-- -- Create class levels
+CREATE TABLE class_level (
+                         id SERIAL PRIMARY KEY,
+                         organization_id INTEGER NOT NULL,
+                         name VARCHAR(10) NOT NULL,
+                         FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
+);
+
 -- Create classes table
 CREATE TABLE classes (
     class_id SERIAL PRIMARY KEY,
     organization_id INTEGER NOT NULL,
-    class_level VARCHAR(10) NOT NULL,
+    class_level_id INTEGER NOT NULL,
     section VARCHAR(10) NOT NULL,
     class_teacher_id INTEGER NOT NULL,
     FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)  ,
+    FOREIGN KEY (class_level_id) REFERENCES class_level(id)  ,
     FOREIGN KEY (class_teacher_id) REFERENCES teachers(teacher_id) ON DELETE SET NULL
 );
 
@@ -98,11 +107,19 @@ CREATE TABLE students (
 -- Create subjects table
 CREATE TABLE subjects (
     subject_id SERIAL PRIMARY KEY,
-    class_id INTEGER NOT NULL,
     subject_name VARCHAR(100) NOT NULL,
     subject_code VARCHAR(20) NOT NULL,
-    is_compulsory BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY (class_id) REFERENCES classes(class_id)  
+    is_compulsory BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- Create class subject mapping table
+CREATE TABLE class_subject_mapping (
+                          id SERIAL PRIMARY KEY,
+                          class_id INTEGER NOT NULL,
+                          subject_id INTEGER NOT NULL,
+                          teacher_id INTEGER NOT NULL,
+                          FOREIGN KEY (class_id) REFERENCES classes(class_id),
+                          FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
 );
 
 -- Create exams table
@@ -134,20 +151,19 @@ CREATE TABLE exams_results (
     marks_obtained INTEGER NOT NULL,
     grade VARCHAR(5) NOT NULL,
     status VARCHAR(15),
-    FOREIGN KEY (exam_map_id) REFERENCES exams_mapping(exam_map_id)  ,
+    FOREIGN KEY (exam_map_id) REFERENCES exams_mapping(exam_map_id),
     FOREIGN KEY (student_id) REFERENCES students(student_id)  
 );
 
 -- Create student_attendance table
 CREATE TABLE student_attendance (
     student_attendance_id SERIAL PRIMARY KEY,
-    subject_id INTEGER NOT NULL,
+    class_subject_mapping_id INTEGER NOT NULL,
     student_id INTEGER NOT NULL,
     attendance_date DATE NOT NULL,
-    status VARCHAR(10) NOT NULL,
+    present BOOLEAN NULL,
     remarks VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ,
-    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (class_subject_mapping_id) REFERENCES class_subject_mapping(id)
 );
