@@ -20,6 +20,12 @@ export default function MenuBar() {
     }
   };
 
+  const handleAttendance = () => {
+    if (orgId) {
+      router.push(`/orgs/${orgId}/attendance`);
+    }
+  };
+
   const handleLogout = async () => {
     // You might want to add a logout endpoint to your API
     // For now, just redirect to login
@@ -57,7 +63,10 @@ export default function MenuBar() {
           {/* Desktop Menu */}
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}> {/* Hide on small screens */}
             {orgId && (
-              <Button color="inherit" onClick={handleDashboard}>Dashboard</Button>
+              <>
+                <Button color="inherit" onClick={handleDashboard}>Dashboard</Button>
+                <Button color="inherit" onClick={handleAttendance}>Attendance</Button>
+              </>
             )}
             <Button color="inherit" onClick={handleLogin}>Login</Button>
             <Button color="inherit" onClick={handleLogout}>Logout</Button>
@@ -74,11 +83,18 @@ export default function MenuBar() {
         >
           <List>
             {orgId && (
-              <ListItem disablePadding>
-                <ListItemButton onClick={handleDashboard}>
-                  <Typography>Dashboard</Typography>
-                </ListItemButton>
-              </ListItem>
+              <>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleDashboard}>
+                    <Typography>Dashboard</Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleAttendance}>
+                    <Typography>Attendance</Typography>
+                  </ListItemButton>
+                </ListItem>
+              </>
             )}
             <ListItem disablePadding>
               <ListItemButton onClick={handleLogin}>
