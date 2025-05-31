@@ -73,15 +73,27 @@ CREATE TABLE class_level (
                          FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
 );
 
--- Create classes table
+-- Create shifts table
+CREATE TABLE shifts (
+    shift_id SERIAL PRIMARY KEY,
+    organization_id INTEGER NOT NULL,
+    shift_name VARCHAR(50) NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    description VARCHAR(200),
+    FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
+);
+
+-- Create classes table (updated to use shift_id instead of section)
 CREATE TABLE classes (
     class_id SERIAL PRIMARY KEY,
     organization_id INTEGER NOT NULL,
     class_level_id INTEGER NOT NULL,
-    section VARCHAR(10) NOT NULL,
+    shift_id INTEGER NOT NULL,
     class_teacher_id INTEGER NOT NULL,
     FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)  ,
     FOREIGN KEY (class_level_id) REFERENCES class_level(id)  ,
+    FOREIGN KEY (shift_id) REFERENCES shifts(shift_id),
     FOREIGN KEY (class_teacher_id) REFERENCES teachers(teacher_id) ON DELETE SET NULL
 );
 

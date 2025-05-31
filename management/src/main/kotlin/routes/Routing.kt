@@ -7,6 +7,7 @@ import com.education.routes.auth.authenticatedRoutes
 import com.education.routes.auth.teacherRoutes
 import com.education.services.IdentityService
 import com.education.services.UserService
+import com.education.services.ClassLevelService
 import configs.JWTConfig
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
@@ -28,11 +29,12 @@ data class UserProfileResponse(
 fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig,
                                  teacherRepository: TeacherRepository,
                                  userService: UserService, identityService: IdentityService, 
-                                 studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository) {
+                                 studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository,
+                                 classLevelService: ClassLevelService) {
     routing {
         route("/api") {
             loginRoute(identityService)
-            authenticatedRoutes(identityService, teacherRepository, studentService, studentAttendanceRepository)
+            authenticatedRoutes(identityService, teacherRepository, studentService, studentAttendanceRepository, classLevelService)
 
             get("/defualt-user-passwordhash", {
                 response {

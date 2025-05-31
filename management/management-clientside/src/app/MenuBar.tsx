@@ -26,6 +26,12 @@ export default function MenuBar() {
     }
   };
 
+  const handleClassLevels = () => {
+    if (orgId) {
+      router.push(`/orgs/${orgId}/class-levels`);
+    }
+  };
+
   const handleLogout = async () => {
     // You might want to add a logout endpoint to your API
     // For now, just redirect to login
@@ -66,6 +72,7 @@ export default function MenuBar() {
               <>
                 <Button color="inherit" onClick={handleDashboard}>Dashboard</Button>
                 <Button color="inherit" onClick={handleAttendance}>Attendance</Button>
+                <Button color="inherit" onClick={handleClassLevels}>Class Levels</Button>
               </>
             )}
             <Button color="inherit" onClick={handleLogin}>Login</Button>
@@ -92,6 +99,11 @@ export default function MenuBar() {
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleAttendance}>
                     <Typography>Attendance</Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleClassLevels}>
+                    <Typography>Class Levels</Typography>
                   </ListItemButton>
                 </ListItem>
               </>

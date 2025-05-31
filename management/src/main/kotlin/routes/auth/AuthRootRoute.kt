@@ -6,6 +6,7 @@ import com.education.repositories.TeacherRepository
 import com.education.repositories.StudentAttendanceRepository
 import com.education.services.IdentityService
 import com.education.services.StudentService
+import com.education.services.ClassLevelService
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -13,7 +14,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepository: TeacherRepository,
-                              studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository) {
+                              studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository,
+                              classLevelService: ClassLevelService) {
 
     authenticate {
         route("/orgs/{orgId}") {
@@ -67,6 +69,7 @@ fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepositor
             studentRoutes(studentService)
             teacherRoutes(teacherRepository)
             studentAttendanceRoutes(studentAttendanceRepository)
+            classLevelRoutes(classLevelService)
         }
     }
 }
