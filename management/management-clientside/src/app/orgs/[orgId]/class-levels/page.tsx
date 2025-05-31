@@ -40,7 +40,8 @@ import {
   School as SchoolIcon,
   Schedule as ScheduleIcon,
   Class as ClassIcon,
-  Subject as SubjectIcon
+  Subject as SubjectIcon,
+  Book as BookIcon
 } from '@mui/icons-material';
 import { useRouter, useParams } from 'next/navigation';
 
@@ -137,6 +138,7 @@ export default function ClassLevelsManagement() {
   const [openClassLevelDialog, setOpenClassLevelDialog] = useState(false);
   const [openShiftDialog, setOpenShiftDialog] = useState(false);
   const [openClassDialog, setOpenClassDialog] = useState(false);
+  const [openSubjectDialog, setOpenSubjectDialog] = useState(false);
   const [openMappingDialog, setOpenMappingDialog] = useState(false);
 
   // Form states
@@ -153,6 +155,12 @@ export default function ClassLevelsManagement() {
     classLevelId: '',
     shiftId: '',
     classTeacherId: ''
+  });
+  const [subjectForm, setSubjectForm] = useState({
+    subjectId: 0,
+    subjectName: '',
+    subjectCode: '',
+    isCompulsory: true
   });
   const [mappingForm, setMappingForm] = useState({
     id: 0,
@@ -265,6 +273,23 @@ export default function ClassLevelsManagement() {
     }
   };
 
+  // Subject handlers
+  const handleSaveSubject = async () => {
+    try {
+      if (editMode) {
+        console.log('Updating subject:', subjectForm);
+      } else {
+        console.log('Creating subject:', subjectForm);
+      }
+      setOpenSubjectDialog(false);
+      setSubjectForm({ subjectId: 0, subjectName: '', subjectCode: '', isCompulsory: true });
+      setEditMode(false);
+      fetchAllData();
+    } catch (error) {
+      setError('Failed to save subject');
+    }
+  };
+
   return (
     <Container maxWidth="xl">
       <Box sx={{ mt: 4 }}>
@@ -291,6 +316,7 @@ export default function ClassLevelsManagement() {
               <Tab icon={<SchoolIcon />} label="Class Levels" />
               <Tab icon={<ScheduleIcon />} label="Shifts" />
               <Tab icon={<ClassIcon />} label="Classes" />
+              <Tab icon={<BookIcon />} label="Subjects" />
               <Tab icon={<SubjectIcon />} label="Subject Mapping" />
             </Tabs>
           </Box>
@@ -457,8 +483,73 @@ export default function ClassLevelsManagement() {
             </TableContainer>
           </TabPanel>
 
-          {/* Subject Mapping Tab */}
+          {/* Subjects Tab */}
           <TabPanel value={tabValue} index={3}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+              <Typography variant="h6">Subjects</Typography>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => {
+                  setSubjectForm({ subjectId: 0, subjectName: '', subjectCode: '', isCompulsory: true });
+                  setEditMode(false);
+                  setOpenSubjectDialog(true);
+                }}
+              >
+                Add Subject
+              </Button>
+            </Box>
+            
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Subject Name</TableCell>
+                    <TableCell>Subject Code</TableCell>
+                    <TableCell>Type</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {subjects.map((subject) => (
+                    <TableRow key={subject.subjectId}>
+                      <TableCell>{subject.subjectName}</TableCell>
+                      <TableCell>{subject.subjectCode}</TableCell>
+                      <TableCell>
+                        <Chip 
+                          label={subject.isCompulsory ? 'Compulsory' : 'Optional'} 
+                          color={subject.isCompulsory ? 'primary' : 'default'}
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          onClick={() => {
+                            setSubjectForm({
+                              subjectId: subject.subjectId,
+                              subjectName: subject.subjectName,
+                              subjectCode: subject.subjectCode,
+                              isCompulsory: subject.isCompulsory
+                            });
+                            setEditMode(true);
+                            setOpenSubjectDialog(true);
+                          }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton color="error">
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </TabPanel>
+
+          {/* Subject Mapping Tab */}
+          <TabPanel value={tabValue} index={4}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
               <Typography variant="h6">Class-Subject Mapping</Typography>
               <Button
@@ -623,6 +714,47 @@ export default function ClassLevelsManagement() {
           <DialogActions>
             <Button onClick={() => setOpenClassDialog(false)}>Cancel</Button>
             <Button onClick={handleSaveClass} variant="contained">
+              {editMode ? 'Update' : 'Create'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Subject Dialog */}
+        <Dialog open={openSubjectDialog} onClose={() => setOpenSubjectDialog(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>{editMode ? 'Edit Subject' : 'Add Subject'}</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Subject Name"
+              fullWidth
+              variant="outlined"
+              value={subjectForm.subjectName}
+              onChange={(e) => setSubjectForm({ ...subjectForm, subjectName: e.target.value })}
+            />
+            <TextField
+              margin="dense"
+              label="Subject Code"
+              fullWidth
+              variant="outlined"
+              value={subjectForm.subjectCode}
+              onChange={(e) => setSubjectForm({ ...subjectForm, subjectCode: e.target.value })}
+              placeholder="e.g., MATH, ENG, SCI"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={subjectForm.isCompulsory}
+                  onChange={(e) => setSubjectForm({ ...subjectForm, isCompulsory: e.target.checked })}
+                />
+              }
+              label="Compulsory Subject"
+              sx={{ mt: 2 }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenSubjectDialog(false)}>Cancel</Button>
+            <Button onClick={handleSaveSubject} variant="contained">
               {editMode ? 'Update' : 'Create'}
             </Button>
           </DialogActions>
