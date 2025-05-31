@@ -3,6 +3,7 @@ package com.education.routes.auth
 import com.education.routes.UserProfileResponse
 import com.education.enums.ROLE
 import com.education.repositories.TeacherRepository
+import com.education.repositories.StudentAttendanceRepository
 import com.education.services.IdentityService
 import com.education.services.StudentService
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
@@ -12,7 +13,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepository: TeacherRepository,
-                              studentService: StudentService) {
+                              studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository) {
 
     authenticate {
         route("/orgs/{orgId}") {
@@ -65,6 +66,7 @@ fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepositor
 
             studentRoutes(studentService)
             teacherRoutes(teacherRepository)
+            studentAttendanceRoutes(studentAttendanceRepository)
         }
     }
 }

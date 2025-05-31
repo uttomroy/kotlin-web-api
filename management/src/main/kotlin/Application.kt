@@ -61,5 +61,5 @@ fun Application.module() {
     configureSerialization()
     configureFrameworks(jwtConfig)
     val globalContext = GlobalContext.get()
-    configureRouting(globalContext.get(), jwtConfig, globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get())
+    configureRouting(globalContext.get(), jwtConfig, globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get())
 }

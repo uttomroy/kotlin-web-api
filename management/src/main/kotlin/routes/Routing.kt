@@ -1,6 +1,7 @@
 package com.education.routes
 
 import com.education.repositories.TeacherRepository
+import com.education.repositories.StudentAttendanceRepository
 import com.education.repositories.UserRepository
 import com.education.routes.auth.authenticatedRoutes
 import com.education.routes.auth.teacherRoutes
@@ -26,11 +27,12 @@ data class UserProfileResponse(
 
 fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTConfig,
                                  teacherRepository: TeacherRepository,
-                                 userService: UserService, identityService: IdentityService, studentService: StudentService) {
+                                 userService: UserService, identityService: IdentityService, 
+                                 studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository) {
     routing {
         route("/api") {
             loginRoute(identityService)
-            authenticatedRoutes(identityService, teacherRepository, studentService)
+            authenticatedRoutes(identityService, teacherRepository, studentService, studentAttendanceRepository)
 
             get("/defualt-user-passwordhash", {
                 response {

@@ -34,5 +34,22 @@ export const api = {
             body: data ? JSON.stringify(data) : undefined,
         });
         return response;
+    },
+
+    put: async (endpoint: string, data?: any) => {
+        const response = await fetch(getBaseUrl(endpoint), {
+            ...defaultOptions,
+            method: 'PUT',
+            body: data ? JSON.stringify(data) : undefined,
+        });
+        return response;
+    },
+
+    delete: async (endpoint: string) => {
+        const response = await fetch(getBaseUrl(endpoint), {
+            ...defaultOptions,
+            method: 'DELETE',
+        });
+        return response;
     }
 }; 

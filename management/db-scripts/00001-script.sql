@@ -69,7 +69,7 @@ CREATE TABLE teachers (
 CREATE TABLE class_level (
                          id SERIAL PRIMARY KEY,
                          organization_id INTEGER NOT NULL,
-                         name VARCHAR(10) NOT NULL,
+                         name VARCHAR(50) NOT NULL,
                          FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
 );
 
@@ -167,3 +167,7 @@ CREATE TABLE student_attendance (
     FOREIGN KEY (student_id) REFERENCES students(student_id),
     FOREIGN KEY (class_subject_mapping_id) REFERENCES class_subject_mapping(id)
 );
+
+-- Add indexes for student_attendance table to improve query performance
+CREATE INDEX IF NOT EXISTS idx_student_attendance_student_date 
+ON student_attendance(student_id, attendance_date);

@@ -28,6 +28,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format, getDaysInMonth, eachDayOfInterval, startOfMonth, endOfMonth } from 'date-fns';
 import { useRouter, useParams } from 'next/navigation';
 import { api } from '@/services/api';
+import { getAttendanceByFilters } from '@/services/attendanceService';
+import type { ComEducationModelsStudentAttendanceDTO } from '@/generated/api';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -63,6 +65,30 @@ export default function Attendance() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
 
+  // Helper function to transform API data to display format
+  const transformAttendanceData = (apiData: ComEducationModelsStudentAttendanceDTO[]): AttendanceRecord[] => {
+    const studentMap = new Map<number, AttendanceRecord>();
+
+    apiData.forEach(record => {
+      const studentKey = record.studentId!;
+      const studentName = `${record.studentFirstName} ${record.studentLastName}`;
+      
+      if (!studentMap.has(studentKey)) {
+        studentMap.set(studentKey, {
+          studentId: record.studentId!,
+          studentName: studentName,
+          attendance: {}
+        });
+      }
+
+      const student = studentMap.get(studentKey)!;
+      const status = record.present ? 'present' : 'absent';
+      student.attendance[record.attendanceDate!] = status as 'present' | 'absent' | 'late';
+    });
+
+    return Array.from(studentMap.values());
+  };
+
   const fetchAttendance = async () => {
     if (!selectedClass || !selectedSubject || !selectedMonth) return;
     
@@ -70,48 +96,22 @@ export default function Attendance() {
     setError('');
     
     try {
-      // Format the month as YYYY-MM
-      const monthStr = format(selectedMonth, 'yyyy-MM');
-      console.log('Selected Month:', monthStr);
+      const startDate = startOfMonth(selectedMonth);
+      const endDate = endOfMonth(selectedMonth);
       
-      // Mock data with daily attendance for the current selected month
-      const currentMonth = format(selectedMonth, 'MM');
-      const currentYear = format(selectedMonth, 'yyyy');
+      const apiData = await getAttendanceByFilters(
+        orgId,
+        selectedClass as number,
+        selectedSubject as number,
+        format(startDate, 'yyyy-MM-dd'),
+        format(endDate, 'yyyy-MM-dd')
+      );
       
-      const mockAttendance = [
-        {
-          studentId: 1,
-          studentName: 'John Doe',
-          attendance: {} as Record<string, 'present' | 'absent' | 'late'>
-        },
-        {
-          studentId: 2,
-          studentName: 'Jane Smith',
-          attendance: {} as Record<string, 'present' | 'absent' | 'late'>
-        },
-        {
-          studentId: 3,
-          studentName: 'Bob Johnson',
-          attendance: {} as Record<string, 'present' | 'absent' | 'late'>
-        },
-        {
-          studentId: 4,
-          studentName: 'Alice Brown',
-          attendance: {} as Record<string, 'present' | 'absent' | 'late'>
-        }
-      ];
-
-      // Generate attendance data for the selected month
-      const daysInMonth = getDaysInMonth(selectedMonth);
-      mockAttendance.forEach(student => {
-        for (let day = 1; day <= daysInMonth; day++) {
-          const date = `${currentYear}-${currentMonth}-${String(day).padStart(2, '0')}`;
-          student.attendance[date] = ['present', 'absent', 'late'][Math.floor(Math.random() * 3)] as 'present' | 'absent' | 'late';
-        }
-      });
-
-      console.log('Mock Attendance Data:', mockAttendance);
-      setAttendanceData(mockAttendance);
+      const transformedData = transformAttendanceData(apiData);
+      
+      console.log('API Attendance Data:', apiData);
+      console.log('Transformed Data:', transformedData);
+      setAttendanceData(transformedData);
     } catch (error) {
       console.error('Failed to fetch attendance:', error);
       setError('Failed to load attendance data');
