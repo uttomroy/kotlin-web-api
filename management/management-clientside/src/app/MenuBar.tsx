@@ -1,10 +1,14 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton, Avatar, Menu, MenuItem, Divider } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton, Avatar, Menu, MenuItem, Divider, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import SchoolIcon from '@mui/icons-material/School';
+import LoginIcon from '@mui/icons-material/Login';
 import { useRouter, useParams } from 'next/navigation';
 
 export default function MenuBar() {
@@ -137,33 +141,51 @@ export default function MenuBar() {
             My Website
           </Typography>
 
-          {/* Desktop Menu */}
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}> {/* Hide on small screens */}
+          {/* Desktop Menu - Icon Only with Tooltips */}
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1 }}> {/* Hide on small screens */}
             {orgId ? (
               <>
-                <Button color="inherit" onClick={handleDashboard}>Dashboard</Button>
-                <Button color="inherit" onClick={handleAttendance}>Attendance</Button>
-                <Button color="inherit" onClick={handleClassLevels}>Academics</Button>
+                <Tooltip title="Dashboard" arrow>
+                  <IconButton color="inherit" onClick={handleDashboard}>
+                    <HomeIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Attendance" arrow>
+                  <IconButton color="inherit" onClick={handleAttendance}>
+                    <HowToRegIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Academics" arrow>
+                  <IconButton color="inherit" onClick={handleClassLevels}>
+                    <SchoolIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             ) : (
-              <Button color="inherit" onClick={handleLogin}>Login</Button>
+              <Tooltip title="Login" arrow>
+                <IconButton color="inherit" onClick={handleLogin}>
+                  <LoginIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Box>
 
           {/* Avatar Menu */}
           {orgId && (
             <>
-              <IconButton
-                onClick={handleAvatarClick}
-                sx={{ ml: 2 }}
-                aria-controls={anchorEl ? 'avatar-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={anchorEl ? 'true' : undefined}
-              >
-                <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
-                  <AccountCircleIcon />
-                </Avatar>
-              </IconButton>
+              <Tooltip title="Profile" arrow>
+                <IconButton
+                  onClick={handleAvatarClick}
+                  sx={{ ml: 2 }}
+                  aria-controls={anchorEl ? 'avatar-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={anchorEl ? 'true' : undefined}
+                >
+                  <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
+                    <AccountCircleIcon />
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
               <Menu
                 id="avatar-menu"
                 anchorEl={anchorEl}
@@ -213,7 +235,7 @@ export default function MenuBar() {
           )}
         </Toolbar>
       </AppBar>
-       {/* Drawer for Hamburger Menu */}
+       {/* Drawer for Hamburger Menu - Keep text for mobile usability */}
        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
@@ -226,16 +248,19 @@ export default function MenuBar() {
               <>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleDashboard}>
+                    <HomeIcon sx={{ mr: 2 }} />
                     <Typography>Dashboard</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleAttendance}>
+                    <HowToRegIcon sx={{ mr: 2 }} />
                     <Typography>Attendance</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleClassLevels}>
+                    <SchoolIcon sx={{ mr: 2 }} />
                     <Typography>Academics</Typography>
                   </ListItemButton>
                 </ListItem>
@@ -243,6 +268,7 @@ export default function MenuBar() {
             ) : (
               <ListItem disablePadding>
                 <ListItemButton onClick={handleLogin}>
+                  <LoginIcon sx={{ mr: 2 }} />
                   <Typography>Login</Typography>
                 </ListItemButton>
               </ListItem>
