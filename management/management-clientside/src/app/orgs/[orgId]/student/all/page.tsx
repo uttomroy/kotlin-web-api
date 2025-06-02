@@ -131,6 +131,7 @@ export default function StudentsPage() {
       <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
         <TextField
           fullWidth
+          sx={{ flex: 1 }}
           variant="outlined"
           placeholder="Search students..."
           value={searchTerm}
@@ -143,7 +144,7 @@ export default function StudentsPage() {
             ),
           }}
         />
-        <FormControl sx={{ minWidth: 120 }}>
+        <FormControl sx={{ flex: 1 }}>
           <InputLabel>Class</InputLabel>
           <Select value={classlabel} label="Class" onChange={handleChangeClass}>
             <MenuItem value="">All</MenuItem>
@@ -152,7 +153,7 @@ export default function StudentsPage() {
             <MenuItem value="3">Three</MenuItem>
           </Select>
         </FormControl>
-        <FormControl sx={{ minWidth: 120 }}>
+        <FormControl sx={{ flex: 1 }}>
           <InputLabel>Gender</InputLabel>
           <Select value={genderFilter} label="Gender" onChange={handleChangeGender}>
             <MenuItem value="">All</MenuItem>

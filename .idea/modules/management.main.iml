@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="management:main" external.linked.project.path="$MODULE_DIR$/../../management" external.root.project.path="$MODULE_DIR$/../../management" external.system.id="GRADLE" external.system.module.group="com.education" external.system.module.type="sourceSet" external.system.module.version="0.0.1" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet external-system-id="GRADLE" type="kotlin-language" name="Kotlin">
+      <configuration version="5" platform="JVM 20" allPlatforms="JVM [20]" useProjectSettings="false" pureKotlinSourceFolders="E:\kotlin-web-api\management\src\main\kotlin;E:\kotlin-web-api\management\src\test\kotlin">
+        <compilerSettings />
+        <compilerArguments>
+          <flagArguments>
+            <flagArg name="allowNoSourceFiles" arg="true" />
+            <flagArg name="noReflect" arg="true" />
+            <flagArg name="noStdlib" arg="true" />
+          </flagArguments>
+          <stringArguments>
+            <stringArg name="destination" arg="$MODULE_DIR$/../../management/build/classes/kotlin/main" />
+            <stringArg name="jvmTarget" arg="20" />
+            <stringArg name="moduleName" arg="management" />
+            <stringArg name="apiVersion" arg="2.1" />
+            <stringArg name="languageVersion" arg="2.1" />
+          </stringArguments>
+          <arrayArguments>
+            <arrayArg name="pluginClasspaths">
+              <args>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/2.1.10/7992af0361147f5918380c58982a1eae2a4eb75e/kotlin-scripting-jvm-2.1.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/2.1.10/c6bc5aa794c482975bb0513e731c47a525cf8130/kotlin-scripting-common-2.1.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.10/d3028429e7151d7a7c1a0d63a4f60eac86a87b91/kotlin-stdlib-2.1.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/2.1.10/70000e6ef453308e55d42ea4ace5b8c32325ce75/kotlin-script-runtime-2.1.10.jar</arg>
+                <arg>$KOTLIN_BUNDLED$/lib/kotlinx-serialization-compiler-plugin.jar</arg>
+              </args>
+            </arrayArg>
+            <arrayArg name="pluginOptions" />
+          </arrayArguments>
+        </compilerArguments>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_20">
+    <output url="file://$MODULE_DIR$/../../management/build/classes/java/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../management/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../management/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../management/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="jdk" jdkName="corretto-20" jdkType="JavaSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.exposed:exposed-dao:0.43.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.exposed:exposed-jdbc:0.43.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.exposed:exposed-java-time:0.43.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.exposed:exposed-core:0.43.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.github.smiley4:ktor-swagger-ui:4.1.6" level="project" />
+    <orderEntry type="library" name="Gradle: io.insert-koin:koin-ktor:3.5.6" level="project" />
+    <orderEntry type="library" name="Gradle: io.insert-koin:koin-logger-slf4j:3.5.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:2.1.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.postgresql:postgresql:42.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.mindrot:jbcrypt:0.4" level="project" />
+    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.5.13" level="project" />
+    <orderEntry type="library" name="Gradle: com.auth0:java-jwt:4.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.zaxxer:HikariCP:6.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:2.1.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:2.0.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.5.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-netty-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-auth-jwt-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-auth-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-config-yaml-jvm:3.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-content-negotiation-jvm:3.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-serialization-kotlinx-json-jvm:3.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-core-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:23.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.5.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.15.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.15.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.10" level="project" />
+    <orderEntry type="library" name="Gradle: io.insert-koin:koin-core-jvm:3.5.6" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec-http2:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.jetty.alpn:alpn-api:1.1.3.v20160715" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport-native-kqueue:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport-native-epoll:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: com.auth0:jwks-rsa:0.22.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.typesafe:config:1.4.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.15.4" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec-http:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-handler:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-codec:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-buffer:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-common:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport-classes-kqueue:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport-native-unix-common:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-transport-classes-epoll:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-server-sessions-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: net.mamoe.yamlkt:yamlkt-jvm:0.13.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-serialization-kotlinx-jvm:3.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-io-jvm:1.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-serialization-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-events-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-websockets-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-concurrent-collections-jvm:2.0.6" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-concurrency-jvm:2.0.6" level="project" />
+    <orderEntry type="library" name="Gradle: io.netty:netty-resolver:4.1.118.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-websocket-serialization-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-sse-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-io-jvm:3.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-core-jvm:0.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:0.6.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.smiley4:schema-kenerator-reflection:1.6.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.smiley4:schema-kenerator-swagger:1.6.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.smiley4:schema-kenerator-core:1.6.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.oshai:kotlin-logging-jvm:7.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.parser.v3:swagger-parser:2.1.24" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.webjars:swagger-ui:5.17.11" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.18.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.18.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.checkerframework:checker-qual:3.37.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-server-resources-jvm:3.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.fusesource.jansi:jansi:2.4.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.parser.v3:swagger-parser-v2-converter:2.1.24" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.parser.v3:swagger-parser-v3:2.1.24" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.yaml:snakeyaml:2.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-io:commons-io:2.17.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.18.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-compat-spec-parser:1.0.72" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-parser:1.0.72" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-core:1.6.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.parser.v3:swagger-parser-core:2.1.24" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.core.v3:swagger-models:2.2.26" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.core.v3:swagger-core:2.2.26" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.parser.v3:swagger-parser-safe-url-resolver:2.1.24" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.guava:guava:32.1.3-android" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.ktor:ktor-resources-jvm:3.0.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:json-patch:1.13" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:json-schema-validator:2.2.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpclient:4.5.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-parser-safe-url-resolver:1.0.72" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-models:1.6.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.commons:commons-lang3:3.17.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger.core.v3:swagger-annotations:2.2.26" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jakarta.validation:jakarta.validation-api:2.0.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.google.errorprone:error_prone_annotations:2.21.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.10.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:jackson-coreutils:2.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:msg-simple:1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:json-schema-core:1.2.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:jackson-coreutils-equivalence:1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: joda-time:joda-time:2.10.5" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.11.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: net.sf.jopt-simple:jopt-simple:5.0.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.apache.httpcomponents:httpcore:4.4.16" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: commons-codec:commons-codec:1.11" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.swagger:swagger-annotations:1.6.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: jakarta.activation:jakarta.activation-api:1.2.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:btf:1.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.java-json-tools:uri-template:0.10" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.mozilla:rhino:1.7.7.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: co.touchlab:stately-strict-jvm:2.0.6" level="project" />
+  </component>
+</module>

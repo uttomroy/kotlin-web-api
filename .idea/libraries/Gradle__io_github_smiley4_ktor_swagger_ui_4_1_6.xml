@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.github.smiley4:ktor-swagger-ui:4.1.6" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.github.smiley4" artifactId="ktor-swagger-ui" version="4.1.6" baseVersion="4.1.6" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.smiley4/ktor-swagger-ui/4.1.6/c7e943256ca7fc6b5a23bf0edb7bebc5e48969c6/ktor-swagger-ui-4.1.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
