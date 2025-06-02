@@ -154,7 +154,7 @@ export class StudentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/orgs/{orgId}/students`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters['orgId']))),
+            path: `/api/orgs/{orgId}/student/all`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters['orgId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

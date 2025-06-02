@@ -13,7 +13,7 @@ object User : Table("users") {
     val email = varchar("email", 255).uniqueIndex()
     val phoneNumber = varchar("phone_number", 25).uniqueIndex()
     val password = varchar("password", 255)
-    val gender = varchar("gender", 25).nullable()
+    val gender = varchar("gender", 25)
     val dateOfBirth = varchar("date_of_birth", 10)  // Format: "YYYY-MM-DD"
     val isActive = bool("is_active").default(true)
     val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
