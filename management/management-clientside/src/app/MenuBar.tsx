@@ -44,7 +44,7 @@ export default function MenuBar() {
 
   const handleClassLevels = () => {
     if (orgId) {
-      router.push(`/orgs/${orgId}/class-levels`);
+      router.push(`/orgs/${orgId}/academic-setup`);
     }
   };
 
@@ -202,7 +202,7 @@ export default function MenuBar() {
                     <HowToRegIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Academics" arrow>
+                <Tooltip title="Academic Setup" arrow>
                   <IconButton color="inherit" onClick={handleClassLevels}>
                     <SchoolIcon />
                   </IconButton>
@@ -331,7 +331,7 @@ export default function MenuBar() {
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleClassLevels} sx={{ color: 'white' }}>
                     <SchoolIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Academics</Typography>
+                    <Typography sx={{ color: 'white' }}>Academic Setup</Typography>
                   </ListItemButton>
                 </ListItem>
               </>

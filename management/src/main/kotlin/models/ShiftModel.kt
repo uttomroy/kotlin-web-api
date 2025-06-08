@@ -34,6 +34,7 @@ data class CreateShiftRequest(
 
 @Serializable
 data class UpdateShiftRequest(
+    val organizationId: Int,
     val shiftName: String,
     val startTime: String,
     val endTime: String,
