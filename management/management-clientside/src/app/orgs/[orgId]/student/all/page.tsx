@@ -53,6 +53,11 @@ export default function StudentsPage() {
     setAnchorEl(event.currentTarget);
   }
 
+  const handleActionView() {
+      const router = useRouter()
+        router.push('./student/view/${studentID}')
+  }
+
   useEffect(() => {
     const filtered = students.filter((student) => {
       const searchString = searchTerm.toLowerCase();
@@ -205,7 +210,7 @@ export default function StudentsPage() {
                           open={Boolean(anchorEl)}
                           onClose={handleActionClose}
                         >
-                            <MenuItem onClick={handleActionClose}>View</MenuItem>
+                            <MenuItem onClick={()=> {handleActionView(student.studentId)}}>View</MenuItem>
                             <MenuItem onClick={handleActionClose}>Edit</MenuItem>
                             <MenuItem onClick={handleActionClose}>Suspend</MenuItem>
                       </Menu>

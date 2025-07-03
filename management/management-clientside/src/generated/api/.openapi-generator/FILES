@@ -1,4 +1,5 @@
 apis/AuthenticationApi.ts
+apis/ClassLevelApi.ts
 apis/DefaultApi.ts
 apis/ProfileApi.ts
 apis/StudentApi.ts
@@ -6,6 +7,9 @@ apis/StudentAttendanceApi.ts
 apis/index.ts
 index.ts
 models/ComEducationModelsBulkAttendanceRequest.ts
+models/ComEducationModelsClassLevelDAO.ts
+models/ComEducationModelsClassLevelDTO.ts
+models/ComEducationModelsCreateClassLevelRequest.ts
 models/ComEducationModelsCreateStudentAttendanceRequest.ts
 models/ComEducationModelsCreateStudentRequest.ts
 models/ComEducationModelsCreateTeacherRequest.ts
@@ -13,6 +17,8 @@ models/ComEducationModelsStudentAttendanceDAO.ts
 models/ComEducationModelsStudentAttendanceDTO.ts
 models/ComEducationModelsStudentAttendanceRecord.ts
 models/ComEducationModelsStudentDTO.ts
+models/ComEducationModelsStudentSummaryDTO.ts
+models/ComEducationModelsUpdateClassLevelRequest.ts
 models/ComEducationModelsUpdateStudentAttendanceRequest.ts
 models/ComEducationModelsUpdateStudentRequest.ts
 models/ComEducationRoutesPublicErrorResponse.ts

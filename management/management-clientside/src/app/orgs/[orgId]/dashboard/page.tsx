@@ -49,7 +49,6 @@ export default function Dashboard() {
 
   return (
     <Container maxWidth="lg">
-    <h1>lorem ipsum you are not okay </h1>
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Dashboard for Organization {orgId}

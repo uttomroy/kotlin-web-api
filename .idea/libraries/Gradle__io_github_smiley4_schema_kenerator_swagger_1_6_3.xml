@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.github.smiley4:schema-kenerator-swagger:1.6.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.github.smiley4" artifactId="schema-kenerator-swagger" version="1.6.3" baseVersion="1.6.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.smiley4/schema-kenerator-swagger/1.6.3/341c871965bbee5ecb99d7287b2517b1ea3074f/schema-kenerator-swagger-1.6.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
