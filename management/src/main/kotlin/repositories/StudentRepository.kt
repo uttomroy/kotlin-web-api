@@ -7,9 +7,9 @@ import com.education.models.CreateStudentRequest
 import com.education.models.StudentDAO
 import com.education.models.UpdateStudentRequest
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 interface StudentRepository {
+    suspend fun getAllStudents(orgId: Int): List<StudentDAO>
     suspend fun getStudentById(studentId: Int): StudentDAO?
     suspend fun createStudent(studentRequest: CreateStudentRequest): Int
     suspend fun updateStudent(updateStudentRequest: UpdateStudentRequest): Boolean
@@ -25,6 +25,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
             userId = this[Student.userId],
             firstName = this[User.firstName],
             lastName = this[User.lastName],
+            gender = this[User.gender],
             fatherName = this[Student.fatherName],
             motherName = this[Student.motherName],
             parentContact = this[Student.parentContact],
@@ -34,6 +35,14 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
             emergencyContact = this[Student.emergencyContact],
             status = this[Student.status]
         )
+
+    override suspend fun getAllStudents(orgId: Int): List<StudentDAO> {
+        return dataSource.dbQuery {
+            (Student innerJoin User)
+                .select { Student.organizationId eq orgId }
+                .map { it.toStudentDAO() }
+        }
+    }
 
     override suspend fun getStudentById(studentId: Int): StudentDAO? {
         return dataSource.dbQuery {
@@ -63,17 +72,17 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
 
             // Then create the student record
             Student.insert {
-                it[Student.organizationId] = studentRequest.organizationId
-                it[Student.classId] = studentRequest.classId
+                it[organizationId] = studentRequest.organizationId
+                it[classId] = studentRequest.classId
                 it[Student.userId] = userId
-                it[Student.fatherName] = studentRequest.fatherName
-                it[Student.motherName] = studentRequest.motherName
-                it[Student.parentContact] = studentRequest.parentContact
-                it[Student.address] = studentRequest.address
-                it[Student.enrollmentDate] = java.time.LocalDate.now()
-                it[Student.photoUrl] = studentRequest.photoUrl
-                it[Student.emergencyContact] = studentRequest.emergencyContact
-                it[Student.status] = "ACTIVE"
+                it[fatherName] = studentRequest.fatherName
+                it[motherName] = studentRequest.motherName
+                it[parentContact] = studentRequest.parentContact
+                it[address] = studentRequest.address
+                it[enrollmentDate] = java.time.LocalDate.now()
+                it[photoUrl] = studentRequest.photoUrl
+                it[emergencyContact] = studentRequest.emergencyContact
+                it[status] = "ACTIVE"
             } get Student.studentId
         }
     }
@@ -81,7 +90,10 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
     override suspend fun updateStudent(updateStudentRequest: UpdateStudentRequest): Boolean {
         return dataSource.dbQuery {
             val updatedRows = Student.update({ Student.studentId eq updateStudentRequest.studentId }) {
-                updateStudentRequest.classId?.let { classId -> it[Student.classId] = classId }
+                val classId = updateStudentRequest.classId
+                if (classId != null) {
+                    it[Student.classId] = classId
+                }
                 it[fatherName] = updateStudentRequest.fatherName
                 it[motherName] = updateStudentRequest.motherName
                 it[parentContact] = updateStudentRequest.parentContact

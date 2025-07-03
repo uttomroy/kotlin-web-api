@@ -13,6 +13,11 @@ export async function getStudents(orgId: number) {
     }
 }
 
+export async function getStudentById(studentId : number) {
+    try{
+        return await studentApi.}
+    }
+
 export async function createStudent(orgId: number, studentData: Omit<ComEducationModelsCreateStudentRequest, 'organizationId'>) {
     try {
         const request = {

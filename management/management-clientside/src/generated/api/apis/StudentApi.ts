@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   ComEducationModelsCreateStudentRequest,
   ComEducationModelsStudentDTO,
+  ComEducationModelsStudentSummaryDTO,
   ComEducationModelsUpdateStudentRequest,
 } from '../models/index';
 import {
@@ -24,17 +25,21 @@ import {
     ComEducationModelsCreateStudentRequestToJSON,
     ComEducationModelsStudentDTOFromJSON,
     ComEducationModelsStudentDTOToJSON,
+    ComEducationModelsStudentSummaryDTOFromJSON,
+    ComEducationModelsStudentSummaryDTOToJSON,
     ComEducationModelsUpdateStudentRequestFromJSON,
     ComEducationModelsUpdateStudentRequestToJSON,
 } from '../models/index';
 
-export interface ApiOrgsOrgIdStudentsCreatePostRequest {
-    orgId: number;
+export interface ApiOrgsOrgIdStudentCreatePostRequest {
     comEducationModelsCreateStudentRequest: ComEducationModelsCreateStudentRequest;
 }
 
-export interface ApiOrgsOrgIdStudentsUpdatePostRequest {
-    orgId: number;
+export interface ApiOrgsOrgIdStudentStudentIdGetRequest {
+    studentId: number;
+}
+
+export interface ApiOrgsOrgIdStudentUpdatePostRequest {
     comEducationModelsUpdateStudentRequest: ComEducationModelsUpdateStudentRequest;
 }
 
@@ -51,18 +56,11 @@ export class StudentApi extends runtime.BaseAPI {
      * Creates a new student with user details
      * Create new student
      */
-    async apiOrgsOrgIdStudentsCreatePostRaw(requestParameters: ApiOrgsOrgIdStudentsCreatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: number; }>> {
-        if (requestParameters['orgId'] == null) {
-            throw new runtime.RequiredError(
-                'orgId',
-                'Required parameter "orgId" was null or undefined when calling apiOrgsOrgIdStudentsCreatePost().'
-            );
-        }
-
+    async apiOrgsOrgIdStudentCreatePostRaw(requestParameters: ApiOrgsOrgIdStudentCreatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: number; }>> {
         if (requestParameters['comEducationModelsCreateStudentRequest'] == null) {
             throw new runtime.RequiredError(
                 'comEducationModelsCreateStudentRequest',
-                'Required parameter "comEducationModelsCreateStudentRequest" was null or undefined when calling apiOrgsOrgIdStudentsCreatePost().'
+                'Required parameter "comEducationModelsCreateStudentRequest" was null or undefined when calling apiOrgsOrgIdStudentCreatePost().'
             );
         }
 
@@ -73,7 +71,7 @@ export class StudentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/orgs/{orgId}/students/create`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters['orgId']))),
+            path: `/api/orgs/{orgId}/student/create`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -87,8 +85,43 @@ export class StudentApi extends runtime.BaseAPI {
      * Creates a new student with user details
      * Create new student
      */
-    async apiOrgsOrgIdStudentsCreatePost(requestParameters: ApiOrgsOrgIdStudentsCreatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: number; }> {
-        const response = await this.apiOrgsOrgIdStudentsCreatePostRaw(requestParameters, initOverrides);
+    async apiOrgsOrgIdStudentCreatePost(requestParameters: ApiOrgsOrgIdStudentCreatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: number; }> {
+        const response = await this.apiOrgsOrgIdStudentCreatePostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get a single student details
+     * Student details
+     */
+    async apiOrgsOrgIdStudentStudentIdGetRaw(requestParameters: ApiOrgsOrgIdStudentStudentIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComEducationModelsStudentDTO>> {
+        if (requestParameters['studentId'] == null) {
+            throw new runtime.RequiredError(
+                'studentId',
+                'Required parameter "studentId" was null or undefined when calling apiOrgsOrgIdStudentStudentIdGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/orgs/{orgId}/student/{studentId}`.replace(`{${"studentId"}}`, encodeURIComponent(String(requestParameters['studentId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ComEducationModelsStudentDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a single student details
+     * Student details
+     */
+    async apiOrgsOrgIdStudentStudentIdGet(requestParameters: ApiOrgsOrgIdStudentStudentIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComEducationModelsStudentDTO> {
+        const response = await this.apiOrgsOrgIdStudentStudentIdGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -96,18 +129,11 @@ export class StudentApi extends runtime.BaseAPI {
      * Updates the information of an existing student
      * Update student information
      */
-    async apiOrgsOrgIdStudentsUpdatePostRaw(requestParameters: ApiOrgsOrgIdStudentsUpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: string; }>> {
-        if (requestParameters['orgId'] == null) {
-            throw new runtime.RequiredError(
-                'orgId',
-                'Required parameter "orgId" was null or undefined when calling apiOrgsOrgIdStudentsUpdatePost().'
-            );
-        }
-
+    async apiOrgsOrgIdStudentUpdatePostRaw(requestParameters: ApiOrgsOrgIdStudentUpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: string; }>> {
         if (requestParameters['comEducationModelsUpdateStudentRequest'] == null) {
             throw new runtime.RequiredError(
                 'comEducationModelsUpdateStudentRequest',
-                'Required parameter "comEducationModelsUpdateStudentRequest" was null or undefined when calling apiOrgsOrgIdStudentsUpdatePost().'
+                'Required parameter "comEducationModelsUpdateStudentRequest" was null or undefined when calling apiOrgsOrgIdStudentUpdatePost().'
             );
         }
 
@@ -118,7 +144,7 @@ export class StudentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/orgs/{orgId}/students/update`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters['orgId']))),
+            path: `/api/orgs/{orgId}/student/update`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -132,8 +158,8 @@ export class StudentApi extends runtime.BaseAPI {
      * Updates the information of an existing student
      * Update student information
      */
-    async apiOrgsOrgIdStudentsUpdatePost(requestParameters: ApiOrgsOrgIdStudentsUpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: string; }> {
-        const response = await this.apiOrgsOrgIdStudentsUpdatePostRaw(requestParameters, initOverrides);
+    async apiOrgsOrgIdStudentUpdatePost(requestParameters: ApiOrgsOrgIdStudentUpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: string; }> {
+        const response = await this.apiOrgsOrgIdStudentUpdatePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -141,7 +167,7 @@ export class StudentApi extends runtime.BaseAPI {
      * Get all students in the organization
      * Get Student list
      */
-    async getStudentsRaw(requestParameters: GetStudentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ComEducationModelsStudentDTO>> {
+    async getStudentsRaw(requestParameters: GetStudentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ComEducationModelsStudentSummaryDTO>>> {
         if (requestParameters['orgId'] == null) {
             throw new runtime.RequiredError(
                 'orgId',
@@ -154,20 +180,20 @@ export class StudentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/orgs/{orgId}/students`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters['orgId']))),
+            path: `/api/orgs/{orgId}/student/all`.replace(`{${"orgId"}}`, encodeURIComponent(String(requestParameters['orgId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ComEducationModelsStudentDTOFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ComEducationModelsStudentSummaryDTOFromJSON));
     }
 
     /**
      * Get all students in the organization
      * Get Student list
      */
-    async getStudents(requestParameters: GetStudentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ComEducationModelsStudentDTO> {
+    async getStudents(requestParameters: GetStudentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ComEducationModelsStudentSummaryDTO>> {
         const response = await this.getStudentsRaw(requestParameters, initOverrides);
         return await response.value();
     }

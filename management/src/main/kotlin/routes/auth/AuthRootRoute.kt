@@ -20,6 +20,7 @@ fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepositor
 
     authenticate {
         route("/orgs/{orgId}") {
+
             get("/profile", {
                 summary = "Get user profile"
                 description = "Get the profile of the authenticated user"

@@ -14,6 +14,7 @@ data class StudentDAO(
     val userId: Int,
     val firstName: String,
     val lastName: String,
+    val gender: String,
     val fatherName: String?,
     val motherName: String?,
     val parentContact: String?,
@@ -34,6 +35,7 @@ data class StudentDTO(
     val userId: Int,
     val firstName: String,
     val lastName: String,
+    val gender: String,
     val fatherName: String?,
     val motherName: String?,
     val parentContact: String?,
@@ -42,6 +44,15 @@ data class StudentDTO(
     val photoUrl: String?,
     val emergencyContact: String?,
     val status: String?,
+)
+@Serializable
+data class StudentSummaryDTO(
+    val studentId: Int,
+    val classId: Int,
+    val firstName: String,
+    val lastName: String,
+    val gender: String,
+    val status: String?
 )
 
 // Request DTOs
@@ -85,6 +96,7 @@ fun StudentDAO.toDTO() = StudentDTO(
     userId = userId,
     firstName = firstName,
     lastName = lastName,
+    gender = gender,
     fatherName = fatherName,
     motherName = motherName,
     parentContact = parentContact,
@@ -94,3 +106,14 @@ fun StudentDAO.toDTO() = StudentDTO(
     emergencyContact = emergencyContact,
     status = status,
 )
+fun StudentDAO.toSummaryDTO () = StudentSummaryDTO(
+    studentId = studentId,
+    classId = classId,
+    firstName= firstName,
+    lastName = lastName,
+    gender = gender,
+    status = status
+)
+fun getStudentSummaries(students: List<StudentDAO>) : List<StudentSummaryDTO>{
+    return students.map{ it.toSummaryDTO() }
+}

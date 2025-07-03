@@ -52,4 +52,18 @@ export const api = {
         });
         return response;
     }
-}; 
+};
+
+export const getStudents = async (orgId: number) => {
+    try {
+        const response = await api.get(`/api/orgs/${orgId}/student/all`);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error in getStudents:', error);
+        throw error;
+    }
+};

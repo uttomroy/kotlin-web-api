@@ -57,6 +57,12 @@ export interface ComEducationModelsStudentDTO {
     firstName: string;
     /**
      * 
+     * @type {string}
+     * @memberof ComEducationModelsStudentDTO
+     */
+    gender: string;
+    /**
+     * 
      * @type {number}
      * @memberof ComEducationModelsStudentDTO
      */
@@ -112,6 +118,7 @@ export function instanceOfComEducationModelsStudentDTO(value: object): value is 
     if (!('classId' in value) || value['classId'] === undefined) return false;
     if (!('enrollmentDate' in value) || value['enrollmentDate'] === undefined) return false;
     if (!('firstName' in value) || value['firstName'] === undefined) return false;
+    if (!('gender' in value) || value['gender'] === undefined) return false;
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('lastName' in value) || value['lastName'] === undefined) return false;
     if (!('organizationId' in value) || value['organizationId'] === undefined) return false;
@@ -135,6 +142,7 @@ export function ComEducationModelsStudentDTOFromJSONTyped(json: any, ignoreDiscr
         'enrollmentDate': json['enrollmentDate'],
         'fatherName': json['fatherName'] == null ? undefined : json['fatherName'],
         'firstName': json['firstName'],
+        'gender': json['gender'],
         'id': json['id'],
         'lastName': json['lastName'],
         'motherName': json['motherName'] == null ? undefined : json['motherName'],
@@ -163,6 +171,7 @@ export function ComEducationModelsStudentDTOToJSONTyped(value?: ComEducationMode
         'enrollmentDate': value['enrollmentDate'],
         'fatherName': value['fatherName'],
         'firstName': value['firstName'],
+        'gender': value['gender'],
         'id': value['id'],
         'lastName': value['lastName'],
         'motherName': value['motherName'],

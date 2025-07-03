@@ -14,6 +14,7 @@ export * from './ComEducationModelsStudentAttendanceDAO';
 export * from './ComEducationModelsStudentAttendanceDTO';
 export * from './ComEducationModelsStudentAttendanceRecord';
 export * from './ComEducationModelsStudentDTO';
+export * from './ComEducationModelsStudentSummaryDTO';
 export * from './ComEducationModelsUpdateClassLevelRequest';
 export * from './ComEducationModelsUpdateShiftRequest';
 export * from './ComEducationModelsUpdateStudentAttendanceRequest';
