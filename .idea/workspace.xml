@@ -4,23 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aefdb859-77c7-495d-ac05-04bd13a53e07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/management/management-clientside/src/app/orgs/[orgId]/student/view/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/app/orgs/[orgId]/dashboard/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/app/orgs/[orgId]/dashboard/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/app/orgs/[orgId]/student/all/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/app/orgs/[orgId]/student/all/page.tsx" afterDir="false" />
+    <list default="true" id="aefdb859-77c7-495d-ac05-04bd13a53e07" name="Changes" comment="Merge main">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/management.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/.openapi-generator/FILES" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/.openapi-generator/FILES" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/ClassLevelApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/ClassLevelApi.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/StudentApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/StudentApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/StudentAttendanceApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/StudentAttendanceApi.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/apis/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsBulkAttendanceRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsBulkAttendanceRequest.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsCreateStudentAttendanceRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsCreateStudentAttendanceRequest.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentAttendanceDAO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentAttendanceDAO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentAttendanceDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentAttendanceDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentAttendanceRecord.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentAttendanceRecord.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsClassLevelDAO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsClassLevelDAO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsClassLevelDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsClassLevelDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsCreateClassLevelRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsCreateClassLevelRequest.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentDTO.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsUpdateStudentAttendanceRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsUpdateStudentAttendanceRequest.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentSummaryDTO.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsStudentSummaryDTO.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsUpdateClassLevelRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/ComEducationModelsUpdateClassLevelRequest.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/generated/api/models/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management/management-clientside/src/services/studentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/management/management-clientside/src/services/studentService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +35,12 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="management" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -98,6 +101,19 @@
       <option name="presentableId" value="Default" />
       <updated>1748669623803</updated>
     </task>
+    <task id="LOCAL-00001" summary="Merge main">
+      <option name="closed" value="true" />
+      <created>1751553993450</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1751553993450</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge main" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge main" />
   </component>
 </project>

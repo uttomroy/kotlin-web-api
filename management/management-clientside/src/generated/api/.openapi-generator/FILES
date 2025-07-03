@@ -21,6 +21,7 @@ models/ComEducationModelsStudentAttendanceDAO.ts
 models/ComEducationModelsStudentAttendanceDTO.ts
 models/ComEducationModelsStudentAttendanceRecord.ts
 models/ComEducationModelsStudentDTO.ts
+models/ComEducationModelsStudentSummaryDTO.ts
 models/ComEducationModelsUpdateClassLevelRequest.ts
 models/ComEducationModelsUpdateShiftRequest.ts
 models/ComEducationModelsUpdateStudentAttendanceRequest.ts
