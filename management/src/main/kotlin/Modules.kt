@@ -31,11 +31,13 @@ fun Application.configureFrameworks(jwtConfig: JWTConfig) {
             single<TeacherRepository> { TeacherRepositoryImpl(get()) }
             single<StudentAttendanceRepository> { StudentAttendanceRepositoryImpl(get()) }
             single<ClassLevelRepository> { ClassLevelRepositoryImpl(get()) }
+            single<ShiftRepository> { ShiftRepositoryImpl(get()) }
             single<UserService> { UserServiceImpl(get(), get()) }
             single<IdentityService> { IdentityServiceImpl(get(), get(), jwtConfig) }
             single<StudentRepository> { StudentRepositoryImpl(get()) }
             single<StudentService> { StudentServiceImpl(get()) }
             single<ClassLevelService> { ClassLevelServiceImpl(get()) }
+            single<ShiftService> { ShiftServiceImpl(get()) }
         })
     }
 }

@@ -1,10 +1,17 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton, Avatar, Menu, MenuItem, Divider } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton, Avatar, Menu, MenuItem, Divider, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import SchoolIcon from '@mui/icons-material/School';
+import LoginIcon from '@mui/icons-material/Login';
+import GroupIcon from '@mui/icons-material/Group';
+import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+import BadgeIcon from '@mui/icons-material/Badge';
 import { useRouter, useParams } from 'next/navigation';
 
 export default function MenuBar() {
@@ -37,7 +44,25 @@ export default function MenuBar() {
 
   const handleClassLevels = () => {
     if (orgId) {
-      router.push(`/orgs/${orgId}/class-levels`);
+      router.push(`/orgs/${orgId}/academic-setup`);
+    }
+  };
+
+  const handleStudents = () => {
+    if (orgId) {
+      router.push(`/orgs/${orgId}/students`);
+    }
+  };
+
+  const handleTeachers = () => {
+    if (orgId) {
+      router.push(`/orgs/${orgId}/teachers`);
+    }
+  };
+
+  const handleStaff = () => {
+    if (orgId) {
+      router.push(`/orgs/${orgId}/staff`);
     }
   };
 
@@ -74,7 +99,7 @@ export default function MenuBar() {
     return (
       <div>
         {/* Navigation Bar */}
-        <AppBar position="static" style={{ background: 'rgba(10, 32, 229, 0.7)' }}>
+        <AppBar position="static" style={{ background: '#263238' }}>
           <Toolbar>
             {/* Hamburger Menu for Mobile */}
             <IconButton
@@ -82,7 +107,10 @@ export default function MenuBar() {
               color="inherit"
               aria-label="menu"
               onClick={toggleDrawer(true)}
-              sx={{ display: { xs: 'block', sm: 'none' } }}
+              sx={{ 
+                display: { xs: 'block', sm: 'none' },
+                color: 'white' 
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -102,7 +130,12 @@ export default function MenuBar() {
         {/* Drawer for Hamburger Menu */}
         <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
           <Box
-            sx={{ width: 250 }}
+            sx={{ 
+              width: 250,
+              backgroundColor: '#263238',
+              height: '100%',
+              color: 'white'
+            }}
             role="presentation"
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
@@ -119,7 +152,7 @@ export default function MenuBar() {
   return (
     <div>
       {/* Navigation Bar */}
-      <AppBar position="static" style={{ background: 'rgba(10, 32, 229, 0.7)' }}>
+      <AppBar position="static" style={{ background: '#263238' }}>
         <Toolbar>
           {/* Hamburger Menu for Mobile */}
           <IconButton
@@ -127,7 +160,10 @@ export default function MenuBar() {
             color="inherit"
             aria-label="menu"
             onClick={toggleDrawer(true)}
-            sx={{ display: { xs: 'block', sm: 'none' } }} // Show only on small screens
+            sx={{ 
+              display: { xs: 'block', sm: 'none' },
+              color: 'white'
+            }} // Show only on small screens
           >
             <MenuIcon />
           </IconButton>
@@ -137,33 +173,66 @@ export default function MenuBar() {
             My Website
           </Typography>
 
-          {/* Desktop Menu */}
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}> {/* Hide on small screens */}
+          {/* Desktop Menu - Icon Only with Tooltips */}
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1 }}> {/* Hide on small screens */}
             {orgId ? (
               <>
-                <Button color="inherit" onClick={handleDashboard}>Dashboard</Button>
-                <Button color="inherit" onClick={handleAttendance}>Attendance</Button>
-                <Button color="inherit" onClick={handleClassLevels}>Academics</Button>
+                <Tooltip title="Dashboard" arrow>
+                  <IconButton color="inherit" onClick={handleDashboard}>
+                    <HomeIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Students" arrow>
+                  <IconButton color="inherit" onClick={handleStudents}>
+                    <GroupIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Teachers" arrow>
+                  <IconButton color="inherit" onClick={handleTeachers}>
+                    <RecordVoiceOverIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Staff" arrow>
+                  <IconButton color="inherit" onClick={handleStaff}>
+                    <BadgeIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Attendance" arrow>
+                  <IconButton color="inherit" onClick={handleAttendance}>
+                    <HowToRegIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Academic Setup" arrow>
+                  <IconButton color="inherit" onClick={handleClassLevels}>
+                    <SchoolIcon />
+                  </IconButton>
+                </Tooltip>
               </>
             ) : (
-              <Button color="inherit" onClick={handleLogin}>Login</Button>
+              <Tooltip title="Login" arrow>
+                <IconButton color="inherit" onClick={handleLogin}>
+                  <LoginIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Box>
 
           {/* Avatar Menu */}
           {orgId && (
             <>
-              <IconButton
-                onClick={handleAvatarClick}
-                sx={{ ml: 2 }}
-                aria-controls={anchorEl ? 'avatar-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={anchorEl ? 'true' : undefined}
-              >
-                <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
-                  <AccountCircleIcon />
-                </Avatar>
-              </IconButton>
+              <Tooltip title="Profile" arrow>
+                <IconButton
+                  onClick={handleAvatarClick}
+                  sx={{ ml: 2 }}
+                  aria-controls={anchorEl ? 'avatar-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={anchorEl ? 'true' : undefined}
+                >
+                  <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
+                    <AccountCircleIcon />
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
               <Menu
                 id="avatar-menu"
                 anchorEl={anchorEl}
@@ -213,10 +282,15 @@ export default function MenuBar() {
           )}
         </Toolbar>
       </AppBar>
-       {/* Drawer for Hamburger Menu */}
+       {/* Drawer for Hamburger Menu - Keep text for mobile usability */}
        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box
-          sx={{ width: 250 }}
+          sx={{ 
+            width: 250,
+            backgroundColor: '#263238',
+            height: '100%',
+            color: 'white'
+          }}
           role="presentation"
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
@@ -225,25 +299,47 @@ export default function MenuBar() {
             {orgId ? (
               <>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={handleDashboard}>
-                    <Typography>Dashboard</Typography>
+                  <ListItemButton onClick={handleDashboard} sx={{ color: 'white' }}>
+                    <HomeIcon sx={{ mr: 2, color: 'white' }} />
+                    <Typography sx={{ color: 'white' }}>Dashboard</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={handleAttendance}>
-                    <Typography>Attendance</Typography>
+                  <ListItemButton onClick={handleStudents} sx={{ color: 'white' }}>
+                    <GroupIcon sx={{ mr: 2, color: 'white' }} />
+                    <Typography sx={{ color: 'white' }}>Students</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={handleClassLevels}>
-                    <Typography>Academics</Typography>
+                  <ListItemButton onClick={handleTeachers} sx={{ color: 'white' }}>
+                    <RecordVoiceOverIcon sx={{ mr: 2, color: 'white' }} />
+                    <Typography sx={{ color: 'white' }}>Teachers</Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleStaff} sx={{ color: 'white' }}>
+                    <BadgeIcon sx={{ mr: 2, color: 'white' }} />
+                    <Typography sx={{ color: 'white' }}>Staff</Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleAttendance} sx={{ color: 'white' }}>
+                    <HowToRegIcon sx={{ mr: 2, color: 'white' }} />
+                    <Typography sx={{ color: 'white' }}>Attendance</Typography>
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleClassLevels} sx={{ color: 'white' }}>
+                    <SchoolIcon sx={{ mr: 2, color: 'white' }} />
+                    <Typography sx={{ color: 'white' }}>Academic Setup</Typography>
                   </ListItemButton>
                 </ListItem>
               </>
             ) : (
               <ListItem disablePadding>
-                <ListItemButton onClick={handleLogin}>
-                  <Typography>Login</Typography>
+                <ListItemButton onClick={handleLogin} sx={{ color: 'white' }}>
+                  <LoginIcon sx={{ mr: 2, color: 'white' }} />
+                  <Typography sx={{ color: 'white' }}>Login</Typography>
                 </ListItemButton>
               </ListItem>
             )}
