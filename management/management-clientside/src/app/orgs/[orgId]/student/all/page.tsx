@@ -210,7 +210,7 @@ export default function StudentsPage() {
                           open={Boolean(anchorEl)}
                           onClose={handleActionClose}
                         >
-                            <MenuItem onClick={() => { handleActionView(student.studentId); }}>View</MenuItem>
+                            <MenuItem onClick={() => { handleActionView(student.studentId.toString()); }}>View</MenuItem>
                             <MenuItem onClick={handleActionClose}>Edit</MenuItem>
                             <MenuItem onClick={handleActionClose}>Suspend</MenuItem>
                       </Menu>
