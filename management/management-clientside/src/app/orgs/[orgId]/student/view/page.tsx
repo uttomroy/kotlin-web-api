@@ -1,6 +1,6 @@
 'use client'
 import { useParam,useRouter } from 'next/router';
-import {getStudentById} from '@/services'
+import {getStudentById} from '@/services/studentService'
 
 const StudentDetails = () {
       const studentId = useParam().studentId;
