@@ -55,7 +55,13 @@ export default function StudentsPage() {
   }
 
   const handleActionView = (studentId: string) => {
-    router.push(`./student/view/${studentId}`);
+    // Use absolute path instead of relative path
+    router.push(`/orgs/${orgId}/student/view/${studentId}`);
+  };
+
+  const handleActionEdit = (studentId: string) => {
+    // Navigate to edit page
+    router.push(`/orgs/${orgId}/student/edit/${studentId}`);
   };
 
   useEffect(() => {
@@ -210,8 +216,8 @@ export default function StudentsPage() {
                           open={Boolean(anchorEl)}
                           onClose={handleActionClose}
                         >
-                            <MenuItem onClick={() => { handleActionView(student.studentId.toString()); }}>View</MenuItem>
-                            <MenuItem onClick={handleActionClose}>Edit</MenuItem>
+                            <MenuItem onClick={() => { handleActionView(student.studentId.toString()); handleActionClose(); }}>View</MenuItem>
+                            <MenuItem onClick={() => { handleActionEdit(student.studentId.toString()); handleActionClose(); }}>Edit</MenuItem>
                             <MenuItem onClick={handleActionClose}>Suspend</MenuItem>
                       </Menu>
                     </TableCell>
