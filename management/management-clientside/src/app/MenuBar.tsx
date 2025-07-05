@@ -50,7 +50,7 @@ export default function MenuBar() {
 
   const handleStudents = () => {
     if (orgId) {
-      router.push(`/orgs/${orgId}/students`);
+      router.push(`/orgs/${orgId}/student/all`);
     }
   };
 
