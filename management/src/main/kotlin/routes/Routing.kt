@@ -9,6 +9,7 @@ import com.education.services.IdentityService
 import com.education.services.UserService
 import com.education.services.ClassLevelService
 import com.education.services.ShiftService
+import com.education.services.DepartmentService
 import configs.JWTConfig
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
@@ -31,11 +32,11 @@ fun Application.configureRouting(userRepository: UserRepository, jwtConfig: JWTC
                                  teacherRepository: TeacherRepository,
                                  userService: UserService, identityService: IdentityService, 
                                  studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository,
-                                 classLevelService: ClassLevelService, shiftService: ShiftService) {
+                                 classLevelService: ClassLevelService, shiftService: ShiftService, departmentService: DepartmentService) {
     routing {
         route("/api") {
             loginRoute(identityService)
-            authenticatedRoutes(identityService, teacherRepository, studentService, studentAttendanceRepository, classLevelService, shiftService)
+            authenticatedRoutes(identityService, teacherRepository, studentService, studentAttendanceRepository, classLevelService, shiftService, departmentService)
 
             get("/defualt-user-passwordhash", {
                 response {

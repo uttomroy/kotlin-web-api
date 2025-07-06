@@ -1,6 +1,7 @@
 apis/AuthenticationApi.ts
 apis/ClassLevelApi.ts
 apis/DefaultApi.ts
+apis/DepartmentApi.ts
 apis/ProfileApi.ts
 apis/ShiftApi.ts
 apis/StudentApi.ts
@@ -11,10 +12,13 @@ models/ComEducationModelsBulkAttendanceRequest.ts
 models/ComEducationModelsClassLevelDAO.ts
 models/ComEducationModelsClassLevelDTO.ts
 models/ComEducationModelsCreateClassLevelRequest.ts
+models/ComEducationModelsCreateDepartmentRequest.ts
 models/ComEducationModelsCreateShiftRequest.ts
 models/ComEducationModelsCreateStudentAttendanceRequest.ts
 models/ComEducationModelsCreateStudentRequest.ts
 models/ComEducationModelsCreateTeacherRequest.ts
+models/ComEducationModelsDepartmentDAO.ts
+models/ComEducationModelsDepartmentDTO.ts
 models/ComEducationModelsShiftDAO.ts
 models/ComEducationModelsShiftDTO.ts
 models/ComEducationModelsStudentAttendanceDAO.ts
@@ -23,6 +27,7 @@ models/ComEducationModelsStudentAttendanceRecord.ts
 models/ComEducationModelsStudentDTO.ts
 models/ComEducationModelsStudentSummaryDTO.ts
 models/ComEducationModelsUpdateClassLevelRequest.ts
+models/ComEducationModelsUpdateDepartmentRequest.ts
 models/ComEducationModelsUpdateShiftRequest.ts
 models/ComEducationModelsUpdateStudentAttendanceRequest.ts
 models/ComEducationModelsUpdateStudentRequest.ts

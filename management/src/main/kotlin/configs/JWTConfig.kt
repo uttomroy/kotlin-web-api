@@ -15,7 +15,7 @@ class JWTConfig(private val environment: ApplicationEnvironment) {
     private val realm = environment.config.property("ktor.jwt.realm").getString()
 
     // Token expiry time
-    private val tokenExpiry = 30L * 60 * 1000 // 30 minutes in milliseconds
+    private val tokenExpiry = 300L * 60 * 1000 // 30 minutes in milliseconds
 
     fun configureJWT(config: JWTAuthenticationProvider.Config) {
         config.verifier(

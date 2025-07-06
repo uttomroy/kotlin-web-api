@@ -6,7 +6,8 @@ import {
   Schedule as ScheduleIcon,
   Class as ClassIcon,
   Subject as SubjectIcon,
-  Book as BookIcon
+  Book as BookIcon,
+  Business as BusinessIcon
 } from '@mui/icons-material';
 import { useParams } from 'next/navigation';
 import ClassLevelsTab from './components/ClassLevelsTab';
@@ -14,6 +15,7 @@ import ShiftsTab from './components/ShiftsTab';
 import ClassesTab from './components/ClassesTab';
 import SubjectsTab from './components/SubjectsTab';
 import SubjectMappingTab from './components/SubjectMappingTab';
+import DepartmentsTab from './components/DepartmentsTab';
 
 function TabPanel({ children, value, index }: { children: React.ReactNode; value: number; index: number }) {
   return (
@@ -52,6 +54,7 @@ export default function AcademicSetup() {
         <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab icon={<SchoolIcon />} label="Class Levels" />
           <Tab icon={<ScheduleIcon />} label="Shifts" />
+          <Tab icon={<BusinessIcon />} label="Departments" />
           <Tab icon={<ClassIcon />} label="Classes" />
           <Tab icon={<BookIcon />} label="Subjects" />
           <Tab icon={<SubjectIcon />} label="Subject Mapping" />
@@ -68,14 +71,18 @@ export default function AcademicSetup() {
       </TabPanel>
 
       <TabPanel value={tabValue} index={2}>
-        <ClassesTab orgId={orgId} />
+        <DepartmentsTab orgId={orgId} />
       </TabPanel>
 
       <TabPanel value={tabValue} index={3}>
-        <SubjectsTab orgId={orgId} />
+        <ClassesTab orgId={orgId} />
       </TabPanel>
 
       <TabPanel value={tabValue} index={4}>
+        <SubjectsTab orgId={orgId} />
+      </TabPanel>
+
+      <TabPanel value={tabValue} index={5}>
         <SubjectMappingTab orgId={orgId} />
       </TabPanel>
     </Box>
