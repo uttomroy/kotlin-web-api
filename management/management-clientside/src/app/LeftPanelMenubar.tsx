@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Drawer, Box, IconButton, Avatar, Typography, List, ListItem, ListItemButton, Button } from "@mui/material";
+import { Drawer, Box, IconButton, Avatar, Typography, List, ListItem, ListItemButton, Button, useTheme } from "@mui/material";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import BusinessIcon from '@mui/icons-material/Business';
 import HomeIcon from '@mui/icons-material/Home';
@@ -12,12 +12,22 @@ import SchoolIcon from '@mui/icons-material/School';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams, usePathname } from 'next/navigation';
 
 export default function LeftPanelMenubar({ onCollapse }: { onCollapse: () => void }) {
   const router = useRouter();
   const params = useParams();
+  const pathname = usePathname();
+  const theme = useTheme();
   const orgId = params?.orgId;
+
+  // Determine which page is currently active
+  const isDashboardActive = pathname === `/orgs/${orgId}/dashboard`;
+  const isStudentsActive = pathname === `/orgs/${orgId}/students`;
+  const isTeachersActive = pathname === `/orgs/${orgId}/teachers`;
+  const isStaffActive = pathname === `/orgs/${orgId}/staff`;
+  const isAttendanceActive = pathname === `/orgs/${orgId}/attendance`;
+  const isAcademicSetupActive = pathname === `/orgs/${orgId}/academic-setup`;
 
   const handleDashboard = () => {
     if (orgId) {
@@ -117,39 +127,111 @@ export default function LeftPanelMenubar({ onCollapse }: { onCollapse: () => voi
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleDashboard} sx={{ color: 'white' }}>
-              <HomeIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
-              <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Dashboard</Typography>
+            <ListItemButton 
+              onClick={handleDashboard} 
+              sx={{ 
+                color: 'white',
+                backgroundColor: isDashboardActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: isDashboardActive ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                },
+                borderLeft: isDashboardActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
+              }}
+            >
+              <HomeIcon sx={{ mr: 2, color: isDashboardActive ? theme.palette.primary.main : 'white', fontSize: '1.1rem' }} />
+              <Typography sx={{ color: isDashboardActive ? theme.palette.primary.main : 'white', fontSize: '0.95rem', fontWeight: isDashboardActive ? 'bold' : 'normal' }}>
+                Dashboard
+              </Typography>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleStudents} sx={{ color: 'white' }}>
-              <GroupIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
-              <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Students</Typography>
+            <ListItemButton 
+              onClick={handleStudents} 
+              sx={{ 
+                color: 'white',
+                backgroundColor: isStudentsActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: isStudentsActive ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                },
+                borderLeft: isStudentsActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
+              }}
+            >
+              <GroupIcon sx={{ mr: 2, color: isStudentsActive ? theme.palette.primary.main : 'white', fontSize: '1.1rem' }} />
+              <Typography sx={{ color: isStudentsActive ? theme.palette.primary.main : 'white', fontSize: '0.95rem', fontWeight: isStudentsActive ? 'bold' : 'normal' }}>
+                Students
+              </Typography>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleTeachers} sx={{ color: 'white' }}>
-              <RecordVoiceOverIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
-              <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Teachers</Typography>
+            <ListItemButton 
+              onClick={handleTeachers} 
+              sx={{ 
+                color: 'white',
+                backgroundColor: isTeachersActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: isTeachersActive ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                },
+                borderLeft: isTeachersActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
+              }}
+            >
+              <RecordVoiceOverIcon sx={{ mr: 2, color: isTeachersActive ? theme.palette.primary.main : 'white', fontSize: '1.1rem' }} />
+              <Typography sx={{ color: isTeachersActive ? theme.palette.primary.main : 'white', fontSize: '0.95rem', fontWeight: isTeachersActive ? 'bold' : 'normal' }}>
+                Teachers
+              </Typography>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleStaff} sx={{ color: 'white' }}>
-              <BadgeIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
-              <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Staff</Typography>
+            <ListItemButton 
+              onClick={handleStaff} 
+              sx={{ 
+                color: 'white',
+                backgroundColor: isStaffActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: isStaffActive ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                },
+                borderLeft: isStaffActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
+              }}
+            >
+              <BadgeIcon sx={{ mr: 2, color: isStaffActive ? theme.palette.primary.main : 'white', fontSize: '1.1rem' }} />
+              <Typography sx={{ color: isStaffActive ? theme.palette.primary.main : 'white', fontSize: '0.95rem', fontWeight: isStaffActive ? 'bold' : 'normal' }}>
+                Staff
+              </Typography>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleAttendance} sx={{ color: 'white' }}>
-              <HowToRegIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
-              <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Attendance</Typography>
+            <ListItemButton 
+              onClick={handleAttendance} 
+              sx={{ 
+                color: 'white',
+                backgroundColor: isAttendanceActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: isAttendanceActive ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                },
+                borderLeft: isAttendanceActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
+              }}
+            >
+              <HowToRegIcon sx={{ mr: 2, color: isAttendanceActive ? theme.palette.primary.main : 'white', fontSize: '1.1rem' }} />
+              <Typography sx={{ color: isAttendanceActive ? theme.palette.primary.main : 'white', fontSize: '0.95rem', fontWeight: isAttendanceActive ? 'bold' : 'normal' }}>
+                Attendance
+              </Typography>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleAcademicSetup} sx={{ color: 'white' }}>
-              <SchoolIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
-              <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Academic Setup</Typography>
+            <ListItemButton 
+              onClick={handleAcademicSetup} 
+              sx={{ 
+                color: 'white',
+                backgroundColor: isAcademicSetupActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: isAcademicSetupActive ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.08)',
+                },
+                borderLeft: isAcademicSetupActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
+              }}
+            >
+              <SchoolIcon sx={{ mr: 2, color: isAcademicSetupActive ? theme.palette.primary.main : 'white', fontSize: '1.1rem' }} />
+              <Typography sx={{ color: isAcademicSetupActive ? theme.palette.primary.main : 'white', fontSize: '0.95rem', fontWeight: isAcademicSetupActive ? 'bold' : 'normal' }}>
+                Academic Setup
+              </Typography>
             </ListItemButton>
           </ListItem>
         </List>

@@ -7,8 +7,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import LeftPanelMenubar from "./LeftPanelMenubar";
 import TopNavbar from "./TopNavbar";
 import MainContent from "./MainContent";
+import PublicMenuBar from "./PublicMenuBar";
 import Drawer from "@mui/material/Drawer";
-import { set } from "date-fns";
+import { useParams, usePathname } from 'next/navigation';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,11 @@ export default function RootLayout({
   const isDesktop = useMediaQuery("(min-width:600px)");
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [topBarOpen, setTopBarOpen] = useState<boolean| null>(null);
+  const params = useParams();
+  const pathname = usePathname();
+  
+  const orgId = params?.orgId;
+  const isLoggedIn = !!orgId;
 
   useEffect(() => {
     // Set initial state based on screen size
@@ -45,7 +51,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {topBarOpen !== null && (
+        {/* Show PublicMenuBar for non-logged-in users */}
+        {!isLoggedIn && <PublicMenuBar />}
+        
+        {/* Show existing navigation for logged-in users */}
+        {isLoggedIn && topBarOpen !== null && (
           isDesktop && !topBarOpen ? (
             <LeftPanelMenubar onCollapse={() => { setTopBarOpen(true) }} />
           ) : (
@@ -64,7 +74,7 @@ export default function RootLayout({
             </>
           )
         )}
-        { topBarOpen !== null && <MainContent sidebarOpen={(isDesktop && topBarOpen === false)} topBarOpen={topBarOpen}>{children}</MainContent> } 
+        { topBarOpen !== null && <MainContent sidebarOpen={(isDesktop && topBarOpen === false && isLoggedIn)} topBarOpen={isLoggedIn ? topBarOpen : true}>{children}</MainContent> } 
       </body>
     </html>
   );
