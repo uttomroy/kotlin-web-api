@@ -209,11 +209,23 @@ export default function MenuBar() {
                 </Tooltip>
               </>
             ) : (
-              <Tooltip title="Login" arrow>
-                <IconButton color="inherit" onClick={handleLogin}>
-                  <LoginIcon />
-                </IconButton>
-              </Tooltip>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleLogin}
+                startIcon={<LoginIcon />}
+                sx={{
+                  borderRadius: 2,
+                  fontWeight: 500,
+                  fontSize: '0.95rem',
+                  letterSpacing: 2,
+                  textTransform: 'uppercase',
+                  px: 1.5,
+                  py: 0.4
+                }}
+              >
+                SIGN IN
+              </Button>
             )}
           </Box>
 
@@ -336,12 +348,25 @@ export default function MenuBar() {
                 </ListItem>
               </>
             ) : (
-              <ListItem disablePadding>
-                <ListItemButton onClick={handleLogin} sx={{ color: 'white' }}>
-                  <LoginIcon sx={{ mr: 2, color: 'white' }} />
-                  <Typography sx={{ color: 'white' }}>Login</Typography>
-                </ListItemButton>
-              </ListItem>
+              <Box sx={{ p: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleLogin}
+                  startIcon={<LoginIcon />}
+                  fullWidth
+                  sx={{ 
+                    borderRadius: 2,
+                    py: 0.8,
+                    fontWeight: 500,
+                    fontSize: '1rem',
+                    letterSpacing: 2,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  SIGN IN
+                </Button>
+              </Box>
             )}
           </List>
         </Box>
