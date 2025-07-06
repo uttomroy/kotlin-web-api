@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton, Avatar, Menu, MenuItem, Divider, Tooltip } from '@mui/material';
+import React, { useEffect } from 'react';
+import { AppBar, Toolbar, Typography, Button, IconButton, Drawer, List, ListItem, Box, ListItemButton, Avatar, Menu, MenuItem, Divider, Tooltip, useTheme, useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -12,15 +12,27 @@ import LoginIcon from '@mui/icons-material/Login';
 import GroupIcon from '@mui/icons-material/Group';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import BadgeIcon from '@mui/icons-material/Badge';
+import BusinessIcon from '@mui/icons-material/Business';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { useRouter, useParams } from 'next/navigation';
 
-export default function MenuBar() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mounted, setMounted] = useState(false);
+interface MenuBarProps {
+  sidebarOpen: boolean;
+  showTopBar: boolean;
+  topBarOpen: boolean;
+  onHamburgerMenuClick: () => void;
+  onChevronClick: () => void;
+}
+
+export default function MenuBar({ sidebarOpen, showTopBar, onHamburgerMenuClick, onChevronClick }: MenuBarProps) {
+  const [drawerOpen, setDrawerOpen] = React.useState(false); // for mobile temporary drawer
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mounted, setMounted] = React.useState(false);
   const router = useRouter();
   const params = useParams();
   const orgId = params?.orgId;
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
 
   useEffect(() => {
     setMounted(true);
@@ -67,16 +79,12 @@ export default function MenuBar() {
   };
 
   const handleLogout = async () => {
-    // You might want to add a logout endpoint to your API
-    // For now, just redirect to login
     setAnchorEl(null);
     router.push('/login');
   };
 
   const handleProfile = () => {
-    // Add profile navigation logic here
     setAnchorEl(null);
-    // router.push(`/orgs/${orgId}/profile`);
   };
 
   const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -94,260 +102,350 @@ export default function MenuBar() {
     setDrawerOpen(open);
   };
 
-  // Don't render conditional content until mounted to prevent hydration mismatch
+  const handleDrawerClose = () => setDrawerOpen(false);
+
   if (!mounted) {
-    return (
-      <div>
-        {/* Navigation Bar */}
-        <AppBar position="static" style={{ background: '#263238' }}>
-          <Toolbar>
-            {/* Hamburger Menu for Mobile */}
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleDrawer(true)}
-              sx={{ 
-                display: { xs: 'block', sm: 'none' },
-                color: 'white' 
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-
-            {/* Website Title */}
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-              My Website
-            </Typography>
-
-            {/* Desktop Menu - Loading state */}
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {/* Empty during SSR to prevent hydration mismatch */}
-            </Box>
-          </Toolbar>
-        </AppBar>
-        
-        {/* Drawer for Hamburger Menu */}
-        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-          <Box
-            sx={{ 
-              width: 250,
-              backgroundColor: '#263238',
-              height: '100%',
-              color: 'white'
-            }}
-            role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
-          >
-            <List>
-              {/* Empty during SSR to prevent hydration mismatch */}
-            </List>
-          </Box>
-        </Drawer>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div>
-      {/* Navigation Bar */}
-      <AppBar position="static" style={{ background: '#263238' }}>
-        <Toolbar>
-          {/* Hamburger Menu for Mobile */}
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Top Bar (only when sidebar is hidden) */}
+      {isDesktop && orgId && showTopBar && (
+        <Box
+          sx={{
+            width: '100%',
+            height: 56,
+            bgcolor: '#263238',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            px: 2,
+            boxShadow: 1,
+            zIndex: (theme) => theme.zIndex.drawer + 2,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+          }}
+        >
           <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-            sx={{ 
-              display: { xs: 'block', sm: 'none' },
-              color: 'white'
-            }} // Show only on small screens
+            onClick={onHamburgerMenuClick}
+            sx={{ color: 'white', mr: 2 }}
+            size="large"
+            aria-label="open menu"
           >
             <MenuIcon />
           </IconButton>
-
-          {/* Website Title */}
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            My Website
+          <Avatar sx={{ width: 40, height: 40, bgcolor: 'primary.main', mr: 2 }}>
+            <BusinessIcon />
+          </Avatar>
+          <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', mr: 1 }}>
+            Organization {orgId}
           </Typography>
+          <Typography variant="body2" sx={{ color: '#b0bec5', fontSize: '0.9rem' }}>
+            Education Management
+          </Typography>
+        </Box>
+      )}
 
-          {/* Desktop Menu - Icon Only with Tooltips */}
-          <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1 }}> {/* Hide on small screens */}
-            {orgId ? (
-              <>
-                <Tooltip title="Dashboard" arrow>
-                  <IconButton color="inherit" onClick={handleDashboard}>
-                    <HomeIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Students" arrow>
-                  <IconButton color="inherit" onClick={handleStudents}>
-                    <GroupIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Teachers" arrow>
-                  <IconButton color="inherit" onClick={handleTeachers}>
-                    <RecordVoiceOverIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Staff" arrow>
-                  <IconButton color="inherit" onClick={handleStaff}>
-                    <BadgeIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Attendance" arrow>
-                  <IconButton color="inherit" onClick={handleAttendance}>
-                    <HowToRegIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Academic Setup" arrow>
-                  <IconButton color="inherit" onClick={handleClassLevels}>
-                    <SchoolIcon />
-                  </IconButton>
-                </Tooltip>
-              </>
-            ) : (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleLogin}
-                startIcon={<LoginIcon />}
-                sx={{
-                  borderRadius: 2,
-                  fontWeight: 500,
-                  fontSize: '0.95rem',
-                  letterSpacing: 2,
-                  textTransform: 'uppercase',
-                  px: 1.5,
-                  py: 0.4
-                }}
-              >
-                SIGN IN
-              </Button>
-            )}
-          </Box>
-
-          {/* Avatar Menu */}
-          {orgId && (
-            <>
-              <Tooltip title="Profile" arrow>
-                <IconButton
-                  onClick={handleAvatarClick}
-                  sx={{ ml: 2 }}
-                  aria-controls={anchorEl ? 'avatar-menu' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={anchorEl ? 'true' : undefined}
-                >
-                  <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main' }}>
-                    <AccountCircleIcon />
-                  </Avatar>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                id="avatar-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleAvatarClose}
-                onClick={handleAvatarClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: 'visible',
-                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                    mt: 1.5,
-                    '& .MuiAvatar-root': {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    '&:before': {
-                      content: '""',
-                      display: 'block',
-                      position: 'absolute',
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: 'background.paper',
-                      transform: 'translateY(-50%) rotate(45deg)',
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              >
-                <MenuItem onClick={handleProfile}>
-                  <PersonIcon sx={{ mr: 2 }} />
-                  Profile
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleLogout}>
-                  <LogoutIcon sx={{ mr: 2 }} />
-                  Logout
-                </MenuItem>
-              </Menu>
-            </>
-          )}
-        </Toolbar>
-      </AppBar>
-       {/* Drawer for Hamburger Menu - Keep text for mobile usability */}
-       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
-        <Box
-          sx={{ 
+      {/* Sidebar for Desktop (after login) */}
+      {isDesktop && orgId && sidebarOpen && (
+        <Drawer
+          variant="permanent"
+          sx={{
             width: 250,
-            backgroundColor: '#263238',
-            height: '100%',
-            color: 'white'
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: 250,
+              boxSizing: 'border-box',
+              backgroundColor: '#263238',
+              color: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              zIndex: (theme) => theme.zIndex.drawer + 3,
+            },
+            display: { xs: 'none', sm: 'block' },
           }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
+          open
         >
-          <List>
-            {orgId ? (
-              <>
+          <Box sx={{ height: 56, display: 'flex', alignItems: 'center', px: 1, justifyContent: 'flex-end' }}>
+            <IconButton onClick={onChevronClick} sx={{ color: 'white' }} size="large" aria-label="collapse sidebar">
+              <ChevronLeftIcon />
+            </IconButton>
+          </Box>
+          {/* Organization Section */}
+          <Box sx={{ p: 2, borderBottom: '1px solid #37474f' }}>
+            <Box display="flex" alignItems="center" mb={2}>
+              <Avatar 
+                sx={{ 
+                  width: 50, 
+                  height: 50, 
+                  bgcolor: 'primary.main',
+                  mr: 2,
+                  fontSize: '1.5rem'
+                }}
+              >
+                <BusinessIcon />
+              </Avatar>
+              <Box>
+                <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
+                  Organization {orgId}
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#b0bec5', fontSize: '0.8rem' }}>
+                  Education Management
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+          <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+            <List>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleDashboard} sx={{ color: 'white' }}>
+                  <HomeIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                  <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Dashboard</Typography>
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleStudents} sx={{ color: 'white' }}>
+                  <GroupIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                  <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Students</Typography>
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleTeachers} sx={{ color: 'white' }}>
+                  <RecordVoiceOverIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                  <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Teachers</Typography>
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleStaff} sx={{ color: 'white' }}>
+                  <BadgeIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                  <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Staff</Typography>
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleAttendance} sx={{ color: 'white' }}>
+                  <HowToRegIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                  <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Attendance</Typography>
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleClassLevels} sx={{ color: 'white' }}>
+                  <SchoolIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                  <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Academic Setup</Typography>
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
+          {/* Profile/Logout at the bottom */}
+          <Box sx={{ p: 2, borderTop: '1px solid #37474f' }}>
+            <Box display="flex" alignItems="center" mb={1}>
+              <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main', mr: 1 }}>
+                <AccountCircleIcon />
+              </Avatar>
+              <Typography variant="body1" sx={{ color: 'white' }}>
+                Profile
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              color="inherit"
+              onClick={handleProfile}
+              startIcon={<PersonIcon />}
+              sx={{
+                color: 'white',
+                borderColor: 'white',
+                mb: 1,
+                textTransform: 'none',
+                width: '100%'
+              }}
+            >
+              Profile
+            </Button>
+            <Button
+              variant="outlined"
+              color="inherit"
+              onClick={handleLogout}
+              startIcon={<LogoutIcon />}
+              sx={{
+                color: 'white',
+                borderColor: 'white',
+                textTransform: 'none',
+                width: '100%'
+              }}
+            >
+              Logout
+            </Button>
+          </Box>
+        </Drawer>
+      )}
+
+      {/* Floating Hamburger IconButton - Show when not logged in or on mobile */}
+      {(!isDesktop || !orgId) && (
+        <IconButton
+          onClick={() => setDrawerOpen(true)}
+          sx={{
+            position: 'fixed',
+            top: 16,
+            left: 16,
+            zIndex: (theme) => theme.zIndex.drawer + 2,
+            bgcolor: '#263238',
+            color: 'white',
+            boxShadow: 2,
+            '&:hover': { bgcolor: '#37474f' },
+          }}
+          size="large"
+          aria-label="open menu"
+        >
+          <MenuIcon />
+        </IconButton>
+      )}
+
+      {/* Temporary Drawer for Mobile (after login) */}
+      {!isDesktop && orgId && (
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={handleDrawerClose}
+        >
+          <Box
+            sx={{
+              width: 250,
+              backgroundColor: '#263238',
+              height: '100%',
+              color: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+            role="presentation"
+            onClick={handleDrawerClose}
+            onKeyDown={handleDrawerClose}
+          >
+            {/* Organization Section for Mobile */}
+            <Box sx={{ p: 2, borderBottom: '1px solid #37474f' }}>
+              <Box display="flex" alignItems="center" mb={2}>
+                <Avatar 
+                  sx={{ 
+                    width: 50, 
+                    height: 50, 
+                    bgcolor: 'primary.main',
+                    mr: 2,
+                    fontSize: '1.5rem'
+                  }}
+                >
+                  <BusinessIcon />
+                </Avatar>
+                <Box>
+                  <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
+                    Organization {orgId}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#b0bec5', fontSize: '0.8rem' }}>
+                    Education Management
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
+            <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+              <List>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleDashboard} sx={{ color: 'white' }}>
-                    <HomeIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Dashboard</Typography>
+                    <HomeIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                    <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Dashboard</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleStudents} sx={{ color: 'white' }}>
-                    <GroupIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Students</Typography>
+                    <GroupIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                    <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Students</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleTeachers} sx={{ color: 'white' }}>
-                    <RecordVoiceOverIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Teachers</Typography>
+                    <RecordVoiceOverIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                    <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Teachers</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleStaff} sx={{ color: 'white' }}>
-                    <BadgeIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Staff</Typography>
+                    <BadgeIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                    <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Staff</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleAttendance} sx={{ color: 'white' }}>
-                    <HowToRegIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Attendance</Typography>
+                    <HowToRegIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                    <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Attendance</Typography>
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={handleClassLevels} sx={{ color: 'white' }}>
-                    <SchoolIcon sx={{ mr: 2, color: 'white' }} />
-                    <Typography sx={{ color: 'white' }}>Academic Setup</Typography>
+                    <SchoolIcon sx={{ mr: 2, color: 'white', fontSize: '1.1rem' }} />
+                    <Typography sx={{ color: 'white', fontSize: '0.95rem' }}>Academic Setup</Typography>
                   </ListItemButton>
                 </ListItem>
-              </>
-            ) : (
+              </List>
+            </Box>
+            {/* Profile/Logout at the bottom */}
+            <Box sx={{ p: 2, borderTop: '1px solid #37474f' }}>
+              <Box display="flex" alignItems="center" mb={1}>
+                <Avatar sx={{ width: 32, height: 32, bgcolor: 'secondary.main', mr: 1 }}>
+                  <AccountCircleIcon />
+                </Avatar>
+                <Typography variant="body1" sx={{ color: 'white' }}>
+                  Profile
+                </Typography>
+              </Box>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={handleProfile}
+                startIcon={<PersonIcon />}
+                sx={{
+                  color: 'white',
+                  borderColor: 'white',
+                  mb: 1,
+                  textTransform: 'none',
+                  width: '100%'
+                }}
+              >
+                Profile
+              </Button>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={handleLogout}
+                startIcon={<LogoutIcon />}
+                sx={{
+                  color: 'white',
+                  borderColor: 'white',
+                  textTransform: 'none',
+                  width: '100%'
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
+          </Box>
+        </Drawer>
+      )}
+      {/* Drawer for Hamburger Menu - mobile only, not logged in */}
+      {!isDesktop && !orgId && (
+        <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerClose}>
+          <Box
+            sx={{
+              width: 250,
+              backgroundColor: '#263238',
+              height: '100%',
+              color: 'white',
+            }}
+            role="presentation"
+            onClick={handleDrawerClose}
+            onKeyDown={handleDrawerClose}
+          >
+            <List>
               <Box sx={{ p: 2 }}>
                 <Button
                   variant="contained"
@@ -355,11 +453,11 @@ export default function MenuBar() {
                   onClick={handleLogin}
                   startIcon={<LoginIcon />}
                   fullWidth
-                  sx={{ 
+                  sx={{
                     borderRadius: 2,
                     py: 0.8,
                     fontWeight: 500,
-                    fontSize: '1rem',
+                    fontSize: '0.95rem',
                     letterSpacing: 2,
                     textTransform: 'uppercase',
                   }}
@@ -367,10 +465,10 @@ export default function MenuBar() {
                   SIGN IN
                 </Button>
               </Box>
-            )}
-          </List>
-        </Box>
-      </Drawer>
+            </List>
+          </Box>
+        </Drawer>
+      )}
     </div>
   );
 }
