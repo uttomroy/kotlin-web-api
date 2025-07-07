@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { getStudents } from '@/services/api';
 import { StudentSummaryDTO } from '@/types/student';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   Table, TableHead, TableCell, TableBody, TableRow,
   TableContainer, Paper, Box, TablePagination,
@@ -16,6 +16,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function StudentsPage() {
   const params = useParams();
+  const router = useRouter();
   const [students, setStudents] = useState<StudentSummaryDTO[]>([]);
   const [filteredStudents, setFilteredStudents] = useState<StudentSummaryDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,10 +54,15 @@ export default function StudentsPage() {
     setAnchorEl(event.currentTarget);
   }
 
-  const handleActionView() {
-      const router = useRouter()
-        router.push('./student/view/${studentID}')
-  }
+  const handleActionView = (studentId: string) => {
+    // Use absolute path instead of relative path
+    router.push(`/orgs/${orgId}/student/view/${studentId}`);
+  };
+
+  const handleActionEdit = (studentId: string) => {
+    // Navigate to edit page
+    router.push(`/orgs/${orgId}/student/edit/${studentId}`);
+  };
 
   useEffect(() => {
     const filtered = students.filter((student) => {
@@ -210,8 +216,8 @@ export default function StudentsPage() {
                           open={Boolean(anchorEl)}
                           onClose={handleActionClose}
                         >
-                            <MenuItem onClick={()=> {handleActionView(student.studentId)}}>View</MenuItem>
-                            <MenuItem onClick={handleActionClose}>Edit</MenuItem>
+                            <MenuItem onClick={() => { handleActionView(student.studentId.toString()); handleActionClose(); }}>View</MenuItem>
+                            <MenuItem onClick={() => { handleActionEdit(student.studentId.toString()); handleActionClose(); }}>Edit</MenuItem>
                             <MenuItem onClick={handleActionClose}>Suspend</MenuItem>
                       </Menu>
                     </TableCell>

@@ -13,10 +13,14 @@ export async function getStudents(orgId: number) {
     }
 }
 
-export async function getStudentById(studentId : number) {
-    try{
-        return await studentApi.}
+export async function getStudentById(studentId: number) {
+    try {
+        return await studentApi.apiOrgsOrgIdStudentStudentIdGet({ studentId });
+    } catch (error) {
+        console.error('Error fetching student:', error);
+        throw error;
     }
+}
 
 export async function createStudent(orgId: number, studentData: Omit<ComEducationModelsCreateStudentRequest, 'organizationId'>) {
     try {
@@ -25,9 +29,8 @@ export async function createStudent(orgId: number, studentData: Omit<ComEducatio
                 ...studentData,
                 organizationId: orgId
             },
-            orgId: orgId
         };
-        return await studentApi.apiOrgsOrgIdStudentsCreatePost(request);
+        return await studentApi.apiOrgsOrgIdStudentCreatePost(request);
     } catch (error) {
         console.error('Error creating student:', error);
         throw error;
@@ -41,9 +44,8 @@ export async function updateStudent(orgId: number, studentData: Omit<ComEducatio
                 ...studentData,
                 organizationId: orgId
             },
-            orgId: orgId
         };
-        return await studentApi.apiOrgsOrgIdStudentsUpdatePost(request);
+        return await studentApi.apiOrgsOrgIdStudentUpdatePost(request);
     } catch (error) {
         console.error('Error updating student:', error);
         throw error;
