@@ -23,7 +23,7 @@ export default function LeftPanelMenubar({ onCollapse }: { onCollapse: () => voi
 
   // Determine which page is currently active
   const isDashboardActive = pathname === `/orgs/${orgId}/dashboard`;
-  const isStudentsActive = pathname === `/orgs/${orgId}/students`;
+  const isStudentsActive = pathname === `/orgs/${orgId}/student/all`;
   const isTeachersActive = pathname === `/orgs/${orgId}/teachers`;
   const isStaffActive = pathname === `/orgs/${orgId}/staff`;
   const isAttendanceActive = pathname === `/orgs/${orgId}/attendance`;
@@ -37,7 +37,7 @@ export default function LeftPanelMenubar({ onCollapse }: { onCollapse: () => voi
 
   const handleStudents = () => {
     if (orgId) {
-      router.push(`/orgs/${orgId}/students`);
+      router.push(`/orgs/${orgId}/student/all`);
     }
   };
 

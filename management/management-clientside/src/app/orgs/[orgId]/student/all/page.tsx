@@ -11,8 +11,11 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Image from 'next/image';
 
 export default function StudentsPage() {
   const params = useParams();
@@ -138,7 +141,7 @@ export default function StudentsPage() {
   ];
 
   return (
-    <Box sx={{ width: '80%', p: 3, mx: 'auto' }}>
+    <Box sx={{ width: '100%', p: 3, mx: 'auto' }}>
       <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
         <TextField
           fullWidth
@@ -206,20 +209,21 @@ export default function StudentsPage() {
                     <TableCell>{student.classId}</TableCell>
                     <TableCell>{student.gender}</TableCell>
                     <TableCell align="center">
-                      <IconButton 
-                        onClick={handleActionOn}
-                      >
-                        <MoreVertIcon/>
-                      </IconButton>
-                      <Menu
-                          anchorEl={anchorEl}
-                          open={Boolean(anchorEl)}
-                          onClose={handleActionClose}
-                        >
-                            <MenuItem onClick={() => { handleActionView(student.studentId.toString()); handleActionClose(); }}>View</MenuItem>
-                            <MenuItem onClick={() => { handleActionEdit(student.studentId.toString()); handleActionClose(); }}>Edit</MenuItem>
-                            <MenuItem onClick={handleActionClose}>Suspend</MenuItem>
-                      </Menu>
+                        <Tooltip title="View">
+                          <IconButton>
+                            <Image src="/icon-info.png" alt="Edit" width={24} height={24} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Edit">
+                            <IconButton >
+                                  <Image src="/edit-icon.png" alt="Edit" width={24} height={24} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Deactive">
+                            <IconButton >
+                                  <Image src="/suspended.png" alt="Edit" width={24} height={24} />
+                            </IconButton>
+                        </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
