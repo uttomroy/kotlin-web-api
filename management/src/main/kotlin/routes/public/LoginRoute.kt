@@ -66,7 +66,7 @@ fun Route.loginRoute(identityService: IdentityService) {
                 value = token,
                 httpOnly = true,
                 path = "/",
-                maxAge = 1800
+                maxAge = 18000
             )
             call.respond(HttpStatusCode.OK)
         } else {

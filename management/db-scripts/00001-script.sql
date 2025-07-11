@@ -73,6 +73,15 @@ CREATE TABLE class_level (
                          FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
 );
 
+-- Create departments table
+CREATE TABLE departments (
+    id SERIAL PRIMARY KEY,
+    organization_id INTEGER NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(500),
+    FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
+);
+
 -- Create shifts table
 CREATE TABLE shifts (
     shift_id SERIAL PRIMARY KEY,
