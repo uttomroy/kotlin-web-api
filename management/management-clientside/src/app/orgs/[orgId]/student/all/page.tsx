@@ -210,12 +210,12 @@ export default function StudentsPage() {
                     <TableCell>{student.gender}</TableCell>
                     <TableCell align="center">
                         <Tooltip title="View">
-                          <IconButton>
+                          <IconButton onClick = {() => handleActionView(student.studentId)} >
                             <Image src="/icon-info.png" alt="Edit" width={24} height={24} />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Edit">
-                            <IconButton >
+                            <IconButton onClick = {() => handleActionEdit(student.studentId)}>
                                   <Image src="/edit-icon.png" alt="Edit" width={24} height={24} />
                             </IconButton>
                         </Tooltip>
