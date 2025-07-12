@@ -5,9 +5,8 @@ import com.education.entities.Teacher
 import com.education.entities.User
 import com.education.models.CreateTeacherRequest
 import com.education.models.TeacherDAO
-import com.education.models.CreateUserRequest
 import org.jetbrains.exposed.sql.*
-import kotlinx.datetime.LocalDate
+import org.jetbrains.exposed.sql.javatime.date
 
 interface TeacherRepository {
     suspend fun getTeacherById(teacherId: Int): TeacherDAO?
@@ -19,17 +18,19 @@ interface TeacherRepository {
 }
 
 class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherRepository {
-    
+
     private fun ResultRow.toTeacherDAO() = TeacherDAO(
-        teacherId = this[Teacher.teacherId],
+        id = this[Teacher.teacherId],
         userId = this[Teacher.userId],
+        firstName = this[User.firstName],
+        lastName = this[User.lastName],
         department = this[Teacher.department],
         joiningDate = this[Teacher.joiningDate],
         photoUrl = this[Teacher.photoUrl],
         designation = this[Teacher.designation],
         isActive = this[Teacher.isActive]
     )
-    
+
     override suspend fun getTeacherById(teacherId: Int): TeacherDAO? {
         return dataSource.dbQuery {
             Teacher.select { Teacher.teacherId eq teacherId }
@@ -81,4 +82,4 @@ class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherReposit
             }[Teacher.teacherId]
         }
     }
-} 
+}

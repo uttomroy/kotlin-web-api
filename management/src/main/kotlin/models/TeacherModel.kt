@@ -1,14 +1,18 @@
 package com.education.models
 
 import kotlinx.serialization.Serializable
-import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Contextual
+import java.time.LocalDate  // ✅ Correct import for LocalDate
 
 // DAO - Represents database structure
 data class TeacherDAO(
-    val teacherId: Int,
+    val id: Int,
     val userId: Int,
+    val firstName: String,
+    val lastName: String,
     val department: String,
-    val joiningDate: String,
+    @Contextual
+    val joiningDate: LocalDate,
     val photoUrl: String,
     val designation: String,
     val isActive: Boolean
@@ -19,8 +23,11 @@ data class TeacherDAO(
 data class TeacherDTO(
     val id: Int,
     val userId: Int,
+    val firstName: String,
+    val lastName: String,
     val department: String,
-    val joiningDate: String,
+    @Contextual
+    val joiningDate: LocalDate,
     val photoUrl: String,
     val designation: String,
     val isActive: Boolean
@@ -30,7 +37,8 @@ data class TeacherDTO(
 @Serializable
 data class CreateTeacherRequest(
     val department: String,
-    val joiningDate: String,
+    @Contextual
+    val joiningDate: LocalDate,
     val photoUrl: String,
     val designation: String,
     val organizationId: Int,
@@ -39,21 +47,25 @@ data class CreateTeacherRequest(
     val email: String,
     val phoneNumber: String,
     val gender: String,
-    val dateOfBirth: String
+    @Contextual
+    val dateOfBirth: LocalDate
 )
 
 @Serializable
 data class UpdateTeacherRequest(
     val department: String,
+    @Contextual
     val joiningDate: LocalDate,
     val photoUrl: String,
     val designation: String
 )
 
-// Extension function to convert between DAO and DTO
+// Extension function to convert DAO to DTO
 fun TeacherDAO.toDTO() = TeacherDTO(
-    id = teacherId,
+    id = id,
     userId = userId,
+    firstName = firstName,
+    lastName = lastName,
     department = department,
     joiningDate = joiningDate,
     photoUrl = photoUrl,

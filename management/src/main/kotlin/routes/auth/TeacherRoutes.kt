@@ -25,7 +25,7 @@ fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
                 example("Create Teacher Request") {
                     value = CreateTeacherRequest(
                         department = "Computer Science",
-                        joiningDate = "2023-09-01",
+                        joiningDate = java.time.LocalDate.parse("2023-09-01"),
                         photoUrl = "https://example.com/photos/teacher.jpg",
                         designation = "Senior Professor",
                         organizationId = 1,
@@ -34,7 +34,7 @@ fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
                         email = "john.doe@university.edu",
                         phoneNumber = "+1-555-123-4567",
                         gender = "Male",
-                        dateOfBirth = "1980-05-15"
+                        dateOfBirth = java.time.LocalDate.parse("1980-05-15")
                     )
                 }
                 required = true
@@ -56,4 +56,6 @@ fun Route.teacherRoutes( teacherRepository: TeacherRepository) {
         val teacherRequest = call.receive<CreateTeacherRequest>()
         call.respond(teacherRepository.createTeacher(teacherRequest))
     }
+
+
 } 

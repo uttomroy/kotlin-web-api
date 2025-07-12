@@ -3,7 +3,6 @@ package com.education.models
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Contextual
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 // DAO - Represents database structure
 @Serializable

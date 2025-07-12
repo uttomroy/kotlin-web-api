@@ -7,6 +7,8 @@ import com.education.models.CreateStudentRequest
 import com.education.models.StudentDAO
 import com.education.models.UpdateStudentRequest
 import org.jetbrains.exposed.sql.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 interface StudentRepository {
     suspend fun getAllStudents(orgId: Int): List<StudentDAO>
@@ -64,7 +66,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
                 it[phoneNumber] = studentRequest.phoneNumber
                 it[password] = studentRequest.password
                 it[gender] = studentRequest.gender
-                it[dateOfBirth] = studentRequest.dateOfBirth
+                it[dateOfBirth] = LocalDate.parse(studentRequest.dateOfBirth, DateTimeFormatter.ISO_LOCAL_DATE)
                 it[isActive] = true
                 it[createdAt] = java.time.LocalDateTime.now()
                 it[updatedAt] = java.time.LocalDateTime.now()

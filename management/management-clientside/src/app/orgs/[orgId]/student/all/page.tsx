@@ -12,7 +12,6 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Image from 'next/image';
@@ -209,21 +208,23 @@ export default function StudentsPage() {
                     <TableCell>{student.classId}</TableCell>
                     <TableCell>{student.gender}</TableCell>
                     <TableCell align="center">
-                        <Tooltip title="View">
-                          <IconButton onClick = {() => handleActionView(student.studentId)} >
-                            <Image src="/icon-info.png" alt="Edit" width={24} height={24} />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit">
-                            <IconButton onClick = {() => handleActionEdit(student.studentId)}>
-                                  <Image src="/edit-icon.png" alt="Edit" width={24} height={24} />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Deactive">
-                            <IconButton >
-                                  <Image src="/suspended.png" alt="Edit" width={24} height={24} />
-                            </IconButton>
-                        </Tooltip>
+                      <Tooltip title="View Details" arrow>
+                        <IconButton onClick={() => handleActionView(student.studentId)}>
+                          <Image src="/icon-info.png" alt="View Details" width={24} height={24} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Edit" arrow>
+                        <IconButton onClick={() => handleActionEdit(student.studentId)}>
+                          <Image src="/edit-icon.png" alt="Edit" width={24} height={24} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Suspend" arrow>
+                        <IconButton onClick={() => handleActionSuspend(row.id)}>
+                          <Image src="/suspended.png" alt="Suspend" width={24} height={24} />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}
