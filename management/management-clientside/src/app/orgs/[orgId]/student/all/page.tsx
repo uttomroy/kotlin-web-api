@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { getStudents } from '@/services/api';
 import { StudentSummaryDTO } from '@/types/student';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   Table, TableHead, TableCell, TableBody, TableRow,
   TableContainer, Paper, Box, TablePagination,
@@ -11,11 +11,14 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Image from 'next/image';
 
 export default function StudentsPage() {
   const params = useParams();
+  const router = useRouter();
   const [students, setStudents] = useState<StudentSummaryDTO[]>([]);
   const [filteredStudents, setFilteredStudents] = useState<StudentSummaryDTO[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,10 +56,15 @@ export default function StudentsPage() {
     setAnchorEl(event.currentTarget);
   }
 
-  const handleActionView() {
-      const router = useRouter()
-        router.push('./student/view/${studentID}')
-  }
+  const handleActionView = (studentId: string) => {
+    // Use absolute path instead of relative path
+    router.push(`/orgs/${orgId}/student/view/${studentId}`);
+  };
+
+  const handleActionEdit = (studentId: string) => {
+    // Navigate to edit page
+    router.push(`/orgs/${orgId}/student/edit/${studentId}`);
+  };
 
   useEffect(() => {
     const filtered = students.filter((student) => {
@@ -132,7 +140,7 @@ export default function StudentsPage() {
   ];
 
   return (
-    <Box sx={{ width: '80%', p: 3, mx: 'auto' }}>
+    <Box sx={{ width: '100%', p: 3, mx: 'auto' }}>
       <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
         <TextField
           fullWidth
@@ -200,20 +208,23 @@ export default function StudentsPage() {
                     <TableCell>{student.classId}</TableCell>
                     <TableCell>{student.gender}</TableCell>
                     <TableCell align="center">
-                      <IconButton 
-                        onClick={handleActionOn}
-                      >
-                        <MoreVertIcon/>
-                      </IconButton>
-                      <Menu
-                          anchorEl={anchorEl}
-                          open={Boolean(anchorEl)}
-                          onClose={handleActionClose}
-                        >
-                            <MenuItem onClick={()=> {handleActionView(student.studentId)}}>View</MenuItem>
-                            <MenuItem onClick={handleActionClose}>Edit</MenuItem>
-                            <MenuItem onClick={handleActionClose}>Suspend</MenuItem>
-                      </Menu>
+                      <Tooltip title="View Details" arrow>
+                        <IconButton onClick={() => handleActionView(student.studentId)}>
+                          <Image src="/icon-info.png" alt="View Details" width={24} height={24} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Edit" arrow>
+                        <IconButton onClick={() => handleActionEdit(student.studentId)}>
+                          <Image src="/edit-icon.png" alt="Edit" width={24} height={24} />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Suspend" arrow>
+                        <IconButton onClick={() => handleActionSuspend(row.id)}>
+                          <Image src="/suspended.png" alt="Suspend" width={24} height={24} />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}

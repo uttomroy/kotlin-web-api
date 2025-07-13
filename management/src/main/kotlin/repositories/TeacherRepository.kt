@@ -5,34 +5,37 @@ import com.education.entities.Teacher
 import com.education.entities.User
 import com.education.models.CreateTeacherRequest
 import com.education.models.TeacherDAO
-import com.education.models.CreateUserRequest
 import org.jetbrains.exposed.sql.*
-import kotlinx.datetime.LocalDate
+import org.jetbrains.exposed.sql.javatime.date
+import java.time.LocalDate
 
 interface TeacherRepository {
     suspend fun getTeacherById(teacherId: Int): TeacherDAO?
     suspend fun getTeacherByUserId(userId: Int): TeacherDAO?
-    suspend fun getAllTeachers(): List<TeacherDAO>
+    suspend fun getAllTeachers(orgId: Int): List<TeacherDAO>
     suspend fun createTeacher(
         teacherRequest: CreateTeacherRequest,
     ): Int
 }
 
 class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherRepository {
-    
+
     private fun ResultRow.toTeacherDAO() = TeacherDAO(
-        teacherId = this[Teacher.teacherId],
+        id = this[Teacher.teacherId],
         userId = this[Teacher.userId],
+        firstName = this[User.firstName],
+        lastName = this[User.lastName],
         department = this[Teacher.department],
-        joiningDate = this[Teacher.joiningDate],
+        joiningDate = this[Teacher.joiningDate].toString(),
         photoUrl = this[Teacher.photoUrl],
         designation = this[Teacher.designation],
         isActive = this[Teacher.isActive]
     )
-    
+
     override suspend fun getTeacherById(teacherId: Int): TeacherDAO? {
         return dataSource.dbQuery {
-            Teacher.select { Teacher.teacherId eq teacherId }
+            (Teacher innerJoin User)
+                .select { Teacher.teacherId eq teacherId }
                 .map { it.toTeacherDAO() }
                 .singleOrNull()
         }
@@ -40,15 +43,17 @@ class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherReposit
 
     override suspend fun getTeacherByUserId(userId: Int): TeacherDAO? {
         return dataSource.dbQuery {
-            Teacher.select { Teacher.userId eq userId }
+            (Teacher innerJoin User)
+                .select { Teacher.userId eq userId }
                 .map { it.toTeacherDAO() }
                 .singleOrNull()
         }
     }
 
-    override suspend fun getAllTeachers(): List<TeacherDAO> {
+    override suspend fun getAllTeachers(orgId: Int): List<TeacherDAO> {
         return dataSource.dbQuery {
-            Teacher.selectAll()
+            (Teacher innerJoin User)
+                .select { User.organizationId eq orgId }
                 .map { it.toTeacherDAO() }
         }
     }
@@ -63,22 +68,23 @@ class TeacherRepositoryImpl(private val dataSource: DataSource) : TeacherReposit
                 it[lastName] = teacherRequest.lastName
                 it[email] = teacherRequest.email
                 it[phoneNumber] = teacherRequest.phoneNumber
-                it[password] = "1234"
+                it[password] = teacherRequest.password // Ideally hashed
                 it[gender] = teacherRequest.gender
-                it[dateOfBirth] = teacherRequest.dateOfBirth
-                it[isActive] = true
-                it[createdAt] = java.time.LocalDateTime.now()
-                it[updatedAt] = java.time.LocalDateTime.now()
+                it[dateOfBirth] = LocalDate.parse(teacherRequest.dateOfBirth)
+                it[isActive] = teacherRequest.isActive
             } get User.userId
 
+            // ২. Making Teacher
             Teacher.insert {
                 it[Teacher.userId] = userId
                 it[department] = teacherRequest.department
-                it[joiningDate] = teacherRequest.joiningDate
+                it[joiningDate] = LocalDate.parse(teacherRequest.joiningDate)
                 it[photoUrl] = teacherRequest.photoUrl
                 it[designation] = teacherRequest.designation
-                it[isActive] = true
-            }[Teacher.teacherId]
+                it[isActive] = teacherRequest.isActive
+            }
+
+            userId // teacherId return
         }
     }
-} 
+}
