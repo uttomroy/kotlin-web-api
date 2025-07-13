@@ -11,9 +11,8 @@ data class TeacherDAO(
     val firstName: String,
     val lastName: String,
     val department: String,
-    @Contextual
-    val joiningDate: LocalDate,
-    val photoUrl: String,
+    val joiningDate: String,
+    val photoUrl: String?,
     val designation: String,
     val isActive: Boolean
 )
@@ -26,9 +25,8 @@ data class TeacherDTO(
     val firstName: String,
     val lastName: String,
     val department: String,
-    @Contextual
-    val joiningDate: LocalDate,
-    val photoUrl: String,
+    val joiningDate: String,
+    val photoUrl: String?,
     val designation: String,
     val isActive: Boolean
 )
@@ -36,26 +34,26 @@ data class TeacherDTO(
 // Request DTOs
 @Serializable
 data class CreateTeacherRequest(
-    val department: String,
-    @Contextual
-    val joiningDate: LocalDate,
-    val photoUrl: String,
-    val designation: String,
     val organizationId: Int,
     val firstName: String,
     val lastName: String,
     val email: String,
     val phoneNumber: String,
+    val password: String,
     val gender: String,
-    @Contextual
-    val dateOfBirth: LocalDate
+    val dateOfBirth: String, // Format: "YYYY-MM-DD"
+
+    val department: String,
+    val joiningDate: String, // Format: "YYYY-MM-DD"
+    val photoUrl: String,
+    val designation: String,
+    val isActive: Boolean = true
 )
 
 @Serializable
 data class UpdateTeacherRequest(
     val department: String,
-    @Contextual
-    val joiningDate: LocalDate,
+    val joiningDate: String,
     val photoUrl: String,
     val designation: String
 )

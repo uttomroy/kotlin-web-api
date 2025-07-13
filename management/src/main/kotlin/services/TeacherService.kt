@@ -9,18 +9,19 @@ import com.education.repositories.TeacherRepository
 interface  TeacherService{
     suspend fun getTeacherById(teacherId: Int): TeacherDAO?
     suspend fun getTeacherByUserId(userId: Int): TeacherDAO?
-    suspend fun getAllTeachers(): List<TeacherDTO>
+    suspend fun getAllTeachers(orgId: Int): List<TeacherDTO>
     suspend fun createTeacher(
         teacherRequest: CreateTeacherRequest,
     ): Int
 }
 
-class TeacherServiceImp(
+class TeacherServiceImpl(
     private val teacherRepository: TeacherRepository
 ) : TeacherService {
 
-    override suspend fun getAllTeachers(): List<TeacherDTO> {
-        return teacherRepository.getAllTeachers().map { it.toDTO() }
+    override suspend fun getAllTeachers(orgId: Int): List<TeacherDTO> {
+        val  teacherList = teacherRepository.getAllTeachers(orgId)
+        return  teacherList.map { it.toDTO() }
     }
     override suspend fun getTeacherById(teacherId: Int): TeacherDAO? {
         return teacherRepository.getTeacherById(teacherId)

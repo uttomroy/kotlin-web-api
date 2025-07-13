@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     val jwtConfig = JWTConfig(environment)
-    
+
     install(Authentication) {
         jwt {
             jwtConfig.configureJWT(this)
@@ -30,7 +30,7 @@ fun Application.module() {
                     JWTPrincipal(credential.payload)
                 } else null
             }
-            authHeader callback@ { call -> 
+            authHeader callback@ { call ->
                 call.request.cookies["jwt_token"]?.let { token ->
                     HttpAuthHeader.Single("Bearer", token)
                 }
