@@ -1,8 +1,5 @@
 package com.education.services
-import com.education.models.CreateTeacherRequest
-import com.education.models.TeacherDAO
-import com.education.models.TeacherDTO
-import com.education.models.toDTO
+import com.education.models.*
 
 import com.education.repositories.TeacherRepository
 
@@ -13,6 +10,7 @@ interface  TeacherService{
     suspend fun createTeacher(
         teacherRequest: CreateTeacherRequest,
     ): Int
+    suspend fun updateTeacher(updateTeacherRequest: UpdateTeacherRequest): Boolean
 }
 
 class TeacherServiceImpl(
@@ -35,5 +33,8 @@ class TeacherServiceImpl(
         teacherRequest: CreateTeacherRequest,
     ): Int {
         return teacherRepository.createTeacher(teacherRequest)
+    }
+    override suspend fun updateTeacher(updateTeacherRequest: UpdateTeacherRequest): Boolean{
+        return teacherRepository.updateTeacherRequest(updateTeacherRequest)
     }
 }

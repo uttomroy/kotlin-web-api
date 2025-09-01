@@ -42,7 +42,6 @@ data class CreateTeacherRequest(
     val password: String,
     val gender: String,
     val dateOfBirth: String, // Format: "YYYY-MM-DD"
-
     val department: String,
     val joiningDate: String, // Format: "YYYY-MM-DD"
     val photoUrl: String,
@@ -52,10 +51,19 @@ data class CreateTeacherRequest(
 
 @Serializable
 data class UpdateTeacherRequest(
+    val teacherId: Int,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val phoneNumber: String,
+    val gender: String,
+    val dateOfBirth: String,
+
     val department: String,
     val joiningDate: String,
     val photoUrl: String,
-    val designation: String
+    val designation: String,
+    val isActive: Boolean
 )
 
 // Extension function to convert DAO to DTO

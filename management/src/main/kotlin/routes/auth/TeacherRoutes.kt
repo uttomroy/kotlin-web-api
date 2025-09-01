@@ -1,6 +1,7 @@
 package com.education.routes.auth
 
 import com.education.models.CreateTeacherRequest
+import com.education.models.UpdateTeacherRequest
 import com.education.models.TeacherDTO
 import com.education.repositories.TeacherRepository
 import com.education.services.TeacherService
@@ -29,6 +30,7 @@ fun Route.teacherRoutes( teacherService: TeacherService) {
                     description = "Teacher creation request with user details"
                     example("Create Teacher Request") {
                         value = CreateTeacherRequest(
+
                             department = "Computer Science",
                             joiningDate = "2023-09-01",
                             photoUrl = "https://example.com/photos/teacher.jpg",
@@ -125,5 +127,65 @@ fun Route.teacherRoutes( teacherService: TeacherService) {
             }
         }
 
+    /*    post("/update",{
+            summary = " "
+            description = ""
+            request{
+                body<UpdateTeacherRequest>{
+                    description = "Updated teacher information"
+                    example("Update Teacher Request"){
+                        value = UpdateTeacherRequest(
+                            teacherId = 1,
+                            firstName = "John",
+                            lastName = "Doe",
+                            email = "john.doe@example.com",
+                            phoneNumber = "+1234567890",
+                            gender = "Male",
+                            dateOfBirth = "1985-04-20",
+                            department = "Physics",
+                            joiningDate = "2020-08-15",
+                            photoUrl = "https://example.com/photo.jpg",
+                            designation = "Associate Professor",
+                            isActive = true
 
-    } }
+                        )
+                    }
+                }
+            }
+            response{
+                HttpStatusCode.OK to {
+                    description = "Teacher updated successfully"
+                    body<Map<String, String>> {
+                        description = "Success response"
+                        example("Success Response") {
+                            value = mapOf("message" to "teacher updated successfully")
+                        }
+                    }
+                }
+                HttpStatusCode.BadRequest to {
+                    description = "Missing or invalid organization ID"
+                }
+                HttpStatusCode.InternalServerError to {
+                    description = "Unexpected error occurred"
+                }
+            }
+        }){
+            try {
+                val orgId = call.parameters["orgId"]
+                if(orgId == null){
+                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid or missing orgId"))
+                    return@get
+                }
+
+                val updateTeacherRequest = call.receive<UpdateTeacherRequest>()
+
+
+            }catch (e:Exception){
+
+            }
+
+        }*/
+
+
+    }
+}

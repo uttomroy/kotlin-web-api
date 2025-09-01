@@ -7,14 +7,18 @@ import {
   Table, TableHead, TableCell, TableBody, TableRow,
   TableContainer, Paper, Box, TablePagination,
   TextField, InputAdornment, Select, MenuItem, InputLabel,
-  FormControl, SelectChangeEvent
+  FormControl, SelectChangeEvent, Typography
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import Menu from '@mui/material/Menu';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Image from 'next/image';
+
+import PeopleIcon from '@mui/icons-material/People';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ClassIcon from '@mui/icons-material/Class';
 
 export default function StudentsPage() {
   const params = useParams();
@@ -26,7 +30,6 @@ export default function StudentsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [classlabel, setClasslabel] = useState('');
   const [genderFilter, setGenderFilter] = useState('');
-  const [anchorEl,setAnchorEl] = useState<null | HTMLElement>(null);
   const orgId = Number(params.orgId);
 
   const [page, setPage] = useState(0);
@@ -49,21 +52,17 @@ export default function StudentsPage() {
     setGenderFilter(event.target.value);
   };
 
-  const handleActionClose= () => {
-    setAnchorEl(null);
-  }
-  const handleActionOn = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  }
-
   const handleActionView = (studentId: string) => {
-    // Use absolute path instead of relative path
     router.push(`/orgs/${orgId}/student/view/${studentId}`);
   };
 
   const handleActionEdit = (studentId: string) => {
-    // Navigate to edit page
     router.push(`/orgs/${orgId}/student/edit/${studentId}`);
+  };
+
+  const handleActionSuspend = (studentId: string) => {
+    console.log('Suspend student:', studentId);
+    // Add your suspend logic here
   };
 
   useEffect(() => {
@@ -124,6 +123,10 @@ export default function StudentsPage() {
     );
   }
 
+  const totalStudents = students.length;
+  const activeStudents = students.filter((student) => student.isActive).length; // Update if needed
+  const uniqueClasses = new Set(students.map((s) => s.classId)).size;
+
   interface Column {
     id: 'studentId' | 'name' | 'class' | 'gender' | 'action';
     minWidth: number;
@@ -140,7 +143,49 @@ export default function StudentsPage() {
   ];
 
   return (
-    <Box sx={{ width: '100%', p: 3, mx: 'auto' }}>
+    <Box sx={{ width: '100%', p: 3 }}>
+      {/* Top Info Boxes */}
+      <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
+        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ bgcolor: '#f57c00', color: '#fff', p: 2, borderRadius: '50%' }}>
+               <ClassIcon />
+            </Box>
+             <Box>
+                 <Button
+                       variant="contained"
+                       startIcon={<AddIcon />}
+                       color="primary"
+                       onClick={() => router.push(`/orgs/${orgId}/student/add`)}
+                    >
+                      Add Student
+                 </Button>
+             </Box>
+        </Paper>
+
+        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ bgcolor: '#1976d2', color: '#fff', p: 2, borderRadius: '50%' }}>
+            <PeopleIcon />
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary">Total Students</Typography>
+            <Typography variant="h5">{totalStudents}</Typography>
+          </Box>
+        </Paper>
+
+        <Paper elevation={3} sx={{ flex: 1, p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ bgcolor: '#388e3c', color: '#fff', p: 2, borderRadius: '50%' }}>
+            <CheckCircleIcon />
+          </Box>
+          <Box>
+            <Typography variant="body2" color="text.secondary">Active Students</Typography>
+            <Typography variant="h5">{activeStudents}</Typography>
+          </Box>
+        </Paper>
+
+
+      </Box>
+
+      {/* Search and Filters */}
       <Box sx={{ mb: 3, display: 'flex', gap: 2 }}>
         <TextField
           fullWidth
@@ -177,6 +222,7 @@ export default function StudentsPage() {
         </FormControl>
       </Box>
 
+      {/* Table */}
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader>
@@ -221,7 +267,7 @@ export default function StudentsPage() {
                       </Tooltip>
 
                       <Tooltip title="Suspend" arrow>
-                        <IconButton onClick={() => handleActionSuspend(row.id)}>
+                        <IconButton onClick={() => handleActionSuspend(student.studentId)}>
                           <Image src="/suspended.png" alt="Suspend" width={24} height={24} />
                         </IconButton>
                       </Tooltip>

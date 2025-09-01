@@ -1,8 +1,8 @@
 "use client";
-import React from 'react';
-import { useParams } from 'next/navigation';
-import { getStudentById } from '@/services/studentService';
-import { ComEducationModelsStudentDTO } from '@/generated/api';
+import React from "react";
+import { useParams, useRouter } from "next/navigation";
+import { getStudentById } from "@/services/studentService";
+import { ComEducationModelsStudentDTO } from "@/generated/api";
 
 import {
   Box,
@@ -12,36 +12,55 @@ import {
   Chip,
   Container,
   Avatar,
-  Grid,
-} from '@mui/material';
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  CircularProgress,
+  Button,
+} from "@mui/material";
 
-const InfoItem = ({ label, value }: { label: string; value?: string | number }) => (
-  <Grid item xs={12} sm={6} md={4}>
-    <Box sx={{ p: 2, bgcolor: '#f9f9f9', borderRadius: 2 }}>
-      <Typography variant="subtitle2" color="text.secondary">
-        {label}
-      </Typography>
-      <Typography variant="body1" fontWeight={500}>
-        {value || 'N/A'}
-      </Typography>
-    </Box>
-  </Grid>
+const InfoTable = ({
+  data,
+}: {
+  data: { label: string; value?: string | number | null }[];
+}) => (
+  <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
+    <Table size="small" aria-label="info table">
+      <TableBody>
+        {data.map(({ label, value }) => (
+          <TableRow key={label} hover>
+            <TableCell
+              component="th"
+              scope="row"
+              sx={{ fontWeight: "bold", width: "40%" }}
+            >
+              {label}
+            </TableCell>
+            <TableCell>{value || "N/A"}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
 );
 
 const StudentDetails = () => {
   const params = useParams();
+  const router = useRouter();
   const studentId = params.studentId;
-  const [student, setStudent] = React.useState<ComEducationModelsStudentDTO | null>(null);
+  const [student, setStudent] =
+  React.useState<ComEducationModelsStudentDTO | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((word: string) => word[0])
-      .join('')
+  const getInitials = (name: string) =>
+    name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase();
-  };
 
   React.useEffect(() => {
     if (!studentId) return;
@@ -58,14 +77,75 @@ const StudentDetails = () => {
       });
   }, [studentId]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!student) return <div>No student found.</div>;
+  const handleActionEdit = (id: number) => {
+    const orgId = student?.organizationId || "defaultOrg";
+    router.push(`/orgs/${orgId}/student/edit/${id}`);
+  };
+
+  if (loading)
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  if (error)
+    return (
+      <Box sx={{ color: "red", mt: 4, textAlign: "center" }}>
+        Error: {error}
+      </Box>
+    );
+  if (!student)
+    return <Box sx={{ mt: 4, textAlign: "center" }}>No student found.</Box>;
+
+  // Prepare data arrays for each section
+  const generalInfo = [
+    { label: "System ID", value: student.id },
+    { label: "Class ID", value: student.classId },
+    { label: "Enrollment Date", value: student.enrollmentDate },
+    { label: "Organization ID", value: student.organizationId },
+    { label: "User ID", value: student.userId },
+  ];
+
+  const personalInfo = [
+    { label: "First Name", value: student.firstName },
+    { label: "Last Name", value: student.lastName },
+    { label: "Gender", value: student.gender },
+    { label: "Father's Name", value: student.fatherName },
+    { label: "Mother's Name", value: student.motherName },
+    { label: "Address", value: student.address },
+  ];
+
+  const otherInfo = [
+    { label: "Parent Contact", value: student.parentContact },
+    { label: "Emergency Contact", value: student.emergencyContact },
+    { label: "Photo URL", value: student.photoUrl },
+    { label: "Status", value: student.status },
+  ];
 
   return (
-    <Container>
+    <Container maxWidth="md" sx={{ py: 5 }}>
+      <Box sx={{ textAlign: "left", mb: 3 }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={() => handleActionEdit(student.id!)}
+        >
+          Edit
+        </Button>
+      </Box>
+
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 4,
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+      >
         <Box>
           <Typography variant="h4" gutterBottom>
             {student.firstName} {student.lastName}
@@ -76,58 +156,34 @@ const StudentDetails = () => {
           sx={{
             width: { xs: 80, sm: 100, md: 120 },
             height: { xs: 80, sm: 100, md: 120 },
-            bgcolor: 'primary.main',
-            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+            bgcolor: "primary.main",
+            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
           }}
         >
-          {getInitials(student.firstName + ' ' + student.lastName)}
+          {getInitials(student.firstName + " " + student.lastName)}
         </Avatar>
       </Box>
 
       {/* General Information */}
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          🎓 General Information
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-        <Grid container spacing={2}>
-          <InfoItem label="System ID" value={student.id} />
-          <InfoItem label="Class ID" value={student.classId} />
-          <InfoItem label="Enrollment Date" value={student.enrollmentDate} />
-          <InfoItem label="Organization ID" value={student.organizationId} />
-          <InfoItem label="User ID" value={student.userId} />
-        </Grid>
-      </Paper>
+      <Typography variant="h5" gutterBottom>
+        🎓 General Information
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+      <InfoTable data={generalInfo} />
 
       {/* Personal Information */}
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          👤 Personal Information
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-        <Grid container spacing={2}>
-          <InfoItem label="First Name" value={student.firstName} />
-          <InfoItem label="Last Name" value={student.lastName} />
-          <InfoItem label="Gender" value={student.gender} />
-          <InfoItem label="Father's Name" value={student.fatherName} />
-          <InfoItem label="Mother's Name" value={student.motherName} />
-          <InfoItem label="Address" value={student.address} />
-        </Grid>
-      </Paper>
+      <Typography variant="h5" gutterBottom>
+        👤 Personal Information
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+      <InfoTable data={personalInfo} />
 
       {/* Other Information */}
-      <Paper elevation={2} sx={{ p: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          📁 Other Information
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-        <Grid container spacing={2}>
-          <InfoItem label="Parent Contact" value={student.parentContact} />
-          <InfoItem label="Emergency Contact" value={student.emergencyContact} />
-          <InfoItem label="Photo URL" value={student.photoUrl} />
-          <InfoItem label="Status" value={student.status} />
-        </Grid>
-      </Paper>
+      <Typography variant="h5" gutterBottom>
+        📁 Other Information
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+      <InfoTable data={otherInfo} />
     </Container>
   );
 };

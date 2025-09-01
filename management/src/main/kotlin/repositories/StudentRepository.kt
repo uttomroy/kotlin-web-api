@@ -28,6 +28,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
             firstName = this[User.firstName],
             lastName = this[User.lastName],
             gender = this[User.gender],
+            email = this[User.email],
             fatherName = this[Student.fatherName],
             motherName = this[Student.motherName],
             parentContact = this[Student.parentContact],
@@ -84,7 +85,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
                 it[enrollmentDate] = java.time.LocalDate.now()
                 it[photoUrl] = studentRequest.photoUrl
                 it[emergencyContact] = studentRequest.emergencyContact
-                it[status] = "ACTIVE"
+                it[status] = studentRequest.status
             } get Student.studentId
         }
     }
