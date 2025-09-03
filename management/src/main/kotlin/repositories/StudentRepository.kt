@@ -7,6 +7,8 @@ import com.education.models.CreateStudentRequest
 import com.education.models.StudentDAO
 import com.education.models.UpdateStudentRequest
 import org.jetbrains.exposed.sql.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 interface StudentRepository {
     suspend fun getAllStudents(orgId: Int): List<StudentDAO>
@@ -26,6 +28,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
             firstName = this[User.firstName],
             lastName = this[User.lastName],
             gender = this[User.gender],
+            email = this[User.email],
             fatherName = this[Student.fatherName],
             motherName = this[Student.motherName],
             parentContact = this[Student.parentContact],
@@ -64,7 +67,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
                 it[phoneNumber] = studentRequest.phoneNumber
                 it[password] = studentRequest.password
                 it[gender] = studentRequest.gender
-                it[dateOfBirth] = studentRequest.dateOfBirth
+                it[dateOfBirth] = LocalDate.parse(studentRequest.dateOfBirth, DateTimeFormatter.ISO_LOCAL_DATE)
                 it[isActive] = true
                 it[createdAt] = java.time.LocalDateTime.now()
                 it[updatedAt] = java.time.LocalDateTime.now()
@@ -82,7 +85,7 @@ class StudentRepositoryImpl(private val dataSource: DataSource) : StudentReposit
                 it[enrollmentDate] = java.time.LocalDate.now()
                 it[photoUrl] = studentRequest.photoUrl
                 it[emergencyContact] = studentRequest.emergencyContact
-                it[status] = "ACTIVE"
+                it[status] = studentRequest.status
             } get Student.studentId
         }
     }

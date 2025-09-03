@@ -14,97 +14,97 @@
 
 import { mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface ComEducationModelsStudentDTO
  */
 export interface ComEducationModelsStudentDTO {
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     address?: string | null;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ComEducationModelsStudentDTO
      */
     classId: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     emergencyContact?: string | null;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     enrollmentDate: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     fatherName?: string | null;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     firstName: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     gender: string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ComEducationModelsStudentDTO
      */
     id: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     lastName: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     motherName?: string | null;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ComEducationModelsStudentDTO
      */
     organizationId: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     parentContact?: string | null;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     photoUrl?: string | null;
     /**
-     * 
+     *
      * @type {string}
      * @memberof ComEducationModelsStudentDTO
      */
     status?: string | null;
     /**
-     * 
+     *
      * @type {number}
      * @memberof ComEducationModelsStudentDTO
      */
@@ -135,7 +135,7 @@ export function ComEducationModelsStudentDTOFromJSONTyped(json: any, ignoreDiscr
         return json;
     }
     return {
-        
+
         'address': json['address'] == null ? undefined : json['address'],
         'classId': json['classId'],
         'emergencyContact': json['emergencyContact'] == null ? undefined : json['emergencyContact'],
@@ -164,7 +164,7 @@ export function ComEducationModelsStudentDTOToJSONTyped(value?: ComEducationMode
     }
 
     return {
-        
+
         'address': value['address'],
         'classId': value['classId'],
         'emergencyContact': value['emergencyContact'],

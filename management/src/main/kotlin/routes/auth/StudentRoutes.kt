@@ -11,6 +11,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.github.smiley4.ktorswaggerui.dsl.routing.post
+import io.ktor.http.content.*
+import io.netty.handler.codec.http.multipart.FileUpload
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeToSequence
+import java.io.File
+import java.util.Base64
+
 
 fun Route.studentRoutes(
     studentService: StudentService
@@ -138,7 +145,8 @@ fun Route.studentRoutes(
                             parentContact = "+1-555-987-6543",
                             address = "123 School St, City, Country",
                             photoUrl = "https://example.com/photos/student.jpg",
-                            emergencyContact = "+1-555-999-8888"
+                            emergencyContact = "+1-555-999-8888",
+                            status=""
                         )
                     }
                     required = true
@@ -165,8 +173,30 @@ fun Route.studentRoutes(
         }) {
             try {
                 val studentRequest = call.receive<CreateStudentRequest>()
+                val photoUrl = studentRequest.photoUrl
+
+                if(photoUrl?.startsWith("data:image/") == true){
+                    val photoBase64 = photoUrl.substringAfter(',')
+                    val imageBytes =  Base64.getDecoder().decode(photoBase64)
+
+                    val fileExtension = photoUrl.substringAfter("data:image/").substringBefore(';')
+                    val fileName = "student_${System.currentTimeMillis()}.${fileExtension}"
+
+                    val uploadDir = File("uploads/students")
+                    if(!uploadDir.exists()){
+                        uploadDir.mkdirs()
+                    }
+                    val imageFile = File(uploadDir,fileName)
+                    imageFile.writeBytes(imageBytes)
+
+                    // Update photoUrl to point to the saved file
+                    studentRequest.photoUrl = "/uploads/students/$fileName"
+                }
+
                 val studentId = studentService.createStudent(studentRequest)
                 call.respond(HttpStatusCode.OK, mapOf("studentId" to studentId))
+
+
             } catch (e: Exception) {
                 call.respond(
                     HttpStatusCode.InternalServerError,

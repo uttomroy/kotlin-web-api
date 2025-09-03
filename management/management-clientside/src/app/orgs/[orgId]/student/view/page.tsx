@@ -1,12 +1,26 @@
 'use client'
 import { useParam,useRouter } from 'next/router';
-import {getStudentById} from '@/services'
+import {getStudentById} from '@/services/studentService'
+import {
+  Box,
+  Typography,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Chip,
+  Grid,
+  Container,
+  Avatar
+} from '@mui/material';
 
 const StudentDetails = () {
       const studentId = useParam().studentId;
-      useEffect( ()=> {
-            const fetchStudentDetails = async () => await ()
-          },
-      [studentId])
 
-}
+     return (
+        Typography variant="h6" sx={{ mb: 2 }}>
+                  {studentId}
+        </Typography>
+     )
+};

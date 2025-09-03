@@ -10,6 +10,8 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import io.ktor.server.http.content.*
 import org.koin.core.context.GlobalContext
 
 fun main(args: Array<String>) {
@@ -18,7 +20,7 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     val jwtConfig = JWTConfig(environment)
-    
+
     install(Authentication) {
         jwt {
             jwtConfig.configureJWT(this)
@@ -30,7 +32,7 @@ fun Application.module() {
                     JWTPrincipal(credential.payload)
                 } else null
             }
-            authHeader callback@ { call -> 
+            authHeader callback@ { call ->
                 call.request.cookies["jwt_token"]?.let { token ->
                     HttpAuthHeader.Single("Bearer", token)
                 }
@@ -60,6 +62,14 @@ fun Application.module() {
     configureHTTP()
     configureSerialization()
     configureFrameworks(jwtConfig)
+    
+    // Configure static content serving for uploads
+    routing {
+        static("/uploads") {
+            files("uploads")
+        }
+    }
+    
     val globalContext = GlobalContext.get()
     configureRouting(globalContext.get(), jwtConfig, globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get(), globalContext.get())
 }

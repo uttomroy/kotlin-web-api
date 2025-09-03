@@ -4,18 +4,14 @@ import com.education.routes.UserProfileResponse
 import com.education.enums.ROLE
 import com.education.repositories.TeacherRepository
 import com.education.repositories.StudentAttendanceRepository
-import com.education.services.IdentityService
-import com.education.services.StudentService
-import com.education.services.ClassLevelService
-import com.education.services.ShiftService
-import com.education.services.DepartmentService
+import com.education.services.*
 import io.github.smiley4.ktorswaggerui.dsl.routing.get
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepository: TeacherRepository,
+fun Route.authenticatedRoutes(identityService: IdentityService, teacherService: TeacherService,
                               studentService: StudentService, studentAttendanceRepository: StudentAttendanceRepository,
                               classLevelService: ClassLevelService, shiftService: ShiftService, departmentService: DepartmentService) {
 
@@ -70,7 +66,7 @@ fun Route.authenticatedRoutes(identityService: IdentityService, teacherRepositor
             }
 
             studentRoutes(studentService)
-            teacherRoutes(teacherRepository)
+            teacherRoutes(teacherService )
             studentAttendanceRoutes(studentAttendanceRepository)
             classLevelRoutes(classLevelService)
             shiftRoutes(shiftService)

@@ -3,7 +3,6 @@ package com.education.models
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Contextual
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 // DAO - Represents database structure
 @Serializable
@@ -15,6 +14,7 @@ data class StudentDAO(
     val firstName: String,
     val lastName: String,
     val gender: String,
+    val email: String,
     val fatherName: String?,
     val motherName: String?,
     val parentContact: String?,
@@ -36,6 +36,7 @@ data class StudentDTO(
     val firstName: String,
     val lastName: String,
     val gender: String,
+    val email: String,
     val fatherName: String?,
     val motherName: String?,
     val parentContact: String?,
@@ -71,8 +72,9 @@ data class CreateStudentRequest(
     val motherName: String?,
     val parentContact: String?,
     val address: String?,
-    val photoUrl: String?,
-    val emergencyContact: String?
+    var photoUrl: String?,
+    val emergencyContact: String?,
+    val status : String
 )
 
 @Serializable
@@ -97,6 +99,7 @@ fun StudentDAO.toDTO() = StudentDTO(
     firstName = firstName,
     lastName = lastName,
     gender = gender,
+    email = email,
     fatherName = fatherName,
     motherName = motherName,
     parentContact = parentContact,
@@ -114,6 +117,7 @@ fun StudentDAO.toSummaryDTO () = StudentSummaryDTO(
     gender = gender,
     status = status
 )
+
 fun getStudentSummaries(students: List<StudentDAO>) : List<StudentSummaryDTO>{
     return students.map{ it.toSummaryDTO() }
 }

@@ -3,6 +3,7 @@ package com.education.entities
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.CurrentDateTime
 import org.jetbrains.exposed.sql.javatime.datetime
+import org.jetbrains.exposed.sql.javatime.date
 import org.jetbrains.exposed.sql.javatime.timestamp
 
 object User : Table("users") {
@@ -14,7 +15,7 @@ object User : Table("users") {
     val phoneNumber = varchar("phone_number", 25).uniqueIndex()
     val password = varchar("password", 255)
     val gender = varchar("gender", 25)
-    val dateOfBirth = varchar("date_of_birth", 10)  // Format: "YYYY-MM-DD"
+    val dateOfBirth = date("date_of_birth")  // Format: "YYYY-MM-DD"
     val isActive = bool("is_active").default(true)
     val createdAt = datetime("created_at").defaultExpression(CurrentDateTime)
     val updatedAt = datetime("updated_at").defaultExpression(CurrentDateTime)

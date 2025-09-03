@@ -28,6 +28,7 @@ fun Application.configureFrameworks(jwtConfig: JWTConfig) {
             }
             single<HashService> { HashServiceImpl() }
             single<UserRepository> { UserRepositoryImpl(get()) }
+            single<TeacherService> { TeacherServiceImpl(get()) }
             single<TeacherRepository> { TeacherRepositoryImpl(get()) }
             single<StudentAttendanceRepository> { StudentAttendanceRepositoryImpl(get()) }
             single<ClassLevelRepository> { ClassLevelRepositoryImpl(get()) }

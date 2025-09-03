@@ -54,135 +54,14 @@ interface Teacher {
   salary: string;
 }
 
-const initialTeachers: Teacher[] = [
-  {
-    id: 1,
-    firstName: 'Dr. Sarah',
-    lastName: 'Wilson',
-    teacherId: 'TEA001',
-    email: 'sarah.wilson@school.com',
-    phone: '555-1001',
-    subject: 'Mathematics',
-    department: 'Science',
-    qualification: 'PhD in Mathematics',
-    experience: '8 years',
-    joinDate: '2020-08-15',
-    address: '123 Teacher Lane, City, State 12345',
-    emergencyContact: 'John Wilson',
-    emergencyPhone: '555-1002',
-    status: 'Active',
-    salary: '$65,000'
-  },
-  {
-    id: 2,
-    firstName: 'Mr. James',
-    lastName: 'Rodriguez',
-    teacherId: 'TEA002',
-    email: 'james.rodriguez@school.com',
-    phone: '555-2001',
-    subject: 'English Literature',
-    department: 'Humanities',
-    qualification: 'Master of Arts in English',
-    experience: '12 years',
-    joinDate: '2018-09-01',
-    address: '456 Faculty St, City, State 12345',
-    emergencyContact: 'Maria Rodriguez',
-    emergencyPhone: '555-2002',
-    status: 'Active',
-    salary: '$70,000'
-  },
-  {
-    id: 3,
-    firstName: 'Ms. Emily',
-    lastName: 'Chen',
-    teacherId: 'TEA003',
-    email: 'emily.chen@school.com',
-    phone: '555-3001',
-    subject: 'Chemistry',
-    department: 'Science',
-    qualification: 'Master of Science in Chemistry',
-    experience: '5 years',
-    joinDate: '2021-08-20',
-    address: '789 Education Ave, City, State 12345',
-    emergencyContact: 'David Chen',
-    emergencyPhone: '555-3002',
-    status: 'Active',
-    salary: '$62,000'
-  }
-];
 
 const subjects = ['Mathematics', 'English Literature', 'Chemistry', 'Physics', 'Biology', 'History', 'Geography', 'Physical Education', 'Art', 'Music'];
 const departments = ['Science', 'Humanities', 'Arts', 'Physical Education', 'Administration'];
 const statuses = ['Active', 'On Leave', 'Inactive', 'Resigned'];
 
 export default function TeachersPage() {
-  const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [editingTeacher, setEditingTeacher] = useState<Teacher | null>(null);
-  const [formData, setFormData] = useState<Partial<Teacher>>({});
+    const [teachers,setTeachers] = useState
 
-  const handleOpenDialog = (teacher?: Teacher) => {
-    if (teacher) {
-      setEditingTeacher(teacher);
-      setFormData(teacher);
-    } else {
-      setEditingTeacher(null);
-      setFormData({
-        firstName: '',
-        lastName: '',
-        teacherId: '',
-        email: '',
-        phone: '',
-        subject: '',
-        department: '',
-        qualification: '',
-        experience: '',
-        joinDate: '',
-        address: '',
-        emergencyContact: '',
-        emergencyPhone: '',
-        status: 'Active',
-        salary: ''
-      });
-    }
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setEditingTeacher(null);
-    setFormData({});
-  };
-
-  const handleInputChange = (field: keyof Teacher, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleSave = () => {
-    if (editingTeacher) {
-      // Update existing teacher
-      setTeachers(prev => prev.map(teacher => 
-        teacher.id === editingTeacher.id 
-          ? { ...teacher, ...formData } as Teacher
-          : teacher
-      ));
-    } else {
-      // Add new teacher
-      const newId = teachers.length > 0 ? Math.max(...teachers.map(t => t.id)) + 1 : 1;
-      const newTeacher: Teacher = {
-        ...formData as Teacher,
-        id: newId
-      };
-      setTeachers(prev => [...prev, newTeacher]);
-    }
-    handleCloseDialog();
-  };
-
-  const handleDelete = (teacherId: number) => {
-    if (window.confirm('Are you sure you want to delete this teacher?')) {
-      setTeachers(prev => prev.filter(teacher => teacher.id !== teacherId));
-    }
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {

@@ -1,5 +1,6 @@
 package com.education.models
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class UserDAO(
@@ -11,7 +12,7 @@ data class UserDAO(
     val phoneNumber: String,
     val password: String,
     val gender: String?,
-    val dateOfBirth: String,  // Format: "YYYY-MM-DD"
+    val dateOfBirth: LocalDate,  // Format: "YYYY-MM-DD"
     val isActive: Boolean,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime,
@@ -26,7 +27,7 @@ data class UserDTO(
     val email: String,
     val phoneNumber: String,
     val gender: String?,
-    val dateOfBirth: String,  // Format: "YYYY-MM-DD"
+    val dateOfBirth: LocalDate,  // Format: "YYYY-MM-DD"
     val isActive: Boolean,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
@@ -40,7 +41,7 @@ data class CreateUserRequest(
     val phoneNumber: String,
     val password: String,
     val gender: String,
-    val dateOfBirth: String
+    val dateOfBirth: LocalDate
 )
 
 data class UpdateUserRequest(
@@ -51,7 +52,7 @@ data class UpdateUserRequest(
     val phoneNumber: String? = null,
     val password: String? = null,
     val gender: String,
-    val dateOfBirth: String? = null,  // Format: "YYYY-MM-DD"
+    val dateOfBirth: LocalDate? = null,  // Format: "YYYY-MM-DD"
     val isActive: Boolean? = null
 )
 

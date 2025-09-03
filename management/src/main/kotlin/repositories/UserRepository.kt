@@ -6,6 +6,8 @@ import com.education.entities.RoleMapping
 import com.education.models.UserDAO
 import com.education.models.RoleMappingDAO
 import org.jetbrains.exposed.sql.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 interface UserRepository {
     suspend fun getUserById(userId: Int): UserDAO?
@@ -96,7 +98,7 @@ class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
                 it[User.phoneNumber] = phoneNumber
                 it[User.password] = password
                 it[User.gender] = gender
-                it[User.dateOfBirth] = dateOfBirth
+                it[User.dateOfBirth] = LocalDate.parse(dateOfBirth, DateTimeFormatter.ISO_LOCAL_DATE)
                 it[User.isActive] = isActive
             }[User.userId]
         }
@@ -118,7 +120,7 @@ class UserRepositoryImpl(private val dataSource: DataSource) : UserRepository {
                 email?.let { statement[User.email] = it }
                 phoneNumber?.let { statement[User.phoneNumber] = it }
                 gender?.let { statement[User.gender] = it }
-                dateOfBirth?.let { statement[User.dateOfBirth] = it }
+                dateOfBirth?.let { statement[User.dateOfBirth] = LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
             }
             updateStatement > 0
         }
