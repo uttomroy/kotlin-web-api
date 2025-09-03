@@ -3,6 +3,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getStudentById } from "@/services/studentService";
 import { ComEducationModelsStudentDTO } from "@/generated/api";
+import config from "@/config/config";
 
 import {
   Box,
@@ -56,8 +57,7 @@ const StudentDetails = () => {
   const [error, setError] = React.useState<string | null>(null);
 
   const getInitials = (name: string) =>
-    name
-      .split(" ")
+    name.split(" ")
       .map((word) => word[0])
       .join("")
       .toUpperCase();
@@ -152,16 +152,13 @@ const StudentDetails = () => {
           </Typography>
           <Chip label={student.status} color="primary" />
         </Box>
-        <Avatar
-          sx={{
-            width: { xs: 80, sm: 100, md: 120 },
-            height: { xs: 80, sm: 100, md: 120 },
-            bgcolor: "primary.main",
-            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-          }}
-        >
-          {getInitials(student.firstName + " " + student.lastName)}
-        </Avatar>
+    <Avatar
+      src={student.photoUrl ? `${config.API_BASE_URL}${student.photoUrl}` : undefined}
+      alt={`${student.firstName} ${student.lastName}`}
+      sx={{ width: 80, height: 80 }}
+    >
+      {getInitials(`${student.firstName ?? ""} ${student.lastName ?? ""}`)}
+    </Avatar>
       </Box>
 
       {/* General Information */}

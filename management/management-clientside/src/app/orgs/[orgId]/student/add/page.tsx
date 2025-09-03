@@ -140,7 +140,7 @@ const fileToBase64 = (file: File): Promise<string> => {
           address: formData.address,
           photoUrl: formData.photoUrl,
           emergencyContact: formData.emergencyContact,
-          status: formData.status ?? ""
+          status: status
         };
 
         // Send request
